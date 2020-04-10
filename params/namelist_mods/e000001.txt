@@ -1,0 +1,2 @@
+paramfile='ens00001.nc'
+baseflow_scalar=0.001
