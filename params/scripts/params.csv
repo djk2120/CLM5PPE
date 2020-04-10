@@ -6,7 +6,7 @@ or scaling factors relative to default (for some PFT-depedent params)",Reference
  Eqn 126",CanopyTemperatureMod.F90 (line 411),"NET/NDT/BET/BDT: 0.67
  BES/BDS/C3/C4/Crop: 0.68",--,0.4,0.95,"[0.4, 0.95]","Zeng and Wang (2007), Raupach (1994), Shaw and Pereira (1982)",Using one range of values for all PFT since there is little variation built into the default model values.
 1,dleaf,Characteristic dimension of leaves in the direction of wind flow,P,dleaf,d_leaf,"Section 2.5
- Eqn 122",CanopyFluxesMod.F90 (line 795),0.04,m,,,See dleaf tab,"Kattge et al. (2011), Prentice et al. (2011), Campbell and Norman (1998), Parkhurst et al. (1968)",
+ Eqn 122",CanopyFluxesMod.F90 (line 795),0.04,m,0.0081,0.243,See dleaf tab,"Kattge et al. (2011), Prentice et al. (2011), Campbell and Norman (1998), Parkhurst et al. (1968)",
 0,froot_leaf,Allocation parameter: new fine root C per new leaf C,P,froot_leaf,a_1,"Section 2.19
  Eqn 7","NutrientCompetitionFlexibleCNMod.F90 (lines 414, 1462)
 PhotosynthesisMod.F90 (line 2761)
@@ -50,9 +50,9 @@ Alternate approach (from Daniel) could be to map this parameter to rooting depth
  BES/BDS/C3/C4/Crop: 0.120",--,,,"z0mr_minv = z0mr_def * 0.6
  z0mr_maxv = z0mr_def * 1.5","Zeng and Wang (2007), Raupach (1994), Shaw and Pereira (1982)",
 1,baseflow_scalar,Scalar multiplier for base flow rate,N,baseflow_scalar,K_baseflow,"Section 2.7
- Eqn 108",SoilHydrologyMod.F90 (line 2090),0.001,--,,,"[0.0005, 0.1]",Expert judgement,"SoilHydrologyMod.F90 defines this parameter as 0.01 (line 40) which is different from the namelist value of 0.001. I tested to see if perturbing the namelist value does anything (otherwise source code is overriding namelist value). UPDATE: perturbation does change outputs, namelist is not overriden"
+ Eqn 108",SoilHydrologyMod.F90 (line 2090),0.001,--,0.0005,0.1,"[0.0005, 0.1]",Expert judgement,"SoilHydrologyMod.F90 defines this parameter as 0.01 (line 40) which is different from the namelist value of 0.001. I tested to see if perturbing the namelist value does anything (otherwise source code is overriding namelist value). UPDATE: perturbation does change outputs, namelist is not overriden"
 1,maximum_leaf_wetted_fraction,Maximum fraction of leaf that may be wet prior to drip occuring,N,maximum_leaf_wetted_fraction,?,"Section 2.7
- Eqn 23?",CanopyHydrologyMod.F90 (line 723),0.05,--,,,"[0.01, 0.5]",Expert judgement,"Parameter range suggested by Sean; suggested to be widened by Dave. Tech note suggests fwet cannot be greater than or equal to 1, but namelist sets this parameter at 0.05 in the default."
+ Eqn 23?",CanopyHydrologyMod.F90 (line 723),0.05,--,0.01,0.5,"[0.01, 0.5]",Expert judgement,"Parameter range suggested by Sean; suggested to be widened by Dave. Tech note suggests fwet cannot be greater than or equal to 1, but namelist sets this parameter at 0.05 in the default."
 0,interception_fraction,Fraction of intercepted precipitation,N,interception_fraction,𝛼_liq,"Section 2.7
  Eqn 4",CanopyHydrologyMod.F90 (line 324),1,--,,,"[0.5, 1]",Expert judgement,"Parameter range suggested by Sean; suggested to be narrowed by Dave. Since max range value = default, only run one simulation here and use control simulation as max."
 0,csoilc,Drag coefficient for soil under dense canopy,H,csoilc,"c_s,dense","Section 2.5
