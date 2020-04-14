@@ -1,0 +1,3 @@
+paramfile='e009.nc'
+baseflow_scalar=0.07993450573965355
+maximum_leaf_wetted_fraction=0.039818367753108264
