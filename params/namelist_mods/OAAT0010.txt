@@ -1,0 +1,1 @@
+paramfile='e0010.nc'
