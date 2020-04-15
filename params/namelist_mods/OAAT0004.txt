@@ -1,1 +1,1 @@
-paramfile='e004.nc'
+! user_nl_clm namelist options written by generate_params:
