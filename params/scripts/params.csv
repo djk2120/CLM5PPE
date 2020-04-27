@@ -1,27 +1,41 @@
-include,name,Description,location,Name in Source Code,Name in Tech Note,"Tech Note Equation Ref.
-(HTML version of tech note)",Source Code Ref. (CLM5 release code),CLM5 Default Value(s),Units,min,max,dim2,"Sensitivity Range [min, max]
-or scaling factors relative to default (for some PFT-depedent params)",References for parameter ranges,Notes,pft_mins
-,"34 parameters from Katie's paper (mostly hydrology, SP mode):",,"Location of parameter: PFT params file (P), Namelist (N), or Hard coded (H)",,,,,,,,,length of any secondary dims,,,,
-1,displar,Ratio of displacement height to canopy top height,P,displar,R_d,"Section 2.5
+include,name,location,min,max,comments?,Description,Name in Source Code,Name in Tech Note,"Tech Note Equation Ref.
+(HTML version of tech note)",Source Code Ref. (CLM5 release code),CLM5 Default Value(s),Units,"Sensitivity Range [min, max]
+or scaling factors relative to default (for some PFT-depedent params)",References for parameter ranges,Notes,pft_mins,pft_maxs,pft_key
+"need not edit, 0 as default, we'll come back to this later...",should match the name on paramfile or namelist,"Location of parameter: 
+PFT params file (P), Namelist (N), or Hard coded (H)","low side perturbation
+
+(pft variation handled on extra","high side perturbation
+
+tabs)",feel free to add any comments here,"------------------->
+this and the columns farther right not currently essential, but of course feel free to peruse and/or add information",,,,,,,,,,"DO NOT EDIT:
+instead, edit these on the supplementary tabs",,
+0,"34 parameters from Katie's paper (mostly hydrology, SP mode):",,,,,,,,,,,,,,,,,
+1,displar,P,0.4,0.95,,Ratio of displacement height to canopy top height,displar,R_d,"Section 2.5
  Eqn 126",CanopyTemperatureMod.F90 (line 411),"NET/NDT/BET/BDT: 0.67
- BES/BDS/C3/C4/Crop: 0.68",--,0.4,0.95,,"[0.4, 0.95]","Zeng and Wang (2007), Raupach (1994), Shaw and Pereira (1982)",Using one range of values for all PFT since there is little variation built into the default model values.,
-1,dleaf,Characteristic dimension of leaves in the direction of wind flow,P,dleaf,d_leaf,"Section 2.5
- Eqn 122",CanopyFluxesMod.F90 (line 795),0.04,m,0.0081,0.243,,See dleaf tab,"Kattge et al. (2011), Prentice et al. (2011), Campbell and Norman (1998), Parkhurst et al. (1968)",,"0.000216,0.000216,0.00072,0.0081,0.0081,0.0081,0.0081,0.0081,0.0081,0.000405,0.000162,0.000144,0.000144,0.000144,0.000162"
-0,froot_leaf,Allocation parameter: new fine root C per new leaf C,P,froot_leaf,a_1,"Section 2.19
+ BES/BDS/C3/C4/Crop: 0.68",--,"[0.4, 0.95]","Zeng and Wang (2007), Raupach (1994), Shaw and Pereira (1982)",Using one range of values for all PFT since there is little variation built into the default model values.,,,
+1,dleaf,P,pft,pft,,Characteristic dimension of leaves in the direction of wind flow,dleaf,d_leaf,"Section 2.5
+ Eqn 122",CanopyFluxesMod.F90 (line 795),0.04,m,See dleaf tab,"Kattge et al. (2011), Prentice et al. (2011), Campbell and Norman (1998), Parkhurst et al. (1968)",,"0.000216,0.000216,0.00072,0.0081,0.0081,0.0081,0.0081,0.0081,0.0081,0.000405,0.000162,0.000144,0.000144,0.000144,0.000162","0.00108,0.00108,0.0036,0.0567,0.0567,0.243,0.243,0.243,0.081,0.1215,0.0486,0.018,0.018,0.018,0.1215","Needleleaf Evergreen Temperate Tree,Needleleaf Evergreen Boreal Tree,Needleleaf Deciduous Boreal Tree,Broadleaf Evergreen Tropical Tree,Broadleaf Evergreen Temperate Tree,Broadleaf Deciduous Tropical Tree,Broadleaf Deciduous Temperate Tree,Broadleaf Deciduous Boreal Tree,Broadleaf Evergreen Shrub,Broadleaf Deciduous Temperate Shrub,Broadleaf Deciduous Boreal Shrub,C3 Arctic Grass,C3 Non-Arctic Grass,C4 Grass,Crops"
+0,froot_leaf,P,20percent,20percent,"**ok, to write in XXpercent, in lieu of absolute range**",Allocation parameter: new fine root C per new leaf C,froot_leaf,a_1,"Section 2.19
  Eqn 7","NutrientCompetitionFlexibleCNMod.F90 (lines 414, 1462)
 PhotosynthesisMod.F90 (line 2761)
 CNVegetationFacade.F90 (line 1353)
 NutrientCompetitionCLM45defaultMod.F90 (lines 265, 747)","NET/NDT/BET/BDT/BES/BDS/C3/C4: 1.5
  C3 Irrig: 1
- Crop: 2",gC/gC,,,,"froot_leaf_minv = froot_leaf_def * 0.8
- froot_leaf_maxv = froot_leaf_def * 1.2","Atkin et al. (2015), Litton et al. (2007), Iversen et al. (2015), Mokany et al. (2006), Malhi et al. (2011)","Some evidence for larger than 10% variation (Atkin et al. 2015), but values are PFT-dependent.",
-1,kmax,Plant segment max conductance,P,kmax,k_max,"Section 2.11
- Eqn 7","PhotosynthesisMod.F90 (lines 4431ff, 4588ff, 4682, 4690, 4695)",2.00E-08,1/s,1.00E-08,3.00E-08,4,"kmax_minv = kmax_def * 0.1
- kmax_maxv = kmax_def * 1.9","Bonan et al. (2014), Chuang et al. (2006), Sperry et al. (1998), Sperry and Love (2015), Williams et al (1996), Kennedy et al. (2019)","Has the capability to vary w/ PFT and segment: sunlit, shaded, xylem, root. I did not include any of that variation in my perturbations. In general, unclear how to set min/max values, so I set the ranges to include at least 1 order of magnitude difference.",
-0,krmax,Root segment max conductance,P,krmax,"k_3,max (?)","Section 2.11
- Eqn 17?",PhotosynthesisMod.F90 (line 2776),"Ranges [1e-11, 1.995e-8]",1/s,,,,"krmax_minv = krmax_def * 0.1
- krmax_maxv = krmax_def * 1.9","Bonan et al. (2014), Chuang et al. (2006), Sperry et al. (1998), Sperry and Love (2015), Williams et al (1996), Kennedy et al. (2019)","How does this parameter differ from the ""root"" segment of kmax? Similar to kmax, ranges include at least 1 order of magnitude difference.",
-0,leafcn,Leaf C:N,P,leafcn,CN_leaf,"Section 2.19
+ Crop: 2",gC/gC,"froot_leaf_minv = froot_leaf_def * 0.8
+ froot_leaf_maxv = froot_leaf_def * 1.2","Atkin et al. (2015), Litton et al. (2007), Iversen et al. (2015), Mokany et al. (2006), Malhi et al. (2011)","Some evidence for larger than 10% variation (Atkin et al. 2015), but values are PFT-dependent.",,,
+1,kmax,P,1.00E-08,3.00E-08,may require PFT variation,Plant segment max conductance,kmax,k_max,"Section 2.11
+ Eqn 7","PhotosynthesisMod.F90 (lines 4431ff, 4588ff, 4682, 4690, 4695)",2.00E-08,1/s,"kmax_minv = kmax_def * 0.1
+ kmax_maxv = kmax_def * 1.9","Bonan et al. (2014), Chuang et al. (2006), Sperry et al. (1998), Sperry and Love (2015), Williams et al (1996), Kennedy et al. (2019)","Has the capability to vary w/ PFT and segment: sunlit, shaded, xylem, root. I did not include any of that variation in my perturbations. In general, unclear how to set min/max values, so I set the ranges to include at least 1 order of magnitude difference.",,,
+0,krmax,P,,,,Root segment max conductance,krmax,"k_3,max (?)","Section 2.11
+ Eqn 17?",PhotosynthesisMod.F90 (line 2776),"Ranges [1e-11, 1.995e-8]",1/s,"krmax_minv = krmax_def * 0.1
+ krmax_maxv = krmax_def * 1.9","Bonan et al. (2014), Chuang et al. (2006), Sperry et al. (1998), Sperry and Love (2015), Williams et al (1996), Kennedy et al. (2019)","How does this parameter differ from the ""root"" segment of kmax? Similar to kmax, ranges include at least 1 order of magnitude difference.",,,
+0,psi50,P,,,,Water potential at 50% loss of conductance,psi50,p_50,"Section 2.11
+ Eqn 7","PhotosynthesisMod.F90 (lines 4820, 4854)","Ranges [-530000, -150000]",mm H2O,"psi50_minv = psi50_def * 0.9
+ psi50_maxv = psi50_def * 1.1","Kennedy et al. (2019), Males and Griffiths (2017)","Has the capability to vary w/ PFT and segment: sunlit, shaded, xylem, root.",,,
+0,ck,P,,,,"Weibull curve shape parameter. Determines slope of vulnerability curve (conductivity vs. water potential).
+Note: Might not need (or want) to change all PHS params at the same time",ck,c_k,"Section 2.11
+ Eqn 7",,3.95,--,,,"Has the capability to vary w/ PFT and segment: sunlit, shaded, xylem, root.",,,
+0,leafcn,P,,,,Leaf C:N,leafcn,CN_leaf,"Section 2.19
  Eqn 9","NutrientCompetitionFlexibleCNMod.F90 (line 1619)
 PhotosynthesisMod.F90 (lines 1274, 2863)","NET: 58
  NDT: 25.813112
@@ -32,150 +46,238 @@ PhotosynthesisMod.F90 (lines 1274, 2863)","NET: 58
  C3 Grass/C3 Crop: 28.026905
  C4 Grass: 35.360680
  C3 Irrig/Corn/Sugarcane: 25
- Other Crop: 20",gC/gN,,,,"leafcn_minv = leafcn_def * 0.69
- leafcn_maxv = leafcn_def * 1.44","White et al. (2000), Thornton and Zimmermann (2007)",,
-0,medlynslope,Medlyn slope of conductance-photosynthesis relationship,P,medlynslope,g_1,"Section 2.9
- Eqn 1",PhotosynthesisMod.F90 (lines 4069-4088),"Ranges [1.62, 9]",umol H2O/umol CO2,,,,See medlynslope tab,"Lin et al. (2015), Medlyn et al. (2011), Rogers et al. (2017), Lombardozzi et al. (2017), De Kauwe et al. (2015)",,
-0,psi50,Water potential at 50% loss of conductance,P,psi50,p_50,"Section 2.11
- Eqn 7","PhotosynthesisMod.F90 (lines 4820, 4854)","Ranges [-530000, -150000]",mm H2O,,,,"psi50_minv = psi50_def * 0.9
- psi50_maxv = psi50_def * 1.1","Kennedy et al. (2019), Males and Griffiths (2017)","Has the capability to vary w/ PFT and segment: sunlit, shaded, xylem, root.",
-0,rootprof_beta,"Rooting beta parameter, for C and N vertical discretization",P,rootprof_beta,𝛽,"Section 2.11
- Eqn 1",RootBiophysMod.F90 (line 268),"Ranges [0.914, 0.993]",--,,,,"rootprof_beta_minv = rootprof_beta_def * 0.995
+ Other Crop: 20",gC/gN,"leafcn_minv = leafcn_def * 0.69
+ leafcn_maxv = leafcn_def * 1.44","White et al. (2000), Thornton and Zimmermann (2007)",,,,
+0,medlynslope,P,,,,Medlyn slope of conductance-photosynthesis relationship,medlynslope,g_1,"Section 2.9
+ Eqn 1",PhotosynthesisMod.F90 (lines 4069-4088),"Ranges [1.62, 9]",umol H2O/umol CO2,See medlynslope tab,"Lin et al. (2015), Medlyn et al. (2011), Rogers et al. (2017), Lombardozzi et al. (2017), De Kauwe et al. (2015)",,,,
+0,rootprof_beta,P,,,,"Rooting beta parameter, for C and N vertical discretization",rootprof_beta,𝛽,"Section 2.11
+ Eqn 1",RootBiophysMod.F90 (line 268),"Ranges [0.914, 0.993]",--,"rootprof_beta_minv = rootprof_beta_def * 0.995
  rootprof_beta_maxv = rootprof_beta_def * 1.005",Jackson et al. (1996),"2 variants for this variable: carbon and water uptake
 Have to be careful that the max values don't go over 1 (physically unreasonable).
-Alternate approach (from Daniel) could be to map this parameter to rooting depth and perturb that quantity intsead. Could be easier to find physically reasonable ranges for each PFT.",
-0,z0mr,Ratio of momentum roughness length to canopy top height,P,z0mr,R_z0m,"Section 2.5
+Alternate approach (from Daniel) could be to map this parameter to rooting depth and perturb that quantity intsead. Could be easier to find physically reasonable ranges for each PFT.",,,
+0,z0mr,P,,,,Ratio of momentum roughness length to canopy top height,z0mr,R_z0m,"Section 2.5
  Eqn 125",CanopyTemperatureMod.F90 (line 410),"NET/NDT/BDT: 0.055
  BET: 0.075
- BES/BDS/C3/C4/Crop: 0.120",--,,,,"z0mr_minv = z0mr_def * 0.6
- z0mr_maxv = z0mr_def * 1.5","Zeng and Wang (2007), Raupach (1994), Shaw and Pereira (1982)",,
-1,baseflow_scalar,Scalar multiplier for base flow rate,N,baseflow_scalar,K_baseflow,"Section 2.7
- Eqn 108",SoilHydrologyMod.F90 (line 2090),0.001,--,0.0005,0.1,,"[0.0005, 0.1]",Expert judgement,"SoilHydrologyMod.F90 defines this parameter as 0.01 (line 40) which is different from the namelist value of 0.001. I tested to see if perturbing the namelist value does anything (otherwise source code is overriding namelist value). UPDATE: perturbation does change outputs, namelist is not overriden",
-1,maximum_leaf_wetted_fraction,Maximum fraction of leaf that may be wet prior to drip occuring,N,maximum_leaf_wetted_fraction,?,"Section 2.7
- Eqn 23?",CanopyHydrologyMod.F90 (line 723),0.05,--,0.01,0.5,,"[0.01, 0.5]",Expert judgement,"Parameter range suggested by Sean; suggested to be widened by Dave. Tech note suggests fwet cannot be greater than or equal to 1, but namelist sets this parameter at 0.05 in the default.",
-0,interception_fraction,Fraction of intercepted precipitation,N,interception_fraction,𝛼_liq,"Section 2.7
- Eqn 4",CanopyHydrologyMod.F90 (line 324),1,--,,,,"[0.5, 1]",Expert judgement,"Parameter range suggested by Sean; suggested to be narrowed by Dave. Since max range value = default, only run one simulation here and use control simulation as max.",
-0,csoilc,Drag coefficient for soil under dense canopy,H,csoilc,"c_s,dense","Section 2.5
-Eqn 120","set in: clm_varcon.F90 (line 115)
-called in: CanopyFluxesMod.F90",0.004,--,,,,"[0.0025, 0.012]","Dickinson et al. (1993), Zeng et al. (2005), Sakaguchi and Zeng (2009)",,
-0,cv,Turbulent transfer coefficient between canopy surface and canopy air,H,[first const in cf eqn],c_v,"Section 2.5
-Eqn 122",CanopyFluxesMod.F90 (line 795),0.01,m/s^(1/2),,,,"[0.005, 0.02]","Deardorff (1978), Dickinson et al. (1993), Zeng et al. (2005)","Zeng et al. (2005) use 0.01 to keep constant for simplicity, but report that it ""varies by...a factor of 2.""",
-0,a,Drag coefficient under less dense canopy,H,"[(1) first coef in z0hg_pft eqn; 
-(2) first const in csoilb eqn]",a,"Section 2.5
+ BES/BDS/C3/C4/Crop: 0.120",--,"z0mr_minv = z0mr_def * 0.6
+ z0mr_maxv = z0mr_def * 1.5","Zeng and Wang (2007), Raupach (1994), Shaw and Pereira (1982)",,,,
+1,baseflow_scalar,N,0.0005,0.1,,Scalar multiplier for base flow rate,baseflow_scalar,K_baseflow,"Section 2.7
+ Eqn 108",SoilHydrologyMod.F90 (line 2090),0.001,--,"[0.0005, 0.1]",Expert judgement,"SoilHydrologyMod.F90 defines this parameter as 0.01 (line 40) which is different from the namelist value of 0.001. I tested to see if perturbing the namelist value does anything (otherwise source code is overriding namelist value). UPDATE: perturbation does change outputs, namelist is not overriden",,,
+1,maximum_leaf_wetted_fraction,N,0.01,0.5,,Maximum fraction of leaf that may be wet prior to drip occuring,maximum_leaf_wetted_fraction,?,"Section 2.7
+ Eqn 23?",CanopyHydrologyMod.F90 (line 723),0.05,--,"[0.01, 0.5]",Expert judgement,"Parameter range suggested by Sean; suggested to be widened by Dave. Tech note suggests fwet cannot be greater than or equal to 1, but namelist sets this parameter at 0.05 in the default.",,,
+0,interception_fraction,N,,,,Fraction of intercepted precipitation,interception_fraction,𝛼_liq,"Section 2.7
+ Eqn 4",CanopyHydrologyMod.F90 (line 324),1,--,"[0.5, 1]",Expert judgement,"Parameter range suggested by Sean; suggested to be narrowed by Dave. Since max range value = default, only run one simulation here and use control simulation as max.",,,
+0,csoilc,P,,,,Drag coefficient for soil under dense canopy,csoilc,"c_s,dense","Section 2.5
+Eqn 120",CanopyFluxesMod.F90,0.004,--,"[0.0025, 0.012]","Dickinson et al. (1993), Zeng et al. (2005), Sakaguchi and Zeng (2009)",04/23/20: KO: verified this is on parameter file on master,,,
+0,cv,P,,,,Turbulent transfer coefficient between canopy surface and canopy air,[first const in cf eqn],c_v,"Section 2.5
+Eqn 122",CanopyFluxesMod.F90 (line 795),0.01,m/s^(1/2),"[0.005, 0.02]","Deardorff (1978), Dickinson et al. (1993), Zeng et al. (2005)","Zeng et al. (2005) use 0.01 to keep constant for simplicity, but report that it ""varies by...a factor of 2.""  04/23/20: KO: verified this is on parameter file on master",,,
+0,a_coef,P,,,,Drag coefficient under less dense canopy,"[(1) first coef in z0hg_pft eqn; 
+(2) first const in csoilb eqn]; now a_coef in param file & code",a,"Section 2.5
 (1) Eqn 82
 (2) Eqn 121","(1) BareGroundFluxesMod.F90 (line 292)
-(2) CanopyFluxesMod.F90 (line 807)",0.13,--,,,,"[0.10, 0.13]","Zeng and Dickinson (1998), Zeng et al. (2005)",,
-0,a2,Drag exponent under less dense canopy,H,"[(1) exp in z0hg_pft eqn; 
-(2) exp in csoilb eqn]",(none),"Section 2.5
+(2) CanopyFluxesMod.F90 (line 807)",0.13,--,"[0.10, 0.13]","Zeng and Dickinson (1998), Zeng et al. (2005)",04/23/20: KO: verified this is on parameter file on master,,,
+0,a_exp,P,,,,Drag exponent under less dense canopy,"[(1) exp in z0hg_pft eqn; 
+(2) exp in csoilb eqn]; now a_exp in param file & code",(none),"Section 2.5
 (1) Eqn 82
 (2) Eqn 121","(1) BareGroundFluxesMod.F90 (line 292)
-(2) CanopyFluxesMod.F90 (line 807)",0.45,--,,,,"[0.45, 0.50]","Zeng and Dickinson (1998), Zeng et al. (2005)","Coefficient is -0.45 for C_s,bare (see Eq. 121).",
-0,zlnd,"Momentum roughness length for soils, glacier, wetland",H,zlnd,"z_0m,g","Section 2.5
+(2) CanopyFluxesMod.F90 (line 807)",0.45,--,"[0.45, 0.50]","Zeng and Dickinson (1998), Zeng et al. (2005)","Coefficient is -0.45 for C_s,bare (see Eq. 121). 04/23/20: KO: verified this is on parameter file on master",,,
+0,zlnd,P,,,,"Momentum roughness length for soils, glacier, wetland",zlnd,"z_0m,g","Section 2.5
 (1) Eqn 82
-(2) Eqn 121","set in: clm_varcon.F90 (line 113)
-called in: CanopyHydrologyMod.F90 (lines 565, 596)
+(2) Eqn 121","CanopyHydrologyMod.F90 (lines 565, 596)
 WaterStateType.F90 (line 695)
-CanopyTemperatureMod.F90 (line 383)",0.01,m,,,,"[0.003, 0.05]","Zeng and Dickinson (1998), Birol-Kara et al. (1997)","CanopyHydrologyMod call only used if (oldfflag == 1), set to 0 by default",
-0,zsno,Momentum roughness length for snow,H,zsno,"z_0m,g","Section 2.5
+CanopyTemperatureMod.F90 (line 383)",0.01,m,"[0.003, 0.05]","Zeng and Dickinson (1998), Birol-Kara et al. (1997)","CanopyHydrologyMod call only used if (oldfflag == 1), set to 0 by default. 04/23/20: KO: verified this is on parameter file on master",,,
+0,zsno,P,,,,Momentum roughness length for snow,zsno,"z_0m,g","Section 2.5
 (1) Eqn 82
-(2) Eqn 121","set in: clm_varcon.F90 (line 114)
-called in: LakeFluxesMod.F90 (line 292)
-CanopyTemperatureMod.F90 (line 381)",0.0024,m,,,,"[0.00001, 0.07]","Chamberlain (1983), Manes et al. (2008), Gromke et al. (2011)",uncertainty…is very high (Gromke et al. 2011),
-0,laidl,Plant litter area index,H,lai_dl,?,Section 2.5?,"set in: CanopyFluxesMod.F90 (line 223)
-called in: CanopyFluxesMod.F90 (line 965)",0.5,m^2/m^2,,,,"[0.5, 1.5]",Sakaguchi and Zeng (2009),Where is this described in the tech note?,
-0,zdl,Litter layer thickness,H,z_dl,?,Section 2.5?,"set in: CanopyFluxesMod.F90 (line 224)
-called in: CanopyFluxesMod.F90 (line 963)",0.05,m,,,,"[0.01, 0.1]","Sato et al. (2004), Sakaguchi and Zeng (2009)",Where is this described in the tech note?,
-0,sy,Minimum specific yield,H,[const in rous and s_y max definitions],?,"Section 2.7
-Eqn 110?","SoilHydrologyMod.F90 (lines 712, 727, 742, 1254, 1290, 1797, 2108)",0.02,--,,,,"[0.01, 0.02]",Niu et al. (2007),"Subroutines: WaterTable, Drainage, PerchedLateralFlow, LateralFlowPowerLaw
+(2) Eqn 121","LakeFluxesMod.F90 (line 292)
+CanopyTemperatureMod.F90 (line 381)",0.0024,m,"[0.00001, 0.07]","Chamberlain (1983), Manes et al. (2008), Gromke et al. (2011)",uncertainty…is very high (Gromke et al. 2011). 04/23/20: KO: verified this is on parameter file on master,,,
+0,lai_dl,P,,,,Plant litter area index,lai_dl,?,Section 2.5?,"set in: CanopyFluxesMod.F90 (line 223)
+called in: CanopyFluxesMod.F90 (line 965)",0.5,m^2/m^2,"[0.5, 1.5]",Sakaguchi and Zeng (2009),Where is this described in the tech note?  04/23/20: KO: verified this is on the parameter file on master,,,
+0,z_dl,P,,,,Litter layer thickness,z_dl,?,Section 2.5?,"set in: CanopyFluxesMod.F90 (line 224)
+called in: CanopyFluxesMod.F90 (line 963)",0.05,m,"[0.01, 0.1]","Sato et al. (2004), Sakaguchi and Zeng (2009)",Where is this described in the tech note? 04/23/20: KO verified this is on the parameter file on master,,,
+0,aq_sp_yield_min,P,,,,Minimum specific yield,[const in rous and s_y max definitions]; now aq_sp_yield_min in param file & code,?,"Section 2.7
+Eqn 110?","SoilHydrologyMod.F90 (lines 712, 727, 742, 1254, 1290, 1797, 2108)",0.02,--,"[0.01, 0.02]",Niu et al. (2007),"Subroutines: WaterTable, Drainage, PerchedLateralFlow, LateralFlowPowerLaw
 WaterTable and Drainage are only called if use_aquifer_layer=True and it is false if lower_boundary_condition=2 (bc_zero_flux) which is the CLM5 default.
-PerchedLateralFlow and LateralFlowPowerLaw appear to be called in HydrologyDrainage which is called in clm_driver. Where is this described in the tech note? Minimum value could be lower depending on combination of soil properties and water table depth (calculations done separately).",
-0,fff,Decay factor for fractional saturated area,H,fff,f_over,"Section 2.7
+PerchedLateralFlow and LateralFlowPowerLaw appear to be called in HydrologyDrainage which is called in clm_driver. Where is this described in the tech note? Minimum value could be lower depending on combination of soil properties and water table depth (calculations done separately).  04/23/20: KO: verified this is on parameter file on master",,,
+0,fff,P,,,,Decay factor for fractional saturated area,fff,f_over,"Section 2.7
 Eqn 27","set in: SoilHydrologyMod.F90 (line 213)
-called in: SoilHydrologyMod.F90 (lines 231, 239, 243)",0.5,1/m,,,,"[0.02, 5]","Niu et al. (2005), Hou et al. (2012), Fan and Miguez-Macho (2011), Fan et al. (2013)","Related to surface runoff (subroutine SurfaceRunoff). Given recharge from other papers, can invert for fff parameter which helps give bounds for sensitivity.
+called in: SoilHydrologyMod.F90 (lines 231, 239, 243)",0.5,1/m,"[0.02, 5]","Niu et al. (2005), Hou et al. (2012), Fan and Miguez-Macho (2011), Fan et al. (2013)","Related to surface runoff (subroutine SurfaceRunoff). Given recharge from other papers, can invert for fff parameter which helps give bounds for sensitivity.
 Two instances are not used if use_vichydro=True (default is OFF)
-Third instance is used to calculate fsat if frost_table > zwt_perched",
-0,dewmx,Maximum storage of liquid water on leaf surface,H,dewmx,p_liq,"Section 2.7
+Third instance is used to calculate fsat if frost_table > zwt_perched.  04/23/20: KO: verified this is on parameter file on master.",,,
+0,liq_canopy_storage_scalar,P,,,,Maximum storage of liquid water on leaf surface,dewmx; now liq_canopy_storage_scalar in param file & code,p_liq,"Section 2.7
 Eqn 12","set in: CanopyStateType.F90 (line 518)
-called in: CanopyHydrologyMod.F90 (lines 321, 721, 726)",0.1,kg/m^2 [mm],,,,"[0.05, 2]","Rutter et al. (1971), Rutter (1975), Rutter et al. (1975), Rutter and Morton (1977), Deardorff (1978), Massman (1980), Dickinson (1984), Noilhan and Planton (1989), Dickinson et al. (1993), Keim et al. (2006)","Subroutines: CanopyHydrology, FracWet
-Ideally want this parameter to vary with PFT, as it is clearly different for different veg types (e.g. needle versus broadleaf). Maybe want something that is described ""per LAI/SAI"" so you can multiply by LAI. There are issues with observational values including bark wetting, fraction of precip that doesn't even fall on leaves, etc.",
-0,psno,Maximum storage of snow on leaf surface,H,"(1) [first const in snocanmx eqn]
-(2) [first 2 consts in fcansnow eqn]",p_sno,"Section 2.7
+called in: CanopyHydrologyMod.F90 (lines 321, 721, 726)",0.1,kg/m^2 [mm],"[0.05, 2]","Rutter et al. (1971), Rutter (1975), Rutter et al. (1975), Rutter and Morton (1977), Deardorff (1978), Massman (1980), Dickinson (1984), Noilhan and Planton (1989), Dickinson et al. (1993), Keim et al. (2006)","Subroutines: CanopyHydrology, FracWet
+Ideally want this parameter to vary with PFT, as it is clearly different for different veg types (e.g. needle versus broadleaf). Maybe want something that is described ""per LAI/SAI"" so you can multiply by LAI. There are issues with observational values including bark wetting, fraction of precip that doesn't even fall on leaves, etc.  04/23/20: KO: verified this is on parameter file on master",,,
+0,snow_canopy_storage_scalar,P,,,,Maximum storage of snow on leaf surface,"(1) [first const in snocanmx eqn]
+(2) [first 2 consts in fcansnow eqn]; now snow_canopy_storage_scalar in param file & code",p_sno,"Section 2.7
 Eqn 13","(1) CanopyHydrologyMod.F90 (line 330)
-(2) CanopyHydrologyMod.F90 (line 727)",6,kg/m^2,,,,"[1.4, 9.5]","Pomeroy et al. (1998), Hedstrom and Pomeroy (1998), Storck et al. (2002)","Defined in source code as 60 * dewmx = 60 * 0.1 = 6, and later in fcansno equation with similar arithmetic.
-Pomeroy et al. (1998) write that this parameter is often underestimated in LSMs and should be calculated with a process-based snow interception model (e.g., Hedstrom and Pomeroy, 1998)",
-0,dmax,Dry surface layer (DSL) parameter,H,[first const in dsl eqn],D_max,"Section 2.5
-Eqn 77",SurfaceResistanceMod.F90 (line 374),15,mm,,,,"[10, 60]","Swenson and Lawrence (2014), van de Griend and Owe (1994), Goss and Madliger (2007), Smits et al. (2012)","Parameter specifying the length scale of max DSL (dry surface layer) thickness
-Requires soil_resis_method = sl_14 which it is by default (as opposed to leepielke_1992)",
-0,dint,Fraction of saturated soil for moisture value at which DSL initiates,H,[second const in dsl eqn],(none),"Section 2.5
-Eqn 77?","SurfaceResistanceMod.F90 (lines 374, 376)",0.8,--,,,,"[0.5, 1]",Swenson and Lawrence (2014),"Called ""K"" in Swenson and Lawrence (2014). Is used to calculate θ_init (as it's called in the tech note) when multiplied by the porosity. θ_init is the moisture value at which DSL initiates.",
-0,kaccum,Accumulation constant for fractional snow covered area,H,accum_factor,k_accum,"Section 2.8
+(2) CanopyHydrologyMod.F90 (line 727)",6,kg/m^2,"[1.4, 9.5]","Pomeroy et al. (1998), Hedstrom and Pomeroy (1998), Storck et al. (2002)","Defined in source code as 60 * dewmx = 60 * 0.1 = 6, and later in fcansno equation with similar arithmetic.
+Pomeroy et al. (1998) write that this parameter is often underestimated in LSMs and should be calculated with a process-based snow interception model (e.g., Hedstrom and Pomeroy, 1998).  04/23/20: KO: verified this is on parameter file",,,
+0,d_max,P,,,,Dry surface layer (DSL) parameter,[first const in dsl eqn]; now d_max in param file & code,D_max,"Section 2.5
+Eqn 77",SurfaceResistanceMod.F90 (line 374),15,mm,"[10, 60]","Swenson and Lawrence (2014), van de Griend and Owe (1994), Goss and Madliger (2007), Smits et al. (2012)","Parameter specifying the length scale of max DSL (dry surface layer) thickness
+Requires soil_resis_method = sl_14 which it is by default (as opposed to leepielke_1992). 04/23/20: KO: verified this is on parameter file",,,
+0,frac_sat_soil_dsl_init,P,,,,Fraction of saturated soil for moisture value at which DSL initiates,[second const in dsl eqn]; now frac_sat_soil_dsl_init in param file & code,(none),"Section 2.5
+Eqn 77?","SurfaceResistanceMod.F90 (lines 374, 376)",0.8,--,"[0.5, 1]",Swenson and Lawrence (2014),"Called ""K"" in Swenson and Lawrence (2014). Is used to calculate θ_init (as it's called in the tech note) when multiplied by the porosity. θ_init is the moisture value at which DSL initiates.  04/23/20: KO: verified this is on parameter file.",,,
+0,accum_factor,P,,,,Accumulation constant for fractional snow covered area,accum_factor,k_accum,"Section 2.8
 Eqn 1","set in: CanopyHydrologyMod.F90 (line 520)
-used in: CanopyHydrologyMod.F90 (lines 538, 578)",0.1,--,,,,"[0.1, 0.4]",Swenson and Lawrence (2012),"Chosen value represents ""plausible lower limit"" (Swenson and Lawrence 2012)",
-0,nmelt,Parameter controlling shape of snow covered area,H,[first const in n_melt eqn],(none),"Section 2.8
+used in: CanopyHydrologyMod.F90 (lines 538, 578)",0.1,--,"[0.1, 0.4]",Swenson and Lawrence (2012),"Chosen value represents ""plausible lower limit"" (Swenson and Lawrence 2012). 04/23/20: KO: verified this is on parameter file.",,,
+0,n_melt_coef,P,,,,Parameter controlling shape of snow covered area,[first const in n_melt eqn]; now n_melt_coef in param file & code,(none),"Section 2.8
 Eqn 3","set in: initVerticalMod.F90 (line 721)
 used in: SnowHydrologyMod.F90 (line 722)
-CanopyHydrologyMod.F90 (lines 532, 543, 583)",200,--,,,,"[180, 220]",Swenson and Lawrence (2012),"N_melt ranges [0.25,8] (Swenson and Lawrence, 2012), 200 comes from tuning N_melt given sd of topography (sigma_topo) where N_melt = 200/sigma_topo. More information on DEM model from the USGS HYDRO1K 1-km dataset (Verdin and Greenlee, 1996) or http://www6.uniovi.es/usr/feli/Data/info.html
-Try 10% perturbation for now, in absense of other information.",
-0,kc25,Michaelis-Menten constant at 25°C for CO2,H,kc25,K_c25,"Section 2.9
+CanopyHydrologyMod.F90 (lines 532, 543, 583)",200,--,"[180, 220]",Swenson and Lawrence (2012),"N_melt ranges [0.25,8] (Swenson and Lawrence, 2012), 200 comes from tuning N_melt given sd of topography (sigma_topo) where N_melt = 200/sigma_topo. More information on DEM model from the USGS HYDRO1K 1-km dataset (Verdin and Greenlee, 1996) or http://www6.uniovi.es/usr/feli/Data/info.html
+Try 10% perturbation for now, in absense of other information.",,,
+0,kc25_coef,P,,,,Michaelis-Menten constant at 25°C for CO2,kc25; now kc25_coef in param file & code,K_c25,"Section 2.9
 Eqn 9","set in: PhotosynthesisMod.F90 (lines 1250-1251, 2843-2844)
-used in: PhotosynthesisMod.F90 (lines 1255-1256, 2848-2849), LunaMod.F90 (lines 1102-1103)",404.9,μmol/mol,,,,"[266, 454]","Badger and Collatz (1977), Jordan and Ogren (1981), Yeoh et al. (1981), Jordan and Ogren (1984), Woodrow and Berry (1988), Collatz et al. (1991), Sellers et al. (1996), Bernacchi et al. (2001)","Used to calculate Michaelis-Menten constants which inform the Rubisco-limited rate of carboxylation for photosynthesis. The first instance in the Photosynthesis code is for PHS off, the second is for PHS on. Also used in LUNA code.",
-0,ko25,Michaelis-Menten constant at 25°C for O2,H,ko25,K_o25,"Section 2.9
+used in: PhotosynthesisMod.F90 (lines 1255-1256, 2848-2849), LunaMod.F90 (lines 1102-1103)",404.9,μmol/mol,"[266, 454]","Badger and Collatz (1977), Jordan and Ogren (1981), Yeoh et al. (1981), Jordan and Ogren (1984), Woodrow and Berry (1988), Collatz et al. (1991), Sellers et al. (1996), Bernacchi et al. (2001)","Used to calculate Michaelis-Menten constants which inform the Rubisco-limited rate of carboxylation for photosynthesis. The first instance in the Photosynthesis code is for PHS off, the second is for PHS on. Also used in LUNA code.  04/23/20: KO: verified this is on parameter file",,,
+0,ko25_coef,P,,,,Michaelis-Menten constant at 25°C for O2,ko25; now ko25_coef in param file & code,K_o25,"Section 2.9
 Eqn 9","set in: PhotosynthesisMod.F90 (lines 1250-1251, 2843-2844)
-used in: PhotosynthesisMod.F90 (lines 1255-1256, 2848-2849), LunaMod.F90 (lines 1102-1103)",278.4,mmol/mol,,,,"[207, 395]","Badger and Collatz (1977), Jordan and Ogren (1981), Yeoh et al. (1981), Jordan and Ogren (1984), Woodrow and Berry (1988), Collatz et al. (1991), Sellers et al. (1996), Bernacchi et al. (2001)","Used to calculate Michaelis-Menten constants which inform the Rubisco-limited rate of carboxylation for photosynthesis. The first instance in the Photosynthesis code is for PHS off, the second is for PHS on. Also used in LUNA code.",
-0,cp25,CO2 compensation point at 25°C,H,cp25,Γ_25,"Section 2.9
+used in: PhotosynthesisMod.F90 (lines 1255-1256, 2848-2849), LunaMod.F90 (lines 1102-1103)",278.4,mmol/mol,"[207, 395]","Badger and Collatz (1977), Jordan and Ogren (1981), Yeoh et al. (1981), Jordan and Ogren (1984), Woodrow and Berry (1988), Collatz et al. (1991), Sellers et al. (1996), Bernacchi et al. (2001)","Used to calculate Michaelis-Menten constants which inform the Rubisco-limited rate of carboxylation for photosynthesis. The first instance in the Photosynthesis code is for PHS off, the second is for PHS on. Also used in LUNA code.  04/23/20: KO: verified this is on parameter file",,,
+0,cp25_yr2000,P,,,,CO2 compensation point at 25°C,cp25; now cp25_yr2000 in param file & code,Γ_25,"Section 2.9
 Eqn 9","set in: PhotosynthesisMod.F90 (lines 1253, 2846)
-used in: PhotosynthesisMod.F90 (lines 1257, 2850)",42.75,μmol/mol,,,,"[35, 44.7]","Bernacchi et al. (2001), Brooks and Farquhar (1985)","Used to calculate the CO2 compensation point which informs the Rubisco- and light-limited rates of carboxylation for photosynthesis. The first instance in the code is for PHS off, the second is for PHS on. Definition in code seems to depend on partial pressure of oxygen in air, not atmospheric pressure (?).",
-0,fnr,Mass ratio of total Rubisco molecular mass to nitrogen in Rubisco,H,fnr,F_NR,"Section 2.10
+used in: PhotosynthesisMod.F90 (lines 1257, 2850)",42.75,μmol/mol,"[35, 44.7]","Bernacchi et al. (2001), Brooks and Farquhar (1985)","Used to calculate the CO2 compensation point which informs the Rubisco- and light-limited rates of carboxylation for photosynthesis. The first instance in the code is for PHS off, the second is for PHS on. Definition in code seems to depend on partial pressure of oxygen in air, not atmospheric pressure (?).  04/23/20: KO: verified this is on parameter file.",,,
+0,fnr,P,,,,Mass ratio of total Rubisco molecular mass to nitrogen in Rubisco,fnr,F_NR,"Section 2.10
 Eqn 11","set in: PhotosynthesisMod.F90 (lines 1176, 2715)
-used in: PhotosynthesisMod.F90 (lines 1331, 1343, 1347, 2920, 2932, 2936)",7.16,gRubisco/gN(Rubisco),,,,"[7.14, 7.16]","Kuehn and McFadden (1969), White et al. (2000), Thornton and Zimmermann (2007)","The first instance in the code is for PHS off, the second is for PHS on.",
-0,act25,Specific activity of Rubisco at 25°C,H,act25,a_R25,"Section 2.10
+used in: PhotosynthesisMod.F90 (lines 1331, 1343, 1347, 2920, 2932, 2936)",7.16,gRubisco/gN(Rubisco),"[7.14, 7.16]","Kuehn and McFadden (1969), White et al. (2000), Thornton and Zimmermann (2007)","The first instance in the code is for PHS off, the second is for PHS on.  04/23/20: KO: verified this is on parameter file",,,
+0,act25,P,,,,Specific activity of Rubisco at 25°C,act25,a_R25,"Section 2.10
 Eqn 11","set in: PhotosynthesisMod.F90 (lines 1177-1179, 2716-2718)
-used in: PhotosynthesisMod.F90 (lines 1331, 1343, 1347, 2920, 2932, 2936)",60,μmol(CO2)/(gRubisco s),,,,"[40, 120]","Evans and Seemann (1984), Seemann et al. (1984), Woodrow and Berry (1988), Thornton and Zimmermann (2007)","Specific activity of rubisco at 25°C, varies with temperature and some older papers calculate values at 30°C. CLM sensitivity range calculated using the Q10 value and formula from Woodrow and Berry (1988). The first instance in the code is for PHS off, the second is for PHS on.",
-0,,,,,,,,,,,,,,,,
-0,Other PHS parameters (from Daniel):,,,,,,,,,,,,,,,
-0,ck,"Weibull curve shape parameter. Determines slope of vulnerability curve (conductivity vs. water potential).
-Note: Might not need (or want) to change all PHS params at the same time",P,ck,c_k,"Section 2.11
- Eqn 7",,3.95,--,,,,,,"Has the capability to vary w/ PFT and segment: sunlit, shaded, xylem, root.",
-0,,,,,,,,,,,,,,,,
-0,Pedo-transfer functions (from Katie):,,,,,,,,,,,,Note: Ranges are potentially dependent on soil texture; how to include this variation in sensitivity study?,,,
-0,om_b,Organic matter Clapp and Hornberger (C&H),H,om_b,B_om,"Section 2.7 (for all following)
-Eqn 61",SoilStateInitTimeConstMod.F90 (line 458),varies with soil depth,--,,,,"[2.7,12]","Letts et al. (2000), Clapp and Hornberger (1978)",,
-0,,Coefficient for mineral C&H,H,[first const in bsw eqn],,Eqn 52,FuncPedotransferMod.F90 (line 99),2.91,--,,,,"[2.18,4.02]","Letts et al. (2000), Cosby et al. (1984), Gohler et al. (2013)",,
-0,,Multiplier for mineral C&H,H,[second const in bsw eqn],,Eqn 52,FuncPedotransferMod.F90 (line 99),0.159,--,,,,"[0.1078,0.2062]","Letts et al. (2000), Cosby et al. (1984), Gohler et al. (2013)",,
-0,om_watsat,Saturated organic matter porosity,H,om_watsat,"θ_sat,om",Eqn 60,SoilStateInitTimeConstMod.F90 (line 457),varies with soil depth,m^3/m^3,,,,"[0.81,0.95]","Farouki (1981), Letts et al. (2000), Radforth et al. (1977)",,
-0,,Coefficient for saturated mineral porosity,H,[first const in watsat eqn],,Eqn 50,FuncPedotransferMod.F90 (line 98),0.489,--,,,,"[0.4,0.6]","Farouki (1981), Letts et al. (2000), Cosby et al. (1984), Dingman (1996), Gohler et al. (2013)",,
-0,,Multiplier for saturated mineral porosity,H,[second const in watsat eqn],,Eqn 50,FuncPedotransferMod.F90 (line 98),0.00126,--,,,,"[0.00126,0.00149]","Farouki (1981), Letts et al. (2000), Cosby et al. (1984), Gohler et al. (2013)",,
-0,om_sucsat,Saturated organic matter matric potential,H,om_sucsat,"ψ_sat,om",Eqn 62,SoilStateInitTimeConstMod.F90 (line 459),varies with soil depth,mm,,,,"[10.1,10.3]",Letts et al. (2000),,
-0,,Coefficient for saturated mineral matric potential,H,[first const in exponent of sucsat eqn],,Eqn 54,FuncPedotransferMod.F90 (line 100),1.88,--,,,,"[0.82,2.26]","Letts et al. (2000), Cosby et al. (1984), Gohler et al. (2013)",,
-0,,First multiplier for saturated mineral matric potential,H,[second const in exponent of sucsat eqn],,Eqn 55,FuncPedotransferMod.F90 (line 100),0.0131,--,,,,"[0.0069,0.0131]","Letts et al. (2000), Cosby et al. (1984), Gohler et al. (2013)",,
-0,om_hksat,Saturated organic matter hydraulic conductivity,H,om_hksat,"k_sat,om",Eqn 63,SoilStateInitTimeConstMod.F90 (line 460),varies with soil depth,mm/s,,,,"[0.0001,0.28]","Stauffer and Aharony (1994), Berkowitz and Balberg (1992), Cosby et al. (1984)",,
-0,,Coefficient for saturated mineral hydraulic conductivity,H,[first const in exponent of xksat eqn],,Eqn 58,FuncPedotransferMod.F90 (line 101),-0.884,--,,,,"[-1.03,-0.17]","Cosby et al. (1984), Gohler et al. (2013)",,
-0,,First multiplier for saturated mineral hydraulic conductivity,H,[second const in exponent of xksat eqn],,Eqn 58,FuncPedotransferMod.F90 (line 101),0.0153,--,,,,"[0.0094,0.0158]","Cosby et al. (1984), Gohler et al. (2013)",,
-0,adding one more line as test,,,,,,,,,,,,,,,
-,Rosie's parameters,,,,,,,,,,,,,,,
-,slatop,,,,,,,,,,,,,,,
-,froot_leaf,,,,,,,,,,,,,,,
-,stem_leaf ,,,,,,,,,,,,,,,
-,n_costs,set of FUN parameters,,,,,,,,,,,,,,
-,fracfixers,,,,,,,,,,,,,,,
-,leafcn,,,,,,,,,,,,,,,
-,medlyn_slope,,,,,,,,,,,,,,,
-,cn_flex_c,set of 3 parameters,,,,,,,,,,,,,,
-,Additional bgc paramters,,,,,,,,,,,,,,,
-,grperc,growth respiration,,,,,,,,,,,,,,
-,br_mr,Base rate for maintenance respiration,,,,,,,,,,,,,,
-,q10_mr,Q10 for maintenance respiration,,,,,,,,,,,,,,
-,lmr_intercept_atkin,canopy leaf maintenance respiration base rate,,,,,,,,,,,,,,
-,r_mort,background mortality,,,,,,,,,,,,,,
-,rf_*_bgc,respiration fraction of litter and SOM pools,,,,,,,,,,,,,,
-,tau_*_bgc,Turnover time of litter and SOM pools,,,,,,,,,,,,,,
-,q10_hr & froz_q10,Q10 for heterotrophic respiration,,,,,,,,,,,,,,
-,minpsi_hr,minimum soil water potential for heterotrophic resp,,,,,,,,,,,,,,
-,cn_s*_bgc,C:N for SOM,,,,,,,,,,,,,,
-,acclimation parameters?,,,,,,,,,,,,,,,
-,"pedotransfer frunctions, Katie has some above",,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,,
-,k_nitr_max,nitrification rate constant scalar,,,,,,,,,,,,,,
-,,denitrifcation rate constant scalar,,,,,,,,,,,,,,
-,,asymbiotic N fixation rates (scalar on ET/NPP),,,,,,,,,,,,,,
-,z_tau,depth control on decomposition rates,,,,,,,,,,,,,,
+used in: PhotosynthesisMod.F90 (lines 1331, 1343, 1347, 2920, 2932, 2936)",60,μmol(CO2)/(gRubisco s),"[40, 120]","Evans and Seemann (1984), Seemann et al. (1984), Woodrow and Berry (1988), Thornton and Zimmermann (2007)","Specific activity of rubisco at 25°C, varies with temperature and some older papers calculate values at 30°C. CLM sensitivity range calculated using the Q10 value and formula from Woodrow and Berry (1988). The first instance in the code is for PHS off, the second is for PHS on.  04/23/20: KO: verified this is on parameter file.",,,
+0,Pedo-transfer functions (from Katie):,,,,,,,,,,,,Note: Ranges are potentially dependent on soil texture; how to include this variation in sensitivity study?,,,,,
+0,om_b,H,,,,Organic matter Clapp and Hornberger (C&H),om_b,B_om,"Section 2.7 (for all following)
+Eqn 61",SoilStateInitTimeConstMod.F90 (line 458),varies with soil depth,--,"[2.7,12]","Letts et al. (2000), Clapp and Hornberger (1978)",,,,
+0,,H,,,,Coefficient for mineral C&H,[first const in bsw eqn],,Eqn 52,FuncPedotransferMod.F90 (line 99),2.91,--,"[2.18,4.02]","Letts et al. (2000), Cosby et al. (1984), Gohler et al. (2013)",,,,
+0,,H,,,,Multiplier for mineral C&H,[second const in bsw eqn],,Eqn 52,FuncPedotransferMod.F90 (line 99),0.159,--,"[0.1078,0.2062]","Letts et al. (2000), Cosby et al. (1984), Gohler et al. (2013)",,,,
+0,om_watsat,H,,,,Saturated organic matter porosity,om_watsat,"θ_sat,om",Eqn 60,SoilStateInitTimeConstMod.F90 (line 457),varies with soil depth,m^3/m^3,"[0.81,0.95]","Farouki (1981), Letts et al. (2000), Radforth et al. (1977)",,,,
+0,,H,,,,Coefficient for saturated mineral porosity,[first const in watsat eqn],,Eqn 50,FuncPedotransferMod.F90 (line 98),0.489,--,"[0.4,0.6]","Farouki (1981), Letts et al. (2000), Cosby et al. (1984), Dingman (1996), Gohler et al. (2013)",,,,
+0,,H,,,,Multiplier for saturated mineral porosity,[second const in watsat eqn],,Eqn 50,FuncPedotransferMod.F90 (line 98),0.00126,--,"[0.00126,0.00149]","Farouki (1981), Letts et al. (2000), Cosby et al. (1984), Gohler et al. (2013)",,,,
+0,om_sucsat,H,,,,Saturated organic matter matric potential,om_sucsat,"ψ_sat,om",Eqn 62,SoilStateInitTimeConstMod.F90 (line 459),varies with soil depth,mm,"[10.1,10.3]",Letts et al. (2000),,,,
+0,,H,,,,Coefficient for saturated mineral matric potential,[first const in exponent of sucsat eqn],,Eqn 54,FuncPedotransferMod.F90 (line 100),1.88,--,"[0.82,2.26]","Letts et al. (2000), Cosby et al. (1984), Gohler et al. (2013)",,,,
+0,,H,,,,First multiplier for saturated mineral matric potential,[second const in exponent of sucsat eqn],,Eqn 55,FuncPedotransferMod.F90 (line 100),0.0131,--,"[0.0069,0.0131]","Letts et al. (2000), Cosby et al. (1984), Gohler et al. (2013)",,,,
+0,om_hksat,H,,,,Saturated organic matter hydraulic conductivity,om_hksat,"k_sat,om",Eqn 63,SoilStateInitTimeConstMod.F90 (line 460),varies with soil depth,mm/s,"[0.0001,0.28]","Stauffer and Aharony (1994), Berkowitz and Balberg (1992), Cosby et al. (1984)",,,,
+0,,H,,,,Coefficient for saturated mineral hydraulic conductivity,[first const in exponent of xksat eqn],,Eqn 58,FuncPedotransferMod.F90 (line 101),-0.884,--,"[-1.03,-0.17]","Cosby et al. (1984), Gohler et al. (2013)",,,,
+0,,H,,,,First multiplier for saturated mineral hydraulic conductivity,[second const in exponent of xksat eqn],,Eqn 58,FuncPedotransferMod.F90 (line 101),0.0153,--,"[0.0094,0.0158]","Cosby et al. (1984), Gohler et al. (2013)",,,,
+0,Plant BGC parameters,,,,,,,,,,,,,,,,,
+0,slatop,P,,,,specific leaf area ,slatop,,,,PFT specific values. We need a standard none error-prone way to put them in this spreadsheet. ,m^2/gC,"[0.6761,1.4791]","Fisher et al. 2019, Kattge et al. 2011",,,,
+0,stem_leaf ,P,,,,stem:leaf ratio,stem_leaf,,,,PFT specific values. We need a standard none error-prone way to put them in this spreadsheet. ,gC/gC,"[0.5,1.25]",Fisher et al. 2019 ,,,,
+0,n_costs,P,,,,set of 6 FUN parameters relating to cost of N acquisition,"akc_active, akn_active, ekc_active, ekn_active, kc_nonmyc, kn_nonmyc",,,,PFT specific values. We need a standard none error-prone way to put them in this spreadsheet. ,gC/gN,"[0.1,10]",Fisher et al. 2019,"need to change all 6 parameters in tandem. Well, not 'need' but that is what I did. ",,,
+0,FUN_fracfixers,P,,,,fraction of carbon available for N fixation,fun_fracfixers ,,,,0.25,gC/gC,"[0,4]",Fisher et al. 2019,,,,
+0,fun_cn_flex_c,P,,,,dominant parameter of the flexible CN ratios,fun_cn_flex_c,,,,PFT specific values. We need a standard non-error-prone way to put them in this spreadsheet. ,n/a,"[0.25,1.5]",Fisher et al. 2019,,,,
+,allocation parameters?,,,,,allocation parameters?,,,,,,,,,,,,
+0,Additional bgc paramters,,,,,,,,,,,,,,,,,
+0,grperc,P,,,,growth respiration,grperc,,,,0.11,gC/gC,,,,,,
+0,br_mr,P,,,,Base rate for maintenance respiration,br_mr,,,,2.53E-06,C/gN/s,,,,,,
+0,lmr_intercept_atkin,P,,,,canopy leaf maintenance respiration base rate,lmr_intercept_atkin,,,,PFT specific values. We need a standard non-error-prone way to put them in this spreadsheet. ,umol CO2/m**2/s,,Atkin et al. in prep 2016,,,,
+0,r_mort,P,,,,background mortality,r_mort,,,,0.02,,,,,,,
+0,rf_*_bgc,P,,,,respiration fraction of litter and SOM pools,"rf_cwdl2_bgc = 0; rf_cwdl3_bgc = 0; rf_l2s1_bgc = 0.5 ; rf_l3s2_bgc = 0.5 ; rf_s2s1_bgc = 0.55 ; rf_s2s3_bgc = 0.55 ; rf_s3s1_bgc = 0.55 ; addicitonal rf_ values are calculated in the code as a function of soil texture (rf_s1s2, rf_s1s3)",https://github.com/ESCOMP/CTSM/blob/605ee9dc7c61219498f50d25bde29decc87bc4f2/src/soilbiogeochem/SoilBiogeochemDecompCascadeBGCMod.F90#L404,,,rf_cwdl2_bgc = 0; rf_cwdl3_bgc = 0; rf_l2s1_bgc = 0.5 ; rf_l3s2_bgc = 0.5 ; rf_s2s1_bgc = 0.55 ; rf_s2s3_bgc = 0.55 ; rf_s3s1_bgc = 0.55 ;,,,,,,,
+0,tau_*,H,,,,Turnover time of litter and SOM pools,"tau_cwd, tau_l1, tau_l2_l3, tau_s1, tau_s2, tau_s3",https://github.com/ESCOMP/CTSM/blob/605ee9dc7c61219498f50d25bde29decc87bc4f2/src/soilbiogeochem/SoilBiogeochemDecompCascadeBGCMod.F90#L730,,,tau_l1 = 1./18.5; tau_l2_l3 = 1./4.9; tau_s1 = 1./7.3; tau_s2 = 1./0.2; tau_s3 = 1./.0045;       tau_cwd  = 1./0.3,,,from the parameter file: tau_cwd = 3.33333325386047 ; tau_l1 = 0.0540540553629398 ; tau_l2_l3 = 0.204081624746323 ; tau_s1 = 0.136986300349236 ; tau_s2 = 5 ; tau_s3 = 222.222229003906 ;,,,,
+0,q10_mr,P,,,,Q10 for maintenance respiration,q10_mr,,,,1.5,,,,,,,
+0,q10_hr,P,,,,Q10 for heterotrophic respiration,q10_hr,,,,1.5,,,,,,,
+0,froz_q10,P,,,,Separate q10 for frozen soil respiration rates,froz_q10,,,,1.5,,,,,,,
+0,minpsi_hr,P,,,,minimum soil water potential for heterotrophic resp,minpsi_hr,,,,-2,MPa,,,,,,
+0,cn_s*_bgc,P,10,25,,C:N for SOM,cn_s1_bgc = 8 ; cn_s2_bgc = 11 ; cn_s3_bgc = 11,,,,cn_s1_bgc = 8 ; cn_s2_bgc = 11 ; cn_s3_bgc = 11,,,"Xu et al  report soil C:N between 10-30 Cleveland & Liptzin report mean soil C:N = 15 (Xu et al. Global Ecology and Biogeography, (2013) 22, 737–749; Cleveland and Liptzin Biogeochemistry (2007) 85:235–252 DOI 10.1007/s10533-007-9132-0)",,,,
+0,acclimation parameters?,,,,,,,,,,,,,,,,,
+0,k_nitr_max,P,,,potential bug! not actually referenced in source code??,nitrification rate constant scalar,k_nitr_max,,,,1.1574074E-06,sec^-1,,,,,,
+0,k_nitr_max_perday,N,,,,,k_nitr_max_perday,,,,0.1,,"[0,1]",first-order decay of ammonium pool f(max*temp*h20*ph),,,,
+0,denitrif_respiration_coefficient,N,,,,coefficient for max denitrification rate based on respiration,denitrif_respiration_coefficient,,,,0.1,,,,,,,
+0,denitrif_respiration_exponent,N,,,,exponent for max denitrification rate based on respiration,denitrif_respiration_exponent,,,,1.3,,,,,,,
+0,denit_nitrate_coef,N,,,,coefficient for max denitrification rate based on nitrate concentration,denit_nitrate_coef,,,,0.15,,,,,,,
+0,denitrif_nitrateconc_exponent,N,,,,exponent for max denitrification rate based on nitrate concentration,denitrif_nitrateconc_exponent,,,,0.57,,,,,,,
+0,freelivfix_slope_wET,N,,,,slope of line of free living fixation with annual ET,freelivfix_slope_wET,,,,0.0006,,,Modified from Cleveland et al 1999 to provide reasonable ffix values,,,,
+0,freelivfix_intercept,N,,,,intercept of line of free living fixation with annual ET,freelivfix_intercept,,,,0.0117,,,Modified from Cleveland et al 1999 to provide reasonable ffix values,,,,
+0,decomp_depth_efolding,P,,,,depth control on decomposition rates,decomp_depth_efolding,z_tau,,,10,m,,"0.5 in  CLM4.5 = slower decay at depth, Koven et al. 2013 Biogeocsiciences, Koven et al. 2017 Nature Climate Change",,,,
+0,fnps,H (moved to P branch),,0.3,,"fraction of light absorbed by non-photosynthetic pigments, Miscellaneous parameters, from Bonan et al (2011) JGR",defined 4x in PhotosynthesisMod,,,Bonan et al (2011) JGR,0.15,,,Gordon's modeling textbook,,,,
+0,theta_psii,H (moved to P branch),,0.9,,"empirical curvature parameter for electron transport rate
+",defined 4x in PhotosynthesisMod,,,Bonan et al (2011) JGR,0.7,,,Gordon's modeling textbook,,,,
+0,theta_ip,H (moved to P branch),,,,empirical curvature parameter for ap photosynthesis co-limitation,defined 4x in PhotosynthesisMod,,,Bonan et al (2011) JGR,0.95,,,,,,,
+0,theta_cj,H (moved to P branch),,,,"empirical curvature parameter for ac, aj photosynthesis co-limitation",defined for C3 and C4 ,,,,"c3 = 0.98, c4= 0.8",,,,,,,
+0,LUNA parameters,,,,,"there are a ton of hard coded LUNA parameters, both at the top of some routines and burried in the code.  I have no idea how to pull out appropriate ones for this effort.",,,,,,,,,,,,
+0,theta_cj,H,,,,! interpolation coefficient (in LUNA) !,,,,,0.95_r8,,,,,,,
+0,Other photosynthesis parameters,,,,,,,,,,,,,,,,,
+0,*ha,H,,,,activation energy,"defined for vcmax, jmax, tpu, lmr, michaelis-menten (kc, ko), CO2 compensation (cp)",,,Bernacchi et al (2001) PCE 24:253-259; Bernacchi et al (2003) PCE 26:1419-1430; TPU from: Harley et al (1992) PCE 15:271-282,,,,,,,,
+0,*da,H,,,,high temperature deactivation,"defined for vcmax, jmax, tpu, lmr",,,"Leuning (2002) Plant, Cell and Environment 25:1205-1210",,,,,,,,
+0,"kc25_coef, ko25_coef, cp25_yr2000",H,,,,"Michaelis-Menten const. at 25°C for CO2, O2 (unitless) and CO2 compensation point",,,,,,,,,,,,
+0,photosynthesis parameters with constants included in equations for below variables,,,,,,,,,,,,,,,,,
+0,tpu25,H,,,,triose phosphate utilization at 25C,set to 0.167 * vcmax25,,,,,,,,,,,
+0,*maxse,H,,,,entropy term (J/mol/K),defined for vcmax & jmax; used for T acclimation,,,Kattge & Knorr (2007),,,,,,,,
+0,jmax25top,H,,,,jmax at 25C at top of canopy,doesn't seem to be used if LUNA is on,,,,,,,,,,,
+0,kp25top,H,,,,canopy top initial slope of CO2 response curve,set to 20000*vcmax,,,,,,,,,,,
+0,additional namelist parameters (scalar values),,,,,,,,,,,,,,,,,
+0,zetamaxstable,N,,,,"Max value zeta (""height"" used in Monin-Obukhov theory) can go to under stable conditions",zetamaxstable,?,Section 2.5.1?,FrictionVelocityMod.F90,0.5,,,,,,,
+0,jmaxb1,N,,,,determines response of electron transport rate to light availability,jmaxb1,J_maxb1,"Section 2.10
+Eqn 5",LunaMod.F90,0.093563,--,,,,,,
+0,br_root,N,,,,base rate for maintenance respiration for roots,br_root,?,?,CNMRespMod.F90,8.30E-07,gC/gN/s,,"M. Ryan, 1991. Effects of climate change on plant respiration. Ecological Applications, 1(2), 157-167",,,,
+0,decomp_depth_efolding,N,,,,e-folding depth for reduction in decomposition,decomp_depth_efolding,z_tau,"Section 2.21
+Eqn 8",SoilBiogeochemDecompCascadeBGCMod.F90,10,m,,"Jenkinson and Coleman (2008), Koven et al. (2013)",,,,
+0,leaf_mr_vcm,N,,,,Scalar constant of leaf respiration with Vcmax,leaf_mr_vcm,(none),"Section 2.10
+Eqn 17",LunaMod.F90,0.015,--,,Collatz et al. (1991),,,,
+0,CN Fire model parameters?,,,,,Dave,,,,,,,,,,,,
+0,Irrigation model parameters?,,,,,,,,,,,,,,,,,
+0,Snow pack parameters?,,,,,Dave and Sean,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
+0,,,,,,,,,,,,,,,,,,
