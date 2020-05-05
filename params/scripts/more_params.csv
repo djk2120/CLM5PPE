@@ -1,0 +1,232 @@
+,name,long_name,default value,units
+0,a_fix,Parameter 'a' of temp response of N fixation (Houlton et al.  2008),-3.62,unitless
+1,aereoxid,Fraction of methane flux entering aerenchyma rhizosphere that will be oxidized rather than emitted,0,unitless
+2,akc_active,Constant relating root C to arbuscular mycorrhizal root active uptake cost.,varies: 0.006 to 0.6,gC/m3
+3,akn_active,Constant relating soil layer Nitrogen content to arbuscular mycorrhizal root active uptake cost.,varies: 0.012 to 1.2,gC/m2
+4,aleaff,Leaf Allocation coefficient parameter used in CNAllocationn,0,unitless
+5,allconsl,Leaf Allocation coefficient parameter power used in CNAllocation,varies: nan to nan,unitless
+6,allconss,Stem Allocation coefficient parameter power used in CNAllocation,varies: nan to nan,unitless
+7,arootf,Root Allocation coefficient parameter used in CNAllocation,varies: nan to nan,unitless
+8,arooti,Root Allocation coefficient parameter used in CNAllocation,varies: nan to nan,unitless
+9,astemf,Stem Allocation coefficient parameter used in CNAllocation,varies: nan to nan,unitless
+10,atmch4,Atmospheric CH4 mixing ratio to prescribe if not provided by the atmospheric model,1.70E-6,mol/mol
+11,b_fix,Parameter 'b' of temp response of N fixation (Houlton et al.  2008),0.27,1/C
+12,baset,"Base Temperature, parameter used in accFlds",0,C
+13,bdnr,bulk denitrification rate,0.5,1/day
+14,bfact,Exponential factor used in CNAllocation for fraction allocated to leaf,varies: nan to nan,unitless
+16,c_fix,Parameter 'c' of temp response of N fixation (Houlton et al.  2008),25.15,C
+17,capthick,Minimum thickness before assuming h2osfc is impermeable,100.0,mm
+18,cc_dstem,Combustion completeness factor for dead stem,varies: 0.27 to 0.8,0 to 1
+19,cc_leaf,Combustion completeness factor for leaf,0.8,0 to 1
+20,cc_lstem,Combustion completeness factor for live stem,varies: 0.27 to 0.8,0 to 1
+21,cc_other,Combustion completeness factor for other plant,varies: 0.45 to 0.8,0 to 1
+22,cn_s1,C:N for SOM pool 1,12.0,gC/gN
+23,cn_s1_bgc,C:N for SOM 1,8.0,unitless
+24,cn_s2,C:N for SOM pool 2,12.0,gC/gN
+25,cn_s2_bgc,C:N for SOM pool 2,11.0,gC/gN
+26,cn_s3,C:N for SOM pool 3,10.0,gC/gN
+27,cn_s3_bgc,C:N for SOM pool 3,11.0,gC/gN
+28,cn_s4,C:N for SOM pool 4,10.0,gC/gN
+29,cnscalefactor,Scale factor on CN decomposition for assigning methane flux,1.0,unitless
+30,compet_decomp_nh4,Relative competitiveness of immobilizers for NH4,1.0,unitless
+31,compet_decomp_no3,Relative competitiveness of immobilizers for NO3,1.0,unitless
+32,compet_denit,Relative competitiveness of denitrifiers for NO3,1.0,unitless
+33,compet_nit,Relative competitiveness of nitrifiers for NH4,1.0,unitless
+34,compet_plant_nh4,Relative compettiveness of plants for NH4,1.0,unitless
+35,compet_plant_no3,Relative compettiveness of plants for NO3,1.0,unitless
+36,crit_dayl,Critical day length for senescence,3.93E+4,seconds
+37,crit_offset_fdd,Critical number of freezing days to initiate offset,15.0,days
+38,crit_offset_swi,Critical number of water stress days to initiate offset,15.0,days
+39,crit_onset_fdd,Critical number of freezing days to set gdd counter,15.0,days
+40,crit_onset_swi,Critical number of days > soilpsi_on for onset,15.0,days
+41,croot_stem,Allocation parameter: new coarse root C per new stem C,varies: 0.0 to 0.3,gC/gC
+43,cryoturb_diffusion_k,The cryoturbation diffusive constant for vertical mixing of SOM,1.59E-11,m^2/sec
+44,cwd_fcel,Cellulose fraction for CWD,0.76,unitless
+45,cwd_flig,Lignin fraction of coarse woody debris,0.24,unitless
+46,dayscrecover,days to recover negative cpool,30.0,unitless
+47,deadwdcn,Dead wood (xylem and heartwood) C:N,varies: 0.0 to 500.0,gC/gN
+48,declfact,Decline factor for gddmaturity used in CNAllocation,varies: nan to nan,unitless
+49,depth_runoff_Nloss,Depth over which runoff mixes with soil water for N loss to runoff,0.05,m
+50,dnp,Denitrification proportion,0.01,unitless
+51,dsladlai,"Through canopy, projected area basis: dSLA/dLAI",varies: 0.00E+2 to 3.00E-3,m^2/gC
+52,ef_time,e-folding time constant,1.0,years
+53,ekc_active,Constant relating root C to ectomycorrhizal root active uptake cost.,varies: 0.036 to 3.6,gC/m3
+54,ekn_active,Constant relating soil layer Nitrogen content to ectomycorrhizal root active uptake cost.,varies: 0.006 to 0.6,gC/m2
+56,f_ch4,Ratio of CH4 production to total C mineralization,0.2,unitless
+57,f_sat,Volumetric soil water defining top of water table or where production is allowed,0.95,unitless
+58,fcur,"Allocation parameter: fraction of allocation that goes to currently displayed growth, remainder to storage",varies: 0.0 to 1.0,fraction
+59,fcurdv,Alternate fcur for use with CNDV,varies: 0.5 to 1.0,fraction
+60,fd_pft,Fire duration,24.0,hr
+61,ffrootcn,Fine root C:N during organ fill,999.0,gC/gN
+62,fleafcn,Leaf C:N during organ fill,999.0,gC/gN
+63,fleafi,Leaf Allocation coefficient parameter fraction used in CNAllocation,varies: nan to nan,unitless
+64,flivewd,Allocation parameter: fraction of new wood that is live (phloem and ray parenchyma),varies: 0.0 to 0.5,fraction
+65,flnr,Fraction of leaf N in Rubisco enzyme,varies: 0.0461 to 0.1365,fraction
+66,fm_droot,Fire-related mortality factor for dead roots,varies: 0.1 to 0.2,0 to 1
+67,fm_dstem,Fire-related mortality factor for dead roots,varies: 0.1 to 0.2,0 to 1
+68,fm_leaf,Fire-related mortality factor for leaf,0.8,0 to 1
+69,fm_lroot,Fire-related mortality factor for live roots,varies: 0.1 to 0.2,0 to 1
+70,fm_lstem,Fire-related mortality factor for live stem,varies: 0.35 to 0.8,0 to 1
+71,fm_other,Fire-related mortality factor for other plant,varies: 0.35 to 0.8,0 to 1
+72,fm_root,Fire-related mortality factor for fine roots,varies: 0.1 to 0.2,0 to 1
+73,fnitr,Foliage nitrogen limitation factor,1.0,unitless
+74,fr_fcel,Fine root litter cellulose fraction,0.5,fraction
+75,fr_flab,Fine root litter labile fraction,0.25,fraction
+76,fr_flig,Fine root litter lignin fraction,0.25,fraction
+77,frootcn,Fine root C:N,42.0,gC/gN
+78,frootcn_max,Maximum fine root CN ratio,52.0,gC/gN
+79,frootcn_min,Minimum fine root CN ratio,32.0,gC/gN
+80,fsr_pft,Fire spread rate,varies: 0.25 to 0.33,m/s
+81,fstemcn,Stem C:N during organ fill,999.0,gC/gN
+82,fstor2tran,Fraction of storage to move to transfer for each onset,0.5,unitless
+83,fun_cn_flex_a,Parameter 'a' of FUN-flexcn code linking leafCN content and N cost to FUN C expenditure,5.0,unitless
+84,fun_cn_flex_b,Parameter 'b' of FUN-flexcn linking leafCN content and N cost to FUN C expenditure,100.0,unitless
+85,gddfunc_p1,Parameter 1 to calculate GDD threshold as fn of annual T,4.8,unitless
+86,gddfunc_p2,Parameter 2 to calculate GDD threshold as fn of annual T,0.13,unitless
+87,gddmin,Minimim growing degree days used in CNPhenology,varies: nan to nan,unitless
+88,graincn,Grain C:N,varies: nan to nan,gC/gN
+89,grnfill,Grain fill parameter used in CNPhenology,varies: nan to nan,unitless
+90,grpnow,Growth respiration factor,1.0,unitless
+91,highlatfact,Multiple of qflxlagd for high latitudes,2.0,unitless
+92,hybgdd,Growing Degree Days for maturity used in CNPhenology,varies: nan to nan,unitless
+93,i_flnr,intercept of the relationship between leaf N per unit area (gN/m2) and fraction leaf N in Rubisco (for vcmax_opt=4),varies: 0.18 to 0.28,fraction
+94,i_vcad,intercept of the relationship between leaf N per unit area (gN/m2) and Vcmax25top (umol CO2/m2/s),varies: 3.21 to 30.93,umol CO2/m2/s
+96,k_frag,Fragmentation rate for CWD,1.00E-3,1/day
+97,k_l1,Decomposition rate for litter 1,1.204,1/day
+98,k_l2,Decomposition rate for litter 2,0.0726,1/day
+99,k_l3,Decomposition rate for litter 3,0.0141,1/day
+100,k_m,Michaelis-Menten oxidation rate constant for CH4 concentration,5.00E-3,mol/m3-w
+101,k_m_o2,Michaelis-Menten oxidation rate constant for O2 concentration,0.02,mol/m3-w
+102,k_m_unsat,Michaelis-Menten oxidation rate constant for CH4 concentration,5.00E-4,mol/m3-w
+103,k_mort,Coefficient of growth efficiency in mortality equation,0.3,unitless
+104,k_s1,Decomposition rate for SOM 1,0.0726,1/day
+105,k_s2,Decomposition rate for SOM 2,0.0141,1/day
+106,k_s3,Decomposition rate for SOM 3,1.40E-3,1/day
+107,k_s4,Decomposition rate for SOM 4,1.00E-4,1/day
+108,kc_nonmyc,Constant relating root C to non-mycorrhizal root active uptake cost.,varies: 0.072 to 7.2,gC/m3
+109,kn_nonmyc,Constant relating soil layer Nitrogen content to non-mycorrhizal root active uptake cost.,varies: 0.0012 to 0.12,gC/m2
+110,kr_resorb,Constant relating leaf N of senesced leaves (gN/m2) to N resorption cost.,24.0,unitless
+111,laimx,Maximum Leaf Area Index used in CNVegStructUpdate,varies: nan to nan,unitless
+112,lake_decomp_fact,Base decomposition rate (1/s) at 25oC in lake,9.00E-11,1/s
+113,leaf_long,Leaf longevity,varies: 0.14 to 3.3092,years
+114,leafcn_max,Maximum leaf CN ratio,varies: 35.0 to 50.0,gC/gN
+115,leafcn_min,Minimum leaf CN ratio,varies: 15.0 to 30.0,gC/gN
+116,lf_fcel,Leaf litter cellulose fraction,0.5,fraction
+117,lf_flab,Leaf litter labile fraction,0.25,fraction
+118,lf_flig,Leaf litter lignin fraction,0.25,fraction
+119,lfemerg,Leaf emergence parameter used in CNPhenology,varies: nan to nan,unitless
+120,lflitcn,Leaf litter C:N,varies: 50.0 to 80.0,gC/gN
+121,livewdcn,Live wood (phloem and ray parenchyma) C:N,varies: 0.0 to 50.0,gC/gN
+122,livewdcn_max,Maximum live wood CN ratio,varies: 0.0 to 60.0,gC/gN
+123,livewdcn_min,Minimum live wood CN ratio,varies: 0.0 to 40.0,gC/gN
+124,lwtop_ann,Live wood turnover proportion,0.7,unitless
+125,manunitro,Max manure to be applied in total,0,kg N/m2
+126,max_NH_planting_date,Maximum planting date for the Northern Hemipsphere,varies: nan to nan,YYYYMMDD
+127,max_SH_planting_date,Maximum planting date for the Southern Hemipsphere,varies: nan to nan,YYYYMMDD
+128,max_altdepth_cryoturbation,Maximum active layer thickness for cryoturbation to occur,2.0,m
+129,max_altmultiplier_cryoturb,Ratio of the maximum extent of cryoturbation to the active layer thickness,3.0,unitless
+130,maxpsi_hr,Maximum soil water potential for heterotrophic resp,-2.00E-3,MPa
+131,mbbopt,"Ball-Berry slope of conductance-photosynthesis relationship, unstressed",varies: 4.0 to 9.0,umol H2O/umol CO2
+132,me_herb,Moisture of extinction for herbaceous PFTs (proportion),0.2,unitless
+133,me_woody,Moisture of extinction for woody PFTs (proportion),0.3,unitless
+134,medlynintercept,Medlyn intercept of conductance-photosynthesis relationship,100.0,umol H2O
+135,mergetoclmpft,CLM pft to merge this pft to,varies: 1.0 to 14.0,index
+136,min_NH_planting_date,Minimum planting date for the Northern Hemipsphere,varies: nan to nan,YYYYMMDD
+137,min_SH_planting_date,Minimum planting date for the Southern Hemipsphere,varies: nan to nan,YYYYMMDD
+138,min_planting_temp,Average 5 day daily minimum temperature needed for planting,varies: nan to nan,K
+139,minfuel,Dead fuel threshold to carry a fire,100.0,gC/m2
+140,mino2lim,Minimum anaerobic decomposition rate as a fraction of potential aerobic rate,0.2,unitless
+141,mxmat,Maximum number of days to maturity parameter in CNPhenology,varies: nan to nan,days
+142,mxtmp,"Max Temperature, parameter used in accFlds",varies: nan to nan,C
+143,ndays_off,Number of days to complete leaf offset,15.0,days
+144,ndays_on,Number of days to complete leaf onset,30.0,days
+145,nongrassporosratio,"Ratio of root porosity in non-grass to grass, used for aerenchyma transport",0.33,unitless
+146,organic_max,Organic matter content where soil is assumed to act like peat for diffusion,130.0,kg/m3
+147,oxinhib,Inhibition of methane production by oxygen,400.0,m^3/mol
+148,pHmax,Maximum pH for methane production,9.0,unitless
+149,pHmin,Minimum pH for methane production,2.2,unitless
+150,pconv,Deadstem proportions to send to conversion flux,varies: 0.6 to 1.0,fraction
+151,perecm,Fraction of N uptake conducted via Ectomycorrhizal fungal associations,varies: 0.0 to 1.0,fraction
+152,pftnum,Plant Functional Type number,varies: 1 to 14,unitless
+153,pftpar20,Tree maximum crown area,varies: 0.0 to 15.0,m2
+154,pftpar28,Minimum coldest monthly mean temperature,varies: -1000.0 to 15.5,degrees_Celsius
+155,pftpar29,Maximum coldest monthly mean temperature,varies: -17.0 to 22.0,degrees_Celsius
+156,pftpar30,Minimum growing degree days (>= 5 degree Celsius),varies: 0.00E+2 to 1.20E+3,degree_C_days
+157,pftpar31,Upper limit of temperature of the warmest month (twmax),varies: 23.0 to 23.0,degrees_Celsius
+158,phenology_soil_depth,Soil depth used for measuring states for phenology triggers,0.08,m
+159,planting_temp,Average 10 day temperature needed for planting,varies: nan to nan,K
+160,porosmin,Minimum aerenchyma porosity,0.05,unitless
+161,pprod10,Deadstem proportions to send to 10 year product pool,varies: 0.0 to 0.4,fraction
+162,pprod100,Deadstem proportions to send to 100 year product pool,varies: 0.0 to 0.1,fraction
+163,pprodharv10,Deadstem proportions to send to 10 year harvest pool,varies: 0.75 to 1.0,fraction
+164,q10_ch4oxid,Q10 oxidation constant,1.9,unitless
+165,q10ch4,Q10 for methane production,1.33,unitless
+166,q10ch4base,Temperature at which the effective f_ch4 actually equals the constant f_ch4,295.0,bug! units not provided in params file
+167,q10lakebase,Base temperature for lake CH4 production,298.0,K
+168,qflxlagd,Days to lag time-lagged surface runoff (qflx_surf_lag) in the tropics,30.0,days
+169,rc_npool,resistance for uptake from plant n pool,10.0,unitless
+170,redoxlag,Number of days to lag in the calculation of finundated_lag,30.0,days
+171,redoxlag_vertical,Time lag (days) to inhibit production for newly unsaturated layers,0,days
+172,rf_cwdl2_bgc,respiration fraction from CWD to litter 2,0,unitless
+173,rf_cwdl3_bgc,respiration fraction from CWD to litter 3,0,unitless
+174,rf_l1s1,Respiration fraction for litter 1 -> SOM 1,0.39,unitless
+175,rf_l1s1_bgc,Respiration fraction for litter 1 -> SOM 1,0.55,unitless
+176,rf_l2s1_bgc,respiration fraction litter 2 to SOM 1,0.5,unitless
+177,rf_l2s2,Respiration fraction for litter 2 -> SOM 2,0.55,unitless
+178,rf_l3s2_bgc,respiration fraction from litter 3 to SOM 2,0.5,unitless
+179,rf_l3s3,Respiration fraction for litter 3 -> SOM 3,0.29,unitless
+180,rf_s1s2,Respiration fraction for SOM 1 -> SOM 2,0.28,unitless
+181,rf_s2s1_bgc,respiration fraction SOM 2 to SOM 1,0.55,unitless
+182,rf_s2s3,Respiration fraction for SOM 2 -> SOM 3,0.46,unitless
+183,rf_s2s3_bgc,Respiration fraction for SOM 2 -> SOM 3,0.55,unitless
+184,rf_s3s1_bgc,respiration fraction SOM 3 to SOM 1,0.55,unitless
+185,rf_s3s4,Respiration fraction for SOM 3 -> SOM 4,0.55,unitless
+186,rholnir,Leaf reflectance: near-IR,varies: 0.35 to 0.45,fraction
+187,rholvis,Leaf reflectance: visible,varies: 0.07 to 0.11,fraction
+188,rhosnir,Stem reflectance: near-IR,varies: 0.39 to 0.53,fraction
+189,rhosvis,Stem reflectance: visible,varies: 0.16 to 0.31,fraction
+190,rij_kro_a,Best-fit parameter of simple-structure model (Arah and Vinten 1995),1.50E-10,unitless
+191,rij_kro_alpha,Simple-structure model parameter (Arah and Vinten 1995),1.26,unitless
+192,rij_kro_beta,Simple-structure model parameter (Arah and Vinten 1995),0.6,unitless
+193,rij_kro_delta,Simple-structure model parameter (Arah and Vinten 1995),0.85,unitless
+194,rij_kro_gamma,Simple-structure model parameter (Arah and Vinten 1995),0.6,unitless
+195,rob,Ratio of root length to vertical depth (root obliquity),3.0,unitless
+196,root_dmx,maximum rooting depth of crops,999.0,m
+197,roota_par,CLM rooting distribution parameter,varies: 6.0 to 11.0,1/m
+198,rootb_par,CLM rooting distribution parameter,varies: 1.0 to 2.0,1/m
+199,rootlitfrac,Fraction of soil organic matter associated with roots,0.5,unitless
+200,s_fix,Baseline cost of N fixation in gC/gN,-6.0,gC/gN
+201,s_flnr,slope of the relationship between leaf N per unit area (gN/m2) and fraction leaf N in Rubisco (for vcmax_opt=4),varies: -0.38 to -0.01,fraction/gN/m2
+202,s_vcad,slope of the relationship between leaf N per unit area (gN/m2) and Vcmax25top (umol CO2/m2/s),varies: 5.5 to 40.96,umol CO2/s/gN
+203,satpow,Exponent on watsat for saturated soil solute diffusion,2.0,unitless
+204,scale_factor_aere,Scale factor on the aerenchyma area for sensitivity tests,1.0,unitless
+205,scale_factor_gasdiff,Scale factor for gas diffusion,1.0,unitless
+206,scale_factor_liqdiff,Scale factor for solute diffusion in liquid (water),1.0,unitless
+208,sf_minn,Soluble fraction of mineral N,0.1,unitless
+209,sf_no3,Soluble fraction of NO3,1.0,unitless
+210,shape_fluxprof_param1,Shape parameter of advection/diffusion profile,1.00E+10,unitless
+211,smp_crit,Critical soil moisture potential to reduce oxidation (mm) due to dessication of methanotrophs above the water table,-2.40E+5,mm
+212,smpsc,Soil water potential at full stomatal closure,varies: -4.28E+5 to -2.24E+5,mm
+213,smpso,Soil water potential at full stomatal opening,varies: -8.30E+4 to -3.50E+4,mm
+214,soilpsi_off,Critical soil water potential for leaf offset,-0.8,MPa
+215,soilpsi_on,Critical soil water potential for leaf onset,-0.6,MPa
+216,som_diffus,Vertical soil organic matter diffusion coefficient for flat adv/diff profile ,3.17E-12,m^2/sec
+217,stem_leaf,Allocation parameter: new stem C per new leaf C (-1 means use dynamic stem allocation),varies: 0.0 to 2.3,gC/gC
+219,surface_tension_water,Surface tension of water (Arah and Vinten 1995),0.073,J/m^2
+220,tau_cwd,Corrected fragmentation rate constant CWD,3.3333,1/year
+221,tau_l1,Turnover time of  litter 1,0.0541,year
+222,tau_l2_l3,Turnover time of  litter 2 and litter 3,0.2041,year
+223,tau_s1,Turnover time of soil organic matter (SOM) 1,0.137,year
+224,tau_s2,Turnover time of soil organic matter (SOM) 2,5.0,year
+225,tau_s3,Turnover time of soil organic matter (SOM) 3,222.2222,year
+226,taulnir,Leaf transmittance: near-IR,varies: 0.1 to 0.34,fraction
+227,taulvis,Leaf transmittance: visible,0.05,fraction
+228,tausnir,Stem transmittance: near-IR,varies: 0.001 to 0.25,fraction
+229,tausvis,Stem transmittance: visible,varies: 0.001 to 0.12,fraction
+230,unsat_aere_ratio,Ratio to multiply upland vegetation aerenchyma porosity by compared to inundated systems,0.1667,unitless
+231,vgc_max,Ratio of saturation pressure triggering ebullition,0.15,unitless
+232,vmax_ch4_oxid,Oxidation rate constant,1.25E-5,mol/m3-w/s
+233,vmax_oxid_unsat,Oxidation rate constant,1.25E-6,mol/m3-w/s
+234,wcf,Wood combustion fraction,0.4,unitless
+236,xl,Leaf/stem orientation index,varies: -0.3 to 0.25,unitless
+237,ztopmx,Canopy top coefficient used in CNVegStructUpdate,varies: nan to nan,m

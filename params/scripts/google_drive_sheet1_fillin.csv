@@ -1,0 +1,174 @@
+,name,long_name,default value,units
+0,"34 parameters from Katie's paper (mostly hydrology, SP mode):",no exact match in params file,tbd,tbd
+1,displar,Ratio of displacement height to canopy top height,varies: 0.67 to 0.68,unitless
+2,dleaf,Characteristic leaf dimension,0.04,m
+3,froot_leaf,Allocation parameter: new fine root C per new leaf C,1.5,gC/gC
+4,kmax,plant segment max conductance,2.00E-8,mm h2o (transpired)/mm h2o (water potential gradient)/sec
+5,krmax,root segment max conductance,1.00E-11,mm h2o (transpired)/mm h2o (water potential gradient)/sec
+6,psi50,water potential at 50% loss of conductance,varies: -5.30E+5 to -2.00E+5,mm
+7,ck,weibull curve shape parameter,3.95,unitless
+8,leafcn,Leaf C:N,varies: 23.2558 to 58.0,gC/gN
+9,medlynslope,Medlyn slope of conductance-photosynthesis relationship,varies: 1.62 to 5.25,umol H2O/umol CO2
+10,rootprof_beta,"Rooting beta parameter, for C and N vertical discretization",varies: 0.914 to 0.993,unitless
+11,z0mr,Ratio of momentum roughness length to canopy top height,varies: 0.055 to 0.12,unitless
+12,baseflow_scalar,no exact match in params file,tbd,tbd
+13,maximum_leaf_wetted_fraction,no exact match in params file,tbd,tbd
+14,interception_fraction,no exact match in params file,tbd,tbd
+15,csoilc,Drag coeff. for soil under dense canopy,4.00E-3,unitless
+16,cv,Turbulent transfer coeff. between canopy surface and canopy air,0.01,m/s^(1/2)
+17,a_coef,Drag coeff. under less dense canopy,0.13,unitless
+18,a_exp,Drag exponent under less dense canopy,0.45,unitless
+19,zlnd,"Momentum roughness length for soils, glacier, wetland",0.01,m
+20,zsno,Momentum roughness length for snow,2.40E-3,m
+21,lai_dl,Plant litter area index,0.5,m2/m2
+22,z_dl,Litter layer thickness,0.05,m
+23,aq_sp_yield_min,Min. aquifer specific yield,0.02,unitless
+24,fff,Decay factor for fractional saturated area,0.5,1/m
+25,liq_canopy_storage_scalar,Canopy-storage-of-liquid-water parameter,0.1,kg/m2
+26,snow_canopy_storage_scalar,Canopy-storage-of-snow parameter,6.0,kg/m2
+27,d_max,Dry surface layer parameter,15.0,mm
+28,frac_sat_soil_dsl_init,Fraction of saturated soil for moisture value at which DSL initiates,0.8,unitless
+29,accum_factor,Accumulation constant for fractional snow covered area,0.1,unitless
+30,n_melt_coef,N_melt parameter,200.0,unitless
+31,kc25_coef,Michaelis-Menten constant at 25degC for CO2,4.05E-4,mol/mol
+32,ko25_coef,Michaelis-Menten constant at 25degC for O2,0.2784,mol/mol
+33,cp25_yr2000,CO2 compensation point at 25degC at present day O2,4.28E-5,mol/mol
+34,fnr,Mass ratio of total Rubisco molecular mass to N in Rubisco,7.16,gRubisco/gN(Rubisco)
+35,act25,Specific activity of Rubisco at 25degC,60.0,mumol(CO2)/(gRubisco s)
+36,Pedo-transfer functions (from Katie):,no exact match in params file,tbd,tbd
+37,om_b,no exact match in params file,tbd,tbd
+38,,no exact match in params file,tbd,tbd
+39,,no exact match in params file,tbd,tbd
+40,om_watsat,no exact match in params file,tbd,tbd
+41,,no exact match in params file,tbd,tbd
+42,,no exact match in params file,tbd,tbd
+43,om_sucsat,no exact match in params file,tbd,tbd
+44,,no exact match in params file,tbd,tbd
+45,,no exact match in params file,tbd,tbd
+46,om_hksat,no exact match in params file,tbd,tbd
+47,,no exact match in params file,tbd,tbd
+48,,no exact match in params file,tbd,tbd
+49,Plant BGC parameters,no exact match in params file,tbd,tbd
+50,slatop,"Specific Leaf Area (SLA) at top of canopy, projected area basis",varies: 0.01 to 0.0402,m^2/gC
+51,stem_leaf ,no exact match in params file,tbd,tbd
+52,n_costs,no exact match in params file,tbd,tbd
+53,FUN_fracfixers,The maximum fraction of assimilated carbon that can be used to pay for N fixation,0.25,fraction
+54,fun_cn_flex_c,Parameter 'c' of FUN-flexcn  linking leafCN content and N cost to FUN C expenditure,8.0,unitless
+55,allocation parameters?,no exact match in params file,tbd,tbd
+56,Additional bgc paramters,no exact match in params file,tbd,tbd
+57,grperc,Growth respiration factor,0.11,unitless
+58,br_mr,Base rate for maintenance respiration,2.52E-6,gC/gN/s
+59,lmr_intercept_atkin,Intercept in the calculation of the top of canopy leaf maintenance respiration base rate. Original values from Atkin et al. in prep 2016.,varies: 1.4995 to 2.1956,umol CO2/m**2/s
+60,r_mort,Mortality rate,0.02,1/year
+61,rf_*_bgc,no exact match in params file,tbd,tbd
+62,tau_*,no exact match in params file,tbd,tbd
+63,q10_mr,Q10 for maintenance respiration,1.5,unitless
+64,q10_hr,Q10 for heterotrophic respiration,1.5,unitless
+65,froz_q10,Separate q10 for frozen soil respiration rates,1.5,unitless
+66,minpsi_hr,Minimum soil water potential for heterotrophic resp,-2.0,MPa
+67,cn_s*_bgc,no exact match in params file,tbd,tbd
+68,acclimation parameters?,no exact match in params file,tbd,tbd
+69,k_nitr_max,Maximum nitrification rate constant,1.16E-6,1/sec
+70,k_nitr_max_perday,no exact match in params file,tbd,tbd
+71,denitrif_respiration_coefficient,no exact match in params file,tbd,tbd
+72,denitrif_respiration_exponent,no exact match in params file,tbd,tbd
+73,denit_nitrate_coef,no exact match in params file,tbd,tbd
+74,denitrif_nitrateconc_exponent,no exact match in params file,tbd,tbd
+75,freelivfix_slope_wET,no exact match in params file,tbd,tbd
+76,freelivfix_intercept,no exact match in params file,tbd,tbd
+77,decomp_depth_efolding,e-folding depth for reduction in decomposition. Sset to large number for depth-independance,10.0,m
+78,fnps,no exact match in params file,tbd,tbd
+79,theta_psii,no exact match in params file,tbd,tbd
+80,theta_ip,no exact match in params file,tbd,tbd
+81,theta_cj,no exact match in params file,tbd,tbd
+82,LUNA parameters,no exact match in params file,tbd,tbd
+83,theta_cj,no exact match in params file,tbd,tbd
+84,Other photosynthesis parameters,no exact match in params file,tbd,tbd
+85,*ha,no exact match in params file,tbd,tbd
+86,*da,no exact match in params file,tbd,tbd
+87,"kc25_coef, ko25_coef, cp25_yr2000",no exact match in params file,tbd,tbd
+88,photosynthesis parameters with constants included in equations for below variables,no exact match in params file,tbd,tbd
+89,tpu25,no exact match in params file,tbd,tbd
+90,*maxse,no exact match in params file,tbd,tbd
+91,jmax25top,no exact match in params file,tbd,tbd
+92,kp25top,no exact match in params file,tbd,tbd
+93,additional namelist parameters (scalar values),no exact match in params file,tbd,tbd
+94,zetamaxstable,no exact match in params file,tbd,tbd
+95,jmaxb1,no exact match in params file,tbd,tbd
+96,br_root,no exact match in params file,tbd,tbd
+97,decomp_depth_efolding,e-folding depth for reduction in decomposition. Sset to large number for depth-independance,10.0,m
+98,leaf_mr_vcm,no exact match in params file,tbd,tbd
+99,CN Fire model parameters?,no exact match in params file,tbd,tbd
+100,Irrigation model parameters?,no exact match in params file,tbd,tbd
+101,Snow pack parameters?,no exact match in params file,tbd,tbd
+102,,no exact match in params file,tbd,tbd
+103,,no exact match in params file,tbd,tbd
+104,,no exact match in params file,tbd,tbd
+105,,no exact match in params file,tbd,tbd
+106,,no exact match in params file,tbd,tbd
+107,,no exact match in params file,tbd,tbd
+108,,no exact match in params file,tbd,tbd
+109,,no exact match in params file,tbd,tbd
+110,,no exact match in params file,tbd,tbd
+111,,no exact match in params file,tbd,tbd
+112,,no exact match in params file,tbd,tbd
+113,,no exact match in params file,tbd,tbd
+114,,no exact match in params file,tbd,tbd
+115,,no exact match in params file,tbd,tbd
+116,,no exact match in params file,tbd,tbd
+117,,no exact match in params file,tbd,tbd
+118,,no exact match in params file,tbd,tbd
+119,,no exact match in params file,tbd,tbd
+120,,no exact match in params file,tbd,tbd
+121,,no exact match in params file,tbd,tbd
+122,,no exact match in params file,tbd,tbd
+123,,no exact match in params file,tbd,tbd
+124,,no exact match in params file,tbd,tbd
+125,,no exact match in params file,tbd,tbd
+126,,no exact match in params file,tbd,tbd
+127,,no exact match in params file,tbd,tbd
+128,,no exact match in params file,tbd,tbd
+129,,no exact match in params file,tbd,tbd
+130,,no exact match in params file,tbd,tbd
+131,,no exact match in params file,tbd,tbd
+132,,no exact match in params file,tbd,tbd
+133,,no exact match in params file,tbd,tbd
+134,,no exact match in params file,tbd,tbd
+135,,no exact match in params file,tbd,tbd
+136,,no exact match in params file,tbd,tbd
+137,,no exact match in params file,tbd,tbd
+138,,no exact match in params file,tbd,tbd
+139,,no exact match in params file,tbd,tbd
+140,,no exact match in params file,tbd,tbd
+141,,no exact match in params file,tbd,tbd
+142,,no exact match in params file,tbd,tbd
+143,,no exact match in params file,tbd,tbd
+144,,no exact match in params file,tbd,tbd
+145,,no exact match in params file,tbd,tbd
+146,,no exact match in params file,tbd,tbd
+147,,no exact match in params file,tbd,tbd
+148,,no exact match in params file,tbd,tbd
+149,,no exact match in params file,tbd,tbd
+150,,no exact match in params file,tbd,tbd
+151,,no exact match in params file,tbd,tbd
+152,,no exact match in params file,tbd,tbd
+153,,no exact match in params file,tbd,tbd
+154,,no exact match in params file,tbd,tbd
+155,,no exact match in params file,tbd,tbd
+156,,no exact match in params file,tbd,tbd
+157,,no exact match in params file,tbd,tbd
+158,,no exact match in params file,tbd,tbd
+159,,no exact match in params file,tbd,tbd
+160,,no exact match in params file,tbd,tbd
+161,,no exact match in params file,tbd,tbd
+162,,no exact match in params file,tbd,tbd
+163,,no exact match in params file,tbd,tbd
+164,,no exact match in params file,tbd,tbd
+165,,no exact match in params file,tbd,tbd
+166,,no exact match in params file,tbd,tbd
+167,,no exact match in params file,tbd,tbd
+168,,no exact match in params file,tbd,tbd
+169,,no exact match in params file,tbd,tbd
+170,,no exact match in params file,tbd,tbd
+171,,no exact match in params file,tbd,tbd
+172,,no exact match in params file,tbd,tbd
