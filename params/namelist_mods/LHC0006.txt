@@ -1,0 +1,3 @@
+! user_nl_clm namelist options written by generate_params:
+baseflow_scalar=0.03496572479618029
+maximum_leaf_wetted_fraction=0.0941376947913166
