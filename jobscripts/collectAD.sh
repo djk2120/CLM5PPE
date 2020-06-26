@@ -18,8 +18,6 @@ do
 
 	oldfile=$d$p".clm2_"$instkey".r.*"
 	newfile=$SPINDIR$paramkey"_ADrestart.nc"
-
-
 	cp $oldfile $newfile
     done < $keyfile
     cd ..
