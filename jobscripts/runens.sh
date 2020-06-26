@@ -10,13 +10,7 @@ fi
 
 #set up environment variables
 source $1
-SCRIPTS_DIR="/glade/work/djk2120/ctsm_hardcode_co/cime/scripts/"
-SCRATCH="/glade/scratch/djk2120/"
-PARAMS_DIR=$(realpath ../params/paramfiles)"/"
-NLMODS_DIR=$(realpath ../params/namelist_mods)"/"
-RESTARTS="/glade/scratch/djk2120/mini_ens/restarts/"
 jobdir=$(pwd)"/"
-ninst=10
 
 #collect restarts if needed
 if [ "$finidatFlag" = true ]
@@ -40,6 +34,7 @@ then
 fi
 
 #count existing cases
+# so that we give this case a new name
 cd $SCRIPTS_DIR
 if [ -d $casePrefix ]
 then
@@ -52,8 +47,6 @@ cd $jobdir
 read_n() { for i in $(seq $1); do read || return; echo $REPLY; done; }
 
 # count how many parameter sets in this batch
-echo $(pwd)
-
 nx=$(wc -l < $paramList)
 
 # outer loop creates a new multi-instance case
@@ -97,14 +90,19 @@ do
 	nlfile="user_nl_clm_"$nlnum
 	pfile=$PARAMS_DIR$p".nc"
 	pfilestr="paramfile = '"$pfile"'"
-	nlmods=$NLMODS_DIR$p".txt"
 
-	# copy and edit user_nl_clm
+	# copy user_nl_clm and specify paramfile
 	cd $SCRIPTS_DIR$casePrefix"/"$repcase
 	cp user_nl_clm.base $nlfile
 	echo $pfilestr >> $nlfile
-	cat $nlmods >> $nlfile
-	
+
+	# cat nlmods if needed
+	if [ "$nlmodsFlag" = true ]
+	then
+	    nlmods=$NLMODS_DIR$p".txt"
+	    cat $nlmods >> $nlfile
+	fi
+
 	# specify finidat if needed
 	if [ "$finidatFlag" = true ]
 	then
@@ -122,6 +120,7 @@ do
 	echo "   building "$repcase
 	echo "--------------------------"
 	./case.build
+	#only need to compile the source code once
 	exeroot=$SCRATCH$repcase"/bld"
 	exerootFlag=true
     fi
