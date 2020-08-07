@@ -15,6 +15,10 @@ jobdir=$(pwd)"/"
 #collect restarts if needed
 if [ "$finidatFlag" = true ]
 then
+    if [ ! -d $RESTARTS ]
+    then
+	mkdir $RESTARTS
+    fi
     cd $SCRIPTS_DIR$prevCase
     for p in $(ls); do
 	cd $p

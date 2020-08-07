@@ -1,8 +1,20 @@
 #!/bin/bash
-SCRIPTS_DIR="/glade/work/djk2120/ctsm_hardcode_co/cime/scripts/"
-SPINDIR="/glade/scratch/djk2120/mini_ens/output/"
-SCRATCH="/glade/scratch/djk2120/"
-casePrefix="miniens_run"
+
+if [ $# -eq 0 ]
+then
+    echo "ERROR: please specify format file"
+    echo "   ex: ./collectRuns.sh mainrun.env"
+    exit 1
+fi
+
+source $1
+
+if [ ! -d $OUTPUT_DIR ]
+then 
+    mkdir $OUTPUT_DIR
+fi
+
+
 cd $SCRIPTS_DIR$casePrefix
 
 ncases=$(ls | wc -w)
@@ -20,11 +32,11 @@ do
 	instkey=${tmp[0]}
 
 	oldfile=$d$p".clm2_"$instkey".h0.*"
-	newfile=$SPINDIR$paramkey"_h0.nc"
+	newfile=$OUTPUT_DIR$paramkey"_h0.nc"
 	cp $oldfile $newfile
 
 	oldfile=$d$p".clm2_"$instkey".h1.*"
-	newfile=$SPINDIR$paramkey"_h1.nc"
+	newfile=$OUTPUT_DIR$paramkey"_h1.nc"
 	cp $oldfile $newfile
     done < $keyfile
     cd ..
