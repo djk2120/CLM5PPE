@@ -1,2 +1,1 @@
 ! user_nl_clm namelist options written by generate_params:
-upplim_destruct_metamorph=250

@@ -1,2 +1,2 @@
 ! user_nl_clm namelist options written by generate_params:
-boreal_peatfire_c=1.08e-05
+maximum_leaf_wetted_fraction=0.5

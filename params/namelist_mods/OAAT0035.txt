@@ -1,2 +1,2 @@
 ! user_nl_clm namelist options written by generate_params:
-jmaxb1=0.05
+zetamaxstable=0.1

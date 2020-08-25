@@ -1,2 +1,1 @@
- boreal_peatfire_c = 0.09d-4
  non_boreal_peatfire_c = 0.17d-3
