@@ -1,1 +1,2 @@
 ! user_nl_clm namelist options written by generate_params:
+cmb_cmplt_fact_litter=0.4

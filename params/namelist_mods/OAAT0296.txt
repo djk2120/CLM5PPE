@@ -1,2 +1,2 @@
 ! user_nl_clm namelist options written by generate_params:
-cli_scale=0.0396
+freelivfix_slope_wet=0.0012
