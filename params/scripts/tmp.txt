@@ -1,1 +1,1 @@
- non_boreal_peatfire_c = 0.17d-3
+ jmaxb1 = 0.17
