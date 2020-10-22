@@ -1,0 +1,2 @@
+! user_nl_clm namelist options written by generate_params:
+br_root=6.639999999999999e-07
