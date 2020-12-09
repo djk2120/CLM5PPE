@@ -1,2 +1,0 @@
-! user_nl_clm namelist options written by generate_params:
-pot_hmn_ign_counts_alpha=0.008

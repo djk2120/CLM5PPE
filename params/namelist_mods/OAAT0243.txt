@@ -1,2 +1,0 @@
-! user_nl_clm namelist options written by generate_params:
-cli_scale=0.026400000000000003
