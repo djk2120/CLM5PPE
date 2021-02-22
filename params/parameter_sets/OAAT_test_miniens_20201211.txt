@@ -1,0 +1,64 @@
+Ensemble member 1
+sand_pf:
+	loc = P
+	default = 0.0
+	min = -20
+	max = 20
+	value = -20
+
+clay_pf:
+	loc = P
+	default = 0.0
+	min = -20
+	max = 20
+	value = None
+
+
+Ensemble member 2
+sand_pf:
+	loc = P
+	default = 0.0
+	min = -20
+	max = 20
+	value = 20
+
+clay_pf:
+	loc = P
+	default = 0.0
+	min = -20
+	max = 20
+	value = None
+
+
+Ensemble member 3
+sand_pf:
+	loc = P
+	default = 0.0
+	min = -20
+	max = 20
+	value = None
+
+clay_pf:
+	loc = P
+	default = 0.0
+	min = -20
+	max = 20
+	value = -20
+
+
+Ensemble member 4
+sand_pf:
+	loc = P
+	default = 0.0
+	min = -20
+	max = 20
+	value = None
+
+clay_pf:
+	loc = P
+	default = 0.0
+	min = -20
+	max = 20
+	value = 20
+
+
