@@ -1,11 +1,30 @@
 #!/bin/bash
 
-basecase='ctsm51c6_PPEn08ctsm51d023_2deg_GSWP3V1_Sparse400_ndepp5_2000AD'
-envtype="nddep5"
-runtype="SASU"
-stopn=80
-prevtype="AD"
-nyprev="21"
+base='ctsm51c6_PPEn08ctsm51d023_2deg_GSWP3V1_Sparse400_ndepp5_2000'
+envtype="ndepp5"
+runtype="AD"
+
+if [[ $runtype == "AD" ]];then 
+    stopn=20
+    basecase=$base"AD"
+    echo $basecase
+fi
+
+if [[ $runtype == "SASU" ]];then 
+    stopn=80
+    prevtype="AD"
+    nyprev="21"
+    basecase=$base"_step3"
+    echo $basecase
+fi
+
+if [[ $runtype == "postSASU" ]];then 
+    stopn=40
+    prevtype="SASU"
+    nyprev="81"
+    basecase=$base"_step4"
+    echo $basecase
+fi
 
 keithdir='/glade/work/oleson/PPE.n08_ctsm5.1.dev023/cime/scripts/'
 newcase="PPEn08_"$envtype"_"$runtype
@@ -39,6 +58,8 @@ else
     echo "yes AD"
 fi
 
-if [[ $envtype == "nddep5" ]];then
+if [[ $envtype == "ndepp5" ]];then
     echo "stream_fldfilename_ndep = '/glade/p/cgd/tss/people/oleson/CLM5_ndep/fndep_p5_clm_hist_b.e21.BWHIST.f09_g17.CMIP6-historical-WACCM.ensmean_1849-2015_monthly_0.9x1.25_c180926.nc'">> user_nl_clm
 fi
+
+#./case.submit

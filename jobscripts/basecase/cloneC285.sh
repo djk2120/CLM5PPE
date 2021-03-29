@@ -1,11 +1,27 @@
 #!/bin/bash
 
-basecase='ctsm51c6_PPEn07ctsm51d023_2deg_GSWP3V1_Sparse400_co2-284.7_2000_step3'
+base='ctsm51c6_PPEn07ctsm51d023_2deg_GSWP3V1_Sparse400_co2-284.7_2000'
 envtype="C285"
 runtype="SASU"
-stopn=80
-prevtype="AD"
-nyprev="21"
+
+
+if [[ $runtype == "SASU" ]];then 
+    stopn=80
+    prevtype="AD"
+    nyprev="21"
+    basecase=$base"_step3"
+    echo $basecase
+fi
+
+
+if [[ $runtype == "postSASU" ]];then 
+    stopn=40
+    prevtype="SASU"
+    nyprev="81"
+    basecase=$base"_step4"
+    echo $basecase
+fi
+
 
 keithdir='/glade/work/oleson/PPE.n07_ctsm5.1.dev023/cime/scripts/'
 newcase="PPEn08_"$envtype"_"$runtype
@@ -43,4 +59,4 @@ if [[ $envtype == "nddep5" ]];then
     echo "stream_fldfilename_ndep = '/glade/p/cgd/tss/people/oleson/CLM5_ndep/fndep_p5_clm_hist_b.e21.BWHIST.f09_g17.CMIP6-historical-WACCM.ensmean_1849-2015_monthly_0.9x1.25_c180926.nc'">> user_nl_clm
 fi
 
-./case.submit
+#./case.submit

@@ -11,7 +11,7 @@ jobdir=$(pwd)"/"
 
 #collect restarts
 failedrun=0
-cd $SCRIPTS_DIR$prevCase
+cd $SCRIPTS_DIR$envtype"/"$prevCase
 for p in $(ls); do
     cd $p
     keyfile=$p"_key.txt"
@@ -26,7 +26,7 @@ for p in $(ls); do
 	fi
 
 	oldfile=$d$p".clm2"$inst".r.*"
-	newfile=$RESTARTS$paramkey$finidatSuff
+	newfile=$RESTARTS$envtype"_"$paramkey$finidatSuff
 
 	if [ -f $oldfile ]; then
 	    echo "cp "$oldfile" "$newfile

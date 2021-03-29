@@ -12,9 +12,9 @@ jobdir=$(pwd)"/"
 #count existing cases
 # so that we give this case a new name
 cd $SCRIPTS_DIR
-if [ -d $casePrefix ]
+if [ -d $caseDir$casePrefix ]
 then
-    j=$(ls $casePrefix | wc -w)
+    j=$(ls $caseDir$casePrefix | wc -w)
 else j=0
 fi
 cd $jobdir
@@ -46,14 +46,20 @@ do
     echo "   creating "$repcase
     echo "--------------------------"
     cd $SCRIPTS_DIR
-    ./create_clone --case $casePrefix"/"$repcase --clone $basecase
-    cd $casePrefix"/"$repcase
+    ./create_clone --case $caseDir$casePrefix"/"$repcase --clone $basecase
+    cd $caseDir$casePrefix"/"$repcase
 
-    #adjust ninst if needed
-    if [ $ninst -ne $ninst0 ]; then
-	./xmlchange NINST_LND=$ninst
-    fi
-
+    #adjust ninst and pelayout
+    ./xmlchange NINST_LND=$ninst
+    ./xmlchange NTASKS=-5
+    ./xmlchange NTASKS_ATM=-1
+    ./xmlchange NTASKS_IAC=10
+    ./xmlchange NTASKS_ESP=10
+    ./xmlchange ROOTPE=-1
+    ./xmlchange ROOTPE_ATM=0
+    ./xmlchange ROOTPE_IAC=0
+    ./xmlchange ROOTPE_ESP=0
+    
     #setup and point to executable
     ./case.setup --reset
     if [ "$exerootFlag" = true ]
@@ -81,14 +87,14 @@ do
 	
 
 	# copy user_nl_clm and specify paramfile
-	cd $SCRIPTS_DIR$casePrefix"/"$repcase
+	cd $SCRIPTS_DIR$caseDir$casePrefix"/"$repcase
 	cp user_nl_clm.base $nlfile
 	echo -e "\n"$pfilestr >> $nlfile
 
 	# specify finidat if needed
 	if [ "$finidatFlag" = true ]
 	then
-	    rfile=$RESTARTS$p$finidatSuff
+	    rfile=$RESTARTS$envtype"_"$p$finidatSuff
 	    rfilestr="finidat ='"$rfile"'"
 	    echo $rfilestr >> $nlfile
 	fi

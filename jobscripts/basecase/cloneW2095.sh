@@ -1,11 +1,18 @@
 #!/bin/bash
 
-basecase='ctsm51c6_PPEn08ctsm51d023_2deg_GSWP3V1_Sparse400_SSP370-2091-2100_2000_step3'
+base='ctsm51c6_PPEn08ctsm51d023_2deg_GSWP3V1_Sparse400_SSP370-2091-2100_2000'
 envtype="W2095"
-runtype="SASU"
-stopn=80
-prevtype="AD"
-nyprev="21"
+runtype="postSASU"
+
+
+if [[ $runtype == "postSASU" ]];then 
+    stopn=40
+    prevtype="SASU"
+    nyprev="81"
+    basecase=$base"_step4"
+    echo $basecase
+fi
+
 
 keithdir='/glade/work/oleson/PPE.n08_ctsm5.1.dev023/cime/scripts/'
 newcase="PPEn08_"$envtype"_"$runtype
