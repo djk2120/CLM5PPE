@@ -173,7 +173,7 @@ Eqn 17",LunaMod.F90,0.015,--,,Collatz et al. (1991),,,
 0,1,kn_nonmyc,P,90percent,900percent,KCN,or the acquisition of N will simply switch to a cheaper source.... ,Constant relating soil layer Nitrogen content to non-mycorrhizal root active uptake cost.,,,,,,,gC/m2,,,,,
 0,1,akc_active,P,90percent,900percent,KCN,thats these 6 parameters ,Constant relating root C to arbuscular mycorrhizal root active uptake cost.,,,,,,,gC/m3,,,,,
 0,1,akn_active,P,90percent,900percent,KCN,"kc_nonmyc, kn_nonmyc , akc_active, akn_active, ekc_active, akn_active",Constant relating soil layer Nitrogen content to arbuscular mycorrhizal root active uptake cost.,,,,,,,gC/m2,,,,,
-0,1,ekc_active,P,90percent,900percent,KCN,KCN flag (when used in all 6 rows) will perturb them together. Remove flag to perturb one-at-a-time.,Constant relating root C to ectomycorrhizal root active uptake cost.,,,,,,,"gC/m3
+0,1,ekc_active,P,90percent,900percent,KCN,KCN flag (when used in all 6 rows) will perturb them together and one-at-a-time. This is the only flag that has this dual behavior.,Constant relating root C to ectomycorrhizal root active uptake cost.,,,,,,,"gC/m3
 ",,,,,
 0,1,ekn_active,P,90percent,900percent,KCN,,Constant relating soil layer Nitrogen content to ectomycorrhizal root active uptake cost.,,,,,,,gC/m2,,,,,
 ,,Carbon and nitrogen allocation,,,,,,,,,,,,,,,,,,
