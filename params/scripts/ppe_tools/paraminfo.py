@@ -3,7 +3,7 @@ class ParamInfo(object):
     Stores parameter information.
     """
     
-    def __init__(self, name, loc, defval=None, value=None, maxmin=None):
+    def __init__(self, name, loc, defval=None, value=None):
         self._name = name # parameter name
         self._default = defval # default value
         self._value = value # actual value to be used in a given ensemble member
