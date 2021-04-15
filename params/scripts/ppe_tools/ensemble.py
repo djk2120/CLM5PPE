@@ -46,7 +46,7 @@ class Ensemble(object):
             else:
                 defval = nl_default(param,self._lndin)
             thisval = mf[param]['value']
-            value   = parse_val(param,loc,defval,thisval)
+            value   = parse_val(loc,defval,thisval)
             paramdict[param]= ParamInfo(param, loc, defval, value)
         if not nextnum:
             nextnum = self.nmemb+1
@@ -69,7 +69,7 @@ class Ensemble(object):
             for minmax in ['min','max']:
                 thisval = oaats[param][minmax]
                 sgn     = sgns[minmax]
-                value   = parse_val(param,loc,defval,thisval,sgn)
+                value   = parse_val(loc,defval,thisval,sgn)
 
                 ct +=1
                 pname  = prefix+str(ct).zfill(4)

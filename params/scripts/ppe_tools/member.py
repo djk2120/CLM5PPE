@@ -4,6 +4,27 @@ import netCDF4
 class Member(object):
     """
     Stores and works with a dictionary of ParamInfos.
+    
+    Parameters
+    ----------
+    name : str 
+        A name for the member. Used as filename with write() method.
+    paramdict: dict
+        A dictionary containing all of the relevant ParamInfo's, 
+        keyed by parameter name.
+    basefile: str
+        Path to the basepft file.
+        e.g. \'/glade/p/cgd/tss/people/oleson/modify_param/ctsm51_params.c210217_kwo.c210222.nc\'
+    minmax: str, optional
+        Optional metadata indicating if the member is a minimum or maximum perturbation.
+        Should be either \'min\' or \'max\'
+    flag: str, optional
+        Optional metadata to indicate a given flag.
+
+    Returns
+    -------
+    member :
+        New member object populated with the various ParamInfo's
     """
 
     def __init__(self, name, paramdict, basefile, minmax=None, flag=None):
@@ -47,35 +68,63 @@ class Member(object):
             names.append(self._paramdict[param].name)
         return names
 
-    def BFB(self,tol=1e-10):
+    def BFB(self,tol=0):
         """
         Tests if all param values are within some tolerance of default values
+
+        Parameters
+        ----------
+        tol : float, optional
+            tolerance for equivalence testing
+
+        Returns
+        -------
+        bfb : bool
+            Logical test for if all parameters equal their default values
         """
         bfb=True
         for param in self._paramdict:
             val     = self._paramdict[param].value
             defval  = self._paramdict[param].default
-            matches = abs(val-defval)<tol
+            
+            #test for equivalence
+            matches = abs(val-defval)<=tol
+
+            #must handle 0- and multi-dimensional parameters
             if type(matches)==bool:
                 match = matches
             else:
                 match = matches.all()
             if not match:
                 bfb=False
-                break
+                break #need not continue with False
 
         return bfb
 
     def write(self,paramdir,nldir):
         """
-        write out new paramfile and nl_mods
+        write out this member's paramfile and nl_mods file
+
+        paramfile and nlfile inherit Member.name and will write to:
+            paramfile -> paramdir/name.nc
+            nlfile    -> nldir/name.txt
+
+        Existing files will be overwritten.
+
+        Parameters
+        ----------
+        paramdir : str
+            path to directory for writing paramfiles
+        nldir : str
+            path to directory for writing nlfiles
         """
         # force dirs to end in /
         if not paramdir[-1]=='/':
             paramdir=paramdir+'/'
         if not nldir[-1]=='/':
             nldir=nldir+'/'
-
+        
+        #establish paramfile and nlmods file names
         pfile  = paramdir+self.name+'.nc'
         nlfile = nldir+self.name+'.txt' 
 
