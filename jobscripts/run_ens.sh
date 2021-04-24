@@ -7,7 +7,7 @@ fi
 
 #set up environment variables
 source $1
-jobdir=$(pwd)"/"
+
 
 #count existing cases
 # so that we give this case a new name
@@ -17,7 +17,7 @@ then
     j=$(ls $caseDir$casePrefix | wc -w)
 else j=0
 fi
-cd $jobdir
+cd $PPE_DIR
 
 # custom function to read n lines from a file
 read_n() { for i in $(seq $1); do read || return; echo $REPLY; done; }
@@ -71,7 +71,6 @@ do
     #inner loop sets up each instance
     #   creating a user_nl_clm_00xx for each paramset
     CT=0
-    extraline="\!"
     lines="$(read_n $ninst)"
     for p in $lines; do 
 	CT=$((CT+1))
@@ -88,13 +87,13 @@ do
 
 	# copy user_nl_clm and specify paramfile
 	cd $SCRIPTS_DIR$caseDir$casePrefix"/"$repcase
-	cp user_nl_clm.base $nlfile
+	cp $nlbase $nlfile
 	echo -e "\n"$pfilestr >> $nlfile
 
 	# specify finidat if needed
 	if [ "$finidatFlag" = true ]
 	then
-	    rfile=$RESTARTS$envtype"_"$p$finidatSuff
+	    rfile=$RESTARTS$ensname"_"$p$finidatSuff
 	    rfilestr="finidat ='"$rfile"'"
 	    echo $rfilestr >> $nlfile
 	fi

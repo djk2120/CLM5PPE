@@ -12,17 +12,14 @@ jobdir=$(pwd)"/"
 rejects=$jobdir$codebase"/"$ensname"_"$runtype"_rejects.txt"
 echo $rejects
 
-casekeys="/glade/u/home/djk2120/clm5ppe/jobscripts/PPEn08/configs/CTL2010_SASU_casekeys.txt"
-
+#collect restarts
 failedrun=0
 
-while read -r casekey; do 
-    p=$casePrefix"_"$casekey
-    cd $SCRIPTS_DIR$ensname"/"$casePrefix"/"$p
-
+for p in $(ls); do
+    cd $p
     keyfile=$p"_key.txt"
     d=$SCRATCH$p"/run/"
-        while read -r line; do 
+    while read -r line; do 
 	tmp=(${line///}) 
 	paramkey=${tmp[1]} 
 	instkey=${tmp[0]}
@@ -30,19 +27,27 @@ while read -r casekey; do
 	if [ $ninst -gt 1 ]; then
 	    inst="_"$instkey
 	fi
+
 	oldfile=$d$p".clm2"$inst".r.*"
 	newfile=$RESTARTS$ensname"_"$paramkey$finidatSuff
+
 	if [ -f $oldfile ]; then
-	    echo $paramkey" is good"
-	    #cp $oldfile $newfile
+	    x=1
 	    #echo "cp "$oldfile" "$newfile
 	    #cp $oldfile $newfile
 	else
-	    echo $paramkey" MAY HAVE FAILED"
-	    echo "CASE="$p
 	    failedrun=1
+	    #echo "!!! File not found: "$oldfile
+	    echo $paramkey
 	    echo $paramkey >> $rejects
 	fi
-    done < $keyfile
-done < $casekeys
 
+    done < $keyfile
+    cd ..
+done
+
+if [ $failedrun -eq 1 ]; then
+    echo "---------------------------------------------------------------------------"
+    echo "One or more simulations may have crashed! Check restarts before continuing."
+    echo "---------------------------------------------------------------------------"
+fi

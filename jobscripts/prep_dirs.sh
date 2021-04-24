@@ -1,5 +1,5 @@
 codebase='PPEn08'
-envtypes=('I2000' 'C285' 'C867' 'W1905' 'W2095' 'ndepp5')
+envtypes=('CTL2010')
 runtypes=('AD' 'SASU' 'postSASU' 'PROD')
 ensname='test34'
 
