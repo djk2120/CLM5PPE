@@ -9,11 +9,8 @@ fi
 source $1
 jobdir=$(pwd)"/"
 
-rejects=$jobdir$codebase"/"$ensname"_"$runtype"_rejects2.txt"
-echo $rejects
 
 casekeys="/glade/u/home/djk2120/clm5ppe/jobscripts/PPEn08/configs/CTL2010_SASU_rejects_casekeys.txt"
-
 failedrun=0
 
 while read -r casekey; do 
@@ -31,18 +28,22 @@ while read -r casekey; do
 	    inst="_"$instkey
 	fi
 	oldfile=$d$p".clm2"$inst".r.*"
-	newfile=$RESTARTS$ensname"_"$paramkey$finidatSuff
+	newfile=$RESTARTS$ensname"_"$paramkey$myfinsuff
+
 	if [ -f $oldfile ]; then
-	    echo $paramkey" is good"
-	    #cp $oldfile $newfile
-	    #echo "cp "$oldfile" "$newfile
-	    #cp $oldfile $newfile
-	else
-	    echo $paramkey" MAY HAVE FAILED"
-	    echo "CASE="$p
-	    failedrun=1
-	    echo $paramkey >> $rejects
+	    if [ -f $newfile ]; then
+		file_error=1
+		echo "ERROR: don't want to overwrite file"
+		echo " .... case="$p
+		echo " .... inst="$instkey
+		echo " .... paramkey="$paramkey
+		echo " .... file="$newfile
+	    else
+		echo "cping: "$paramkey
+		cp $oldfile $newfile
+	    fi
 	fi
+
     done < $keyfile
 done < $casekeys
 
