@@ -12,7 +12,7 @@ base="ctsm51c6_PPEn08ctsm51d023_2deg_GSWP3V1_Sparse400_2000"
 keithdir='/glade/work/oleson/PPE.n08_ctsm5.1.dev023/cime/scripts/'
 scripts='/glade/work/djk2120/PPEn08/cime/scripts/'
 scratch='/glade/scratch/djk2120'
-nlbase='/glade/u/home/djk2120/clm5ppe/jobscripts/nlbase/'
+nlbase='/glade/u/home/djk2120/clm5ppe/jobscripts/PPEn08/nlbase/basecases/'
 envdir=$envtype"/basecases/"
 
 
@@ -60,17 +60,17 @@ echo "nextcase="$envdir$newcase
 
 cd $envdir$newcase
 ./case.setup
-./case.build
+#./case.build
 
-cp $nlbase$runtype".base" user_nl_clm.base
+cp $nlbase$runtype".base" user_nl_clm
 ./xmlchange STOP_N=$stopn
 ./xmlchange JOB_QUEUE="economy"
 ./xmlchange DOUT_S="false"
 ./xmlchange PROJECT="P08010000"
 
+#consider using just one nlbase
+#and appending appropriate finidat and paramfile
 
-cp user_nl_clm.base user_nl_clm
-echo -e "\nparamfile = '/glade/p/cgd/tss/people/oleson/modify_param/ctsm51_params.c210217_kwo.c210222.nc'" >> user_nl_clm
 if [[ $runtype != "AD" ]];then
     scratch="/glade/scratch/djk2120/"$prevcase"/run/"
     suffix=".clm2.r.00"$nyprev"-01-01-00000.nc"

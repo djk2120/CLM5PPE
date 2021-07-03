@@ -17,7 +17,7 @@
 ! Set maxpatch_glcmec    with GLC_NEC                            option
 ! Set glc_do_dynglacier  with GLC_TWO_WAY_COUPLING               env variable
 !----------------------------------------------------------------------------------
-paramfile = '/glade/p/cgd/tss/people/oleson/modify_param/ctsm51_params.c210217_kwo.c210222.nc'
+!paramfile = '/glade/p/cgd/tss/people/oleson/modify_param/ctsm51_params.c210217_kwo.c210222.nc'
 calc_human_stress_indices = 'NONE'
 
 

@@ -9,40 +9,45 @@ fi
 source $1
 jobdir=$(pwd)"/"
 
-rejects=$jobdir$codebase"/"$ensname"_"$runtype"_rejects2.txt"
-echo $rejects
+rejects=$codebase"/"$casePrefix"_"$chunk"_rejects.txt"
 
-casekeys="/glade/u/home/djk2120/clm5ppe/jobscripts/PPEn08/configs/CTL2010_SASU_rejects_casekeys.txt"
 
+#loop through paramlist
 failedrun=0
+while read p; do
+    repcase=$casePrefix"_"$p
+    rfile=$SCRATCH$repcase"/run/*.clm2.r.*"
+    newfile=$RESTARTS$(basename $rfile)
 
-while read -r casekey; do 
-    p=$casePrefix"_"$casekey
-    cd $SCRIPTS_DIR$ensname"/"$casePrefix"/"$p
 
-    keyfile=$p"_key.txt"
-    d=$SCRATCH$p"/run/"
-        while read -r line; do 
-	tmp=(${line///}) 
-	paramkey=${tmp[1]} 
-	instkey=${tmp[0]}
+    if [ ! -f $rfile ]; then
+	echo $p" MAY HAVE FAILED"
+	failedrun=1
+	echo $p >> $rejects
+    fi
 
-	if [ $ninst -gt 1 ]; then
-	    inst="_"$instkey
+    if [ $2 -gt 0 ]; then 
+	already=0
+	if [ -f $newfile ]; then
+	    already=1
+	    
+	    if [ $2 -eq 1 ]; then
+		echo $p" restart already exists, will not copy"
+	    else
+		echo $p" restart already exists, file overwritten"
+	    fi
 	fi
-	oldfile=$d$p".clm2"$inst".r.*"
-	newfile=$RESTARTS$ensname"_"$paramkey$finidatSuff
-	if [ -f $oldfile ]; then
-	    echo $paramkey" is good"
-	    #cp $oldfile $newfile
-	    #echo "cp "$oldfile" "$newfile
-	    #cp $oldfile $newfile
-	else
-	    echo $paramkey" MAY HAVE FAILED"
-	    echo "CASE="$p
-	    failedrun=1
-	    echo $paramkey >> $rejects
+	if [ $already == 0 ] || [ $2 == 2 ]; then
+	    cp $rfile $newfile
 	fi
-    done < $keyfile
-done < $casekeys
+    fi 
 
+
+done <$paramList
+
+
+if [ $failedrun == 1 ]; then
+    echo "ERROR: one or more simulations may have crashed!"
+else
+    echo "All simulations yield restart files"
+fi
