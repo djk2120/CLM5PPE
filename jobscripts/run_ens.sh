@@ -11,8 +11,15 @@ source $1
 
 #loop through paramlist
 while read p; do
-  #create the new case 
-  repcase=$casePrefix"_"$p
+  #create the new case name
+  if [ ${#runtype} -gt 0 ];then
+      pad='_'
+  else
+      pad=''
+  fi
+  repcase=$casePrefix$pad$p
+
+  #clone case
   echo "--------------------------------------------"
   echo "   creating "$repcase
   echo "--------------------------------------------" 
