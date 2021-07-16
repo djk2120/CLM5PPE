@@ -1,7 +1,7 @@
 if [ $# -eq 0 ]
 then
     echo "ERROR: please specify format file"
-    echo "   ex: ./collect_hist.sh ppe.config"
+    echo "   ex: ./runens.sh spinAD.env"
     exit 1
 fi
 
@@ -9,69 +9,48 @@ fi
 source $1
 jobdir=$(pwd)"/"
 
-runtypes=('AD' 'SASU' 'postSASU' 'PROD')
 
 
+#loop through paramlist
+failedrun=0
+already=0
+htapes=('h0' 'h1' 'h2' 'h3' 'h4' 'h5' 'h7')
 
-runtype='PROD'
+pad=''
+histdir=$SCRATCH$codebase"/hist"$pad$runtype"/"$ensname"/"
 
-if [ $runtype = "PROD" ]; then
-    rstr=""
+while read p; do
+    echo $p
+    for htape in "${htapes[@]}"; do
+	repcase=$casePrefix"_"$p
+	hfile=$SCRATCH$repcase"/run/*.clm2."$htape".*"
+	newfile=$histdir$(basename $hfile)
+
+	if [ ! -f $hfile ]; then
+	    echo $p" MAY HAVE FAILED"
+	    failedrun=1
+	fi
+
+	if [ -f $newfile ]; then
+	    already=1
+	    echo $newfile" ALREADY EXISTS, not copied"
+	else
+	    mv $hfile $newfile
+	fi
+
+    done
+done <$paramList
+
+
+if [ $failedrun == 1 ]; then
+    echo "ERROR: one or more simulations may have crashed!"
 else
-    rstr="_"$runtype
+    echo "All simulations yield restart files"
 fi
 
-
-newdir=$SCRATCH$codebase"/"$ensname"/hist"$rstr"/"
-if [ ! -d $newdir ]; then
-    mkdir $newdir
+if [ $already == 1 ]; then
+    echo "ERROR: one or more simulations had already existed!"
+else
+    echo "All history files were moved"
 fi
-
-cd $SCRIPTS_DIR$ensname"/"$codebase"_"$ensname"_"$runtype
-#cases=("PPEn08_CTL2010_postSASU_002") ${cases[@]}; do
-for case in $(ls);do
-    cd $SCRIPTS_DIR$ensname"/"$codebase"_"$ensname"_"$runtype
-    cd $case
-    ninst=$(./xmlquery NINST_LND | cut -d':' -f2)
-    
-    keyfile=$case"_key.txt"
-    while read -r line; do
-	tmp=(${line///}) 
-	paramkey=${tmp[1]} 
-	instkey=${tmp[0]}
-	
-	if [ $ninst -gt 1 ]; then
-	    inst="_"$instkey
-	else
-	    inst=""
-	fi
-	
-	rfile=$SCRATCH$case"/run/"$case".clm2"$inst".r.*"
-	if [ -f $rfile ]; then
-	    echo $paramkey
-	    for i in $(seq 0 7); do
-		hfile=$SCRATCH$case"/run/"$case".clm2"$inst".h"$i".*"
-		hfile=$(echo $hfile)  #force wildcard expansion
-		if [ -f $hfile ]; then
-		    yrs="$(cut -d'.' -f4 <<<$hfile)" #years is the fourth element if you split on '.'
-		    ff=$codebase"_"$ensname$rstr"_"$paramkey".clm2.h"$i"."$yrs".nc"
-		    newfile=$newdir$ff
-		    if [ -f $newfile ]; then
-			echo "ABORT MV: "$ff"already exists"
-		    else
-			#echo "mv "$hfile" "$newfile
-			mv $hfile $newfile
-		    fi
-		fi
-	    done
-	else
-	    echo "ERROR: no restartfile, "$paramkey
-	fi
-		
-    done < $keyfile
-done
-
-
-
-
 

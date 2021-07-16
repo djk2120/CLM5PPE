@@ -1,31 +1,26 @@
-if [ $# -eq 0 ]
+if [ $# -lt 2 ]
 then
-    echo "ERROR: please specify format file"
-    echo "   ex: ./runens.sh spinAD.env"
+    echo "ERROR: please specify format file and paramlist"
+    echo "   ex: ./runens.sh spinAD.env ctl.txt"
     exit 1
 fi
 
 #set up environment variables
 source $1
-
+paramList=$2
 
 #loop through paramlist
 while read p; do
   #create the new case name
-  if [ ${#runtype} -gt 0 ];then
-      pad='_'
-  else
-      pad=''
-  fi
-  repcase=$casePrefix$pad$p
+  repcase=$casePrefix"_"$p
 
   #clone case
   echo "--------------------------------------------"
   echo "   creating "$repcase
   echo "--------------------------------------------" 
   cd $SCRIPTS_DIR
-  ./create_clone --case $caseDir$casePrefix"/"$repcase --clone $basecase
-  cd $caseDir$casePrefix"/"$repcase
+  ./create_clone --case $caseDir$repcase --clone $basecase
+  cd $caseDir$repcase
 
   #setup and point to executable
   ./case.setup
@@ -41,7 +36,6 @@ while read p; do
   fi
 
   # copy user_nl_clm and specify paramfile
-  cd $SCRIPTS_DIR$caseDir$casePrefix"/"$repcase
   cp $nlbase user_nl_clm
   pfile=$PARAMS_DIR$p".nc"
   pfilestr="paramfile = '"$pfile"'"

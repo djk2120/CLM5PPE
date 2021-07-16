@@ -8,7 +8,12 @@ fi
 #set up environment variables
 source $1
 jobdir=$(pwd)"/"
+paramList=$2
+moveFiles=$3
 
+
+file_name="${paramList##*/}"
+chunk="${file_name%.*}"
 rejects=$codebase"/"$casePrefix"_"$chunk"_rejects.txt"
 
 
@@ -26,12 +31,12 @@ while read p; do
 	echo $p >> $rejects
     fi
 
-    if [ $2 -gt 0 ]; then 
+    if [ $moveFiles -gt 0 ]; then 
 	already=0
 	if [ -f $newfile ]; then
 	    already=1
 	    
-	    if [ $2 -eq 1 ]; then
+	    if [ $moveFiles -eq 1 ]; then
 		echo $p" restart already exists, will not copy"
 	    else
 		echo $p" restart already exists, file overwritten"
