@@ -8,7 +8,7 @@ fi
 #set up environment variables
 source $1
 jobdir=$(pwd)"/"
-
+paramList=$2
 
 
 #loop through paramlist
