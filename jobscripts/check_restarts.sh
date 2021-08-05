@@ -8,9 +8,7 @@ fi
 #set up environment variables
 source $1
 jobdir=$(pwd)"/"
-paramList=$2
-moveFiles=$3
-
+moveFiles=$2
 
 file_name="${paramList##*/}"
 chunk="${file_name%.*}"

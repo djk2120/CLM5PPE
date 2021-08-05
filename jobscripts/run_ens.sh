@@ -1,13 +1,12 @@
-if [ $# -lt 2 ]
+if [ $# -lt 1 ]
 then
-    echo "ERROR: please specify format file and paramlist"
-    echo "   ex: ./runens.sh spinAD.env ctl.txt"
+    echo "ERROR: please specify config file"
+    echo "   ex: ./runens.sh AF1855_AD_e0.config"
     exit 1
 fi
 
 #set up environment variables
 source $1
-paramList=$2
 
 #loop through paramlist
 while read p; do
