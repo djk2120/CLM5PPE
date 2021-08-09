@@ -1,7 +1,8 @@
-## Each pdf contains the top20 parameters, by effect size, for the ...
-        given output field
+## Control ensemble results
 
-If you notice anything interesting, please let us know in this
+Each pdf contains the top20 parameters, by effect size, for the given output field
+
+If you notice anything interesting, please record it in this
 [google doc](https://docs.google.com/document/d/1- ...
              mJMUTPzPxbprCs6BXvCRCtXEXEKz6rv0Aq7ser9euM/edit)
 
