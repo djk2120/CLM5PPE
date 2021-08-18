@@ -29,6 +29,8 @@ x='SCRATCH="'$SCRATCH'"'
 echo $x >> $config
 x='RESTARTS="'$SCRATCH$codebase'/restarts/"'
 echo $x >> $config
+x='HIST_DIR="'$SCRATCH$codebase'/hist'$pad$runtype'/'$ensname'/"'
+echo $x >> $config
 
 #CASEPREFIX
 echo "" >> $config
