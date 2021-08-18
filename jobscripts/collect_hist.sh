@@ -8,7 +8,7 @@ fi
 #set up environment variables
 source $1
 jobdir=$(pwd)"/"
-paramList=$2
+
 
 
 #loop through paramlist
@@ -18,6 +18,8 @@ htapes=('h0' 'h1' 'h2' 'h3' 'h4' 'h5' 'h7')
 
 pad=''
 histdir=$SCRATCH$codebase"/hist"$pad$runtype"/"$ensname"/"
+
+mkdir -p $histdir
 
 while read p; do
     echo $p

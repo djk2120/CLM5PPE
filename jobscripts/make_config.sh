@@ -1,13 +1,14 @@
 codebase='PPEn11'
-ensname='AF1855'
-runtype=''
-chunk='e0'
+ensname=$1
+runtype=$2
+chunk=$3
 
 #create pad
-if [ ${#runtype} -gt 0 ];then
-      pad='_'
+if [ $runtype == 'PROD' ];then
+    runtype=''
+    pad=''
 else
-      pad=''
+    pad='_'
 fi
 
 #establish the config file

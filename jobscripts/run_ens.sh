@@ -34,6 +34,10 @@ while read p; do
       ./case.build
   fi
 
+  #temp, adjust project
+  ./xmlchange PROJECT="P93300041"
+
+
   # copy user_nl_clm and specify paramfile
   cp $nlbase user_nl_clm
   pfile=$PARAMS_DIR$p".nc"
