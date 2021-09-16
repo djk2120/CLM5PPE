@@ -1,0 +1,21 @@
+,Ice sheet,Tropical rain forest,Tropical seasonal forest,Subtropical desert,Temperate rain forest,Temperate seasonal forest,Woodland/shrubland,Temperate grassland,Boreal forest,Tundra
+0,zsno,kmax,kmax,fff,tpu25ratio,jmaxb0,jmaxb1,fff,jmaxb1,jmaxb0
+1,frac_sat_soil_dsl_init,jmaxb0,psi50,medlynintercept,jmaxb1,leafcn,tpu25ratio,jmaxb0,jmaxb0,medlynslope
+2,snw_rds_refrz,leafcn,medlynslope,d_max,jmaxb0,wc2wjb0,FUN_fracfixers,medlynintercept,tpu25ratio,tpu25ratio
+3,leafcn,krmax,jmaxb0,watsat_sf,leafcn,tpu25ratio,jmaxb0,leafcn,leafcn,fff
+4,jmaxb0,kcha,fff,sucsat_sf,tpuha,kmax,fff,wc2wjb0,kmax,wc2wjb0
+5,zetamaxstable,medlynslope,medlynintercept,frac_sat_soil_dsl_init,wc2wjb0,jmaxb1,kmax,d_max,wc2wjb0,leafcn
+6,upplim_destruct_metamorph,liq_canopy_storage_scalar,leafcn,kmax,jmaxha,FUN_fracfixers,lmrha,tpu25ratio,lmrha,jmaxb1
+7,wc2wjb0,psi50,wc2wjb0,theta_cj,vcmaxha,lmrha,leafcn,watsat_sf,theta_cj,kmax
+8,fff,nstem,theta_cj,FUN_fracfixers,theta_cj,theta_cj,wc2wjb0,frac_sat_soil_dsl_init,tpuha,FUN_fracfixers
+9,froot_leaf,theta_cj,FUN_fracfixers,jmaxb0,lmrha,lmrhd,sucsat_sf,lmrha,jmaxha,theta_cj
+10,tpuse_sf,wc2wjb0,frac_sat_soil_dsl_init,lmr_intercept_atkin,FUN_fracfixers,vcmaxha,theta_cj,jmaxb1,vcmaxha,d_max
+11,slopebeta,maximum_leaf_wetted_fraction,jmaxb1,leafcn,tpuse_sf,lmr_intercept_atkin,frac_sat_soil_dsl_init,krmax,FUN_fracfixers,tpuha
+12,tpuhd,jmaxb1,nstem,krmax,tpuhd,fff,tpuha,kmax,fff,jmaxha
+13,theta_ip,fnps,d_max,medlynslope,kmax,sucsat_sf,d_max,FUN_fracfixers,medlynintercept,medlynintercept
+14,tpu25ratio,cv,krmax,jmaxb1,lmrhd,tpuha,krmax,hksat_sf,lmrhd,om_frac_sf
+15,slopemax,lmr_intercept_atkin,sucsat_sf,kcha,kcha,jmaxha,medlynslope,theta_cj,kcha,vcmaxha
+16,tpuha,medlynintercept,lmr_intercept_atkin,bsw_sf,q10_mr,q10_mr,jmaxha,sucsat_sf,medlynslope,froot_leaf
+17,xl,leaf_long,hksat_sf,vcmaxhd,jmaxhd,medlynintercept,lmr_intercept_atkin,medlynslope,krmax,tpuse_sf
+18,e_ice,dleaf,maximum_leaf_wetted_fraction,KCN,lmr_intercept_atkin,tpuhd,hksat_sf,jmaxha,upplim_destruct_metamorph,liq_canopy_storage_scalar
+19,cv,kn_nonmyc,kcha,wc2wjb0,theta_ip,lmrse,lmrhd,lmr_intercept_atkin,q10_mr,krmax
