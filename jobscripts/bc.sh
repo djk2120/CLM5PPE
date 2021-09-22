@@ -1,8 +1,8 @@
 #!/bin/bash
 envtypes=('CTL2010' 'C285' 'AF1855')
 
-prevtype='postSASU'
-chunk='s0'
+prevtype='PROD'
+chunk='s2'
 
 mvfiles=$1
 

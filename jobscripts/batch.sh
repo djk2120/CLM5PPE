@@ -1,13 +1,27 @@
 #!/bin/bash
-envtypes=('CTL2010' 'C285' 'AF1855')
-runtype='PROD'
-chunk='s0'
+
+#PBS -N ens_submit
+#PBS -q regular
+#PBS -l walltime=12:00:00
+#PBS -A P93300641
+### Merge output and error files
+#PBS -j oe
+#PBS -k eod
+### Select one CPU
+#PBS -l select=1:ncpus=1
+
+
+
+envtypes=('NDEP' 'C867' 'AF2095')
+runtype='AD'
+chunk='e0'
 
 if [ $runtype == 'PROD' ];then
     runstr=''
     pad=''
 else
-    pad=' '
+    runstr=$runtype
+    pad='_'
 fi
 
 

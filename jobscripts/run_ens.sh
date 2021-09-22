@@ -35,7 +35,7 @@ while read p; do
   fi
 
   #temp, adjust project
-  ./xmlchange PROJECT="P93300041"
+  ./xmlchange PROJECT="P08010000"
 
 
   # copy user_nl_clm and specify paramfile

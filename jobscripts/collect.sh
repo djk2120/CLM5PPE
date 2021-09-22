@@ -23,9 +23,9 @@ echo $1
 jobdir=$(pwd)"/"
 tape=$2
 moveFiles=$3
-fails=$(basename $1 .config)"_fails.txt"
+fails=$(basename $1 .config)"_"$tape"_fails.txt"
 > $fails
-echo $fails
+
 
 if [ $tape == 'r' ]; then
     NEW_DIR=$RESTARTS

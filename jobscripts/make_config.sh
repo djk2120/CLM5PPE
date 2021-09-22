@@ -1,7 +1,14 @@
-codebase='PPEn11'
+
+# a very brittle script to automatically populate config file
+
+
 ensname=$1
 runtype=$2
 chunk=$3
+
+codebase='PPEn11'
+PPE_DIR="/glade/u/home/djk2120/clm5ppe/jobscripts/"
+SCRATCH="/glade/scratch/djk2120/"
 
 #create pad
 if [ $runtype == 'PROD' ];then
@@ -19,12 +26,11 @@ echo "" >> $config
 #VARIOUS DIR LOCATIONS
 x='#need to identify where the script can expect certain files'
 echo $x >> $config
-PPE_DIR="/glade/u/home/djk2120/clm5ppe/jobscripts/"
+
 x='PPE_DIR="'$PPE_DIR'"'
 echo $x >> $config
 x='SCRIPTS_DIR="/glade/work/djk2120/'$codebase'/cime/scripts/"'
 echo $x >> $config
-SCRATCH="/glade/scratch/djk2120/"
 x='SCRATCH="'$SCRATCH'"'
 echo $x >> $config
 x='RESTARTS="'$SCRATCH$codebase'/restarts/"'
