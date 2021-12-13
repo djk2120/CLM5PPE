@@ -17,6 +17,8 @@ then
     exit 1
 fi
 
+
+
 #set up environment variables
 source $1
 echo $1
@@ -32,32 +34,40 @@ if [ $tape == 'r' ]; then
 else
     NEW_DIR=$HIST_DIR
 fi
+echo $HIST_DIR
 
 #loop through paramlist
 while read p; do
     thiscase=$casePrefix"_"$p
-    file=$SCRATCH$thiscase"/run/*.clm2."$tape".*nc"
-    if [ ! -f $file ]; then
+    files=$SCRATCH$thiscase"/run/*.clm2."$tape".*nc"
+
+    if compgen -G $files > /dev/null; then
+	i=0
+	for file in $files; do
+	    i=$((i+1))
+	    if [ $i == 1 ]; then
+		newfile=$NEW_DIR$(basename $file)	
+		if [ $moveFiles -gt 0 ]; then 
+		    already=0
+		    if [ -f $newfile ]; then
+			already=1
+			if [ $moveFiles -eq 1 ]; then
+			    echo $p" restart already exists, will not copy"
+			else
+			    echo $p" restart already exists, file overwritten"
+			fi
+		    fi
+		    if [ $already == 0 ] || [ $3 == 2 ]; then
+			mv $file $newfile
+		    fi
+		fi 
+	    fi
+	done
+    else
 	echo $p" MAY HAVE FAILED"
 	echo $p>>$fails
-    else
-	echo $p
-	newfile=$NEW_DIR$(basename $file)
-	if [ $moveFiles -gt 0 ]; then 
-	    already=0
-	    if [ -f $newfile ]; then
-		already=1
-		if [ $moveFiles -eq 1 ]; then
-		    echo $p" restart already exists, will not copy"
-		else
-		    echo $p" restart already exists, file overwritten"
-		fi
-	    fi
-	    if [ $already == 0 ] || [ $2 == 2 ]; then
-		mv $file $newfile
-	    fi
-	fi 
     fi
+
 done < $paramList
 
 nf=$(wc -l < $fails)

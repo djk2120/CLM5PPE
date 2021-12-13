@@ -1,0 +1,136 @@
+!----------------------------------------------------------------------------------
+! Users should add all user specific namelist changes below in the form of 
+! namelist_var = new_namelist_value 
+!
+! EXCEPTIONS: 
+! Set use_cndv           by the compset you use and the CLM_BLDNML_OPTS -dynamic_vegetation setting
+! Set use_vichydro       by the compset you use and the CLM_BLDNML_OPTS -vichydro           setting
+! Set use_cn             by the compset you use and CLM_BLDNML_OPTS -bgc  setting
+! Set use_crop           by the compset you use and CLM_BLDNML_OPTS -crop setting
+! Set spinup_state       by the CLM_BLDNML_OPTS -bgc_spinup      setting
+! Set co2_ppmv           with CCSM_CO2_PPMV                      option
+! Set fatmlndfrc         with LND_DOMAIN_PATH/LND_DOMAIN_FILE    options
+! Set finidat            with RUN_REFCASE/RUN_REFDATE/RUN_REFTOD options for hybrid or branch cases
+!                        (includes $inst_string for multi-ensemble cases)
+!                        or with CLM_FORCE_COLDSTART to do a cold start
+!                        or set it with an explicit filename here.
+! Set maxpatch_glcmec    with GLC_NEC                            option
+! Set glc_do_dynglacier  with GLC_TWO_WAY_COUPLING               env variable
+!----------------------------------------------------------------------------------
+
+stream_fldfilename_ndep = '/glade/p/cgd/tss/people/oleson/CLM5_ndep/fndep_p5_clm_hist_b.e21.BWHIST.f09_g17.CMIP6-historical-WACCM.ensmean_1849-2015_monthly_0.9x1.25_c180926.nc'
+
+calc_human_stress_indices = 'NONE'
+
+
+! h0 stream (monthly average, gridcell-level)
+! h0 stream ICE variables and other variables inactive by default (monthly average, gridcell-level)
+! Emon, Lmon, LIMon
+hist_mfilt(1) = 120
+hist_dov2xy(1) = .false.
+hist_nhtfrq(1) = 0
+hist_type1d_pertape(1) = 'GRID'
+hist_fexcl1 += 'PCT_GLC_MEC','PCT_NAT_PFT'
+hist_fincl1 += 'EFLX_LH_TOT_ICE', 'FIRE_ICE', 'FLDS_ICE', 'FSH_ICE', 'FSNO_ICE', 'FSR_ICE', 'QFLX_SOLIDEVAP_FROM_TOP_LAYER_ICE', 'QRUNOFF_ICE', 'QSNOFRZ_ICE', 'QSNOMELT_ICE', 'RAIN_ICE', 'SNOW_ICE', 'SNOWICE_ICE', 'SNOWLIQ_ICE', 'SNOTXMASS_ICE', 'TG_ICE', 'TOPO_COL_ICE', 'TSA_ICE', 'TSOI_ICE', 'VEGWPLN', 'VEGWPPD', 'QHR','VPD_CAN'
+
+! h1 stream (monthly average, finest sub-grid)
+! Emon, Lmon
+hist_mfilt(2) = 120
+hist_dov2xy(2) = .false.
+hist_nhtfrq(2) = 0
+hist_type1d_pertape(2) = ' '
+hist_fincl2 += 'TLAI', 'TSA','TREFMNAV','TREFMXAV', 'BTRANMN', 'Vcmx25Z', 'FSH', 'VEGWP', 'FCTR', 'FCEV', 'FGEV', 'FIRE', 'FSR', 'FIRA', 'FSA', 'GSSUNLN', 'GSSHALN', 'TSKIN'
+
+! h2 stream (monthly average, landunit-level)
+! Emon
+hist_mfilt(3) = 120
+hist_dov2xy(3) = .false.
+hist_nhtfrq(3) = 0
+hist_type1d_pertape(3) = 'LAND'
+hist_fincl3 += 'FSR', 'H2OSNO', 'Q2M', 'SNOWDP', 'TSA', 'TREFMNAV', 'TREFMXAV', 'TG', 'QRUNOFF', 'FSH', 'FIRE', 'FIRA', 'FGR', 'EFLX_LH_TOT', 'RH2M', 'TLAI', 'SOILWATER_10CM', 'TOTSOILLIQ', 'TOTSOILICE', 'U10', 'TSOI_10CM', 'QIRRIG_DRIP', 'URBAN_HEAT', 'WASTEHEAT', 'TSKIN'
+
+! h3 stream (yearly average, gridcell-level)
+! Eyr
+hist_mfilt(4) = 11
+hist_dov2xy(4) = .false.
+hist_nhtfrq(4) = -8760
+hist_type1d_pertape(4) = 'GRID'
+hist_fincl4 += 'PCT_GLC_MEC', 'QICE_FORC', 'TSRF_FORC', 'TOPO_FORC', 'PCT_NAT_PFT','PCT_LANDUNIT','FSNO_ICE'
+
+! h4 stream (yearly average, landunit-level)
+! Eyr landuse tiles
+! (No fields in base, but other usermods add to this stream)
+hist_mfilt(5) = 11
+hist_dov2xy(5) = .false.
+hist_nhtfrq(5) = -8760
+hist_type1d_pertape(5) = 'LAND'
+
+!----------------------------------------------------------------------------------
+! Settings from output_bgc
+!----------------------------------------------------------------------------------
+
+! h0 stream (monthly average, gridcell-level)
+hist_fexcl1 += 'SOIL1C_vr', 'SOIL1N_vr', 'SOIL2C_vr', 'SOIL2N_vr', 'SOIL3C_vr', 'SOIL3N_vr', 'SOILC_vr', 'SOILN_vr', 'CWDC_vr', 'LITR1C_vr', 'LITR2C_vr', 'LITR3C_vr', 'LITR1N_vr', 'LITR2N_vr', 'LITR3N_vr', 'CWDN_vr', 'SMIN_NO3_vr', 'CONC_O2_UNSAT', 'CONC_O2_SAT','SMIN_NH4_vr','SMINN_vr'
+hist_fincl1 += 'LEAFC_TO_LITTER', 'FROOTC_TO_LITTER','LITR1C_TO_SOIL1C','LITR1N_TO_SOIL1N','LITR2C_TO_SOIL1C', 'LITR2N_TO_SOIL1N','LITR3C_TO_SOIL2C','LITR3N_TO_SOIL2N','DWT_WOOD_PRODUCTC_GAIN_PATCH'
+
+! h1 stream (monthly average, finest sub-grid)
+hist_fincl2 += 'GPP', 'NPP', 'AGNPP', 'TOTVEGC', 'NPP_NUPTAKE', 'AR', 'HR', 'HTOP'
+
+! h2 stream (monthly average, landunit-level)
+! TOT_WOODPRODC:I, CROPPROD1C:I, and NEE are not available at the landunit level
+hist_fincl3 += 'GPP', 'NPP', 'AR', 'HR', 'DWT_CONV_CFLUX_PATCH', 'WOOD_HARVESTC', 'DWT_WOOD_PRODUCTC_GAIN_PATCH', 'SLASH_HARVESTC', 'COL_FIRE_CLOSS', 'DWT_SLASH_CFLUX_PATCH', 'FROOTC:I', 'HTOP'
+
+! h3 stream (yearly average, gridcell-level)
+hist_fincl4 += 'SOILC_vr', 'SOILN_vr', 'CWDC_vr', 'LITR1C_vr', 'LITR2C_vr', 'LITR3C_vr', 'LITR1N_vr', 'LITR2N_vr', 'LITR3N_vr','CWDN_vr', 'TOTLITC:I', 'TOT_WOODPRODC:I', 'TOTSOMC:I','TOTVEGC:I'
+
+! h4 stream (yearly average, landunit-level)
+hist_fincl5 += 'TOTSOMC:I', 'TOTSOMC_1m:I', 'TOTECOSYSC:I', 'TOTVEGC:I', 'WOODC:I', 'TOTLITC:I', 'LIVECROOTC:I', 'DEADCROOTC:I', 'FROOTC:I'
+
+!----------------------------------------------------------------------------------
+! Settings from output_base_highfreq
+!----------------------------------------------------------------------------------
+
+! h5 stream (daily average, gridcell-level)
+! day, Eday
+hist_mfilt(6) = 3651
+hist_dov2xy(6) = .false.
+hist_nhtfrq(6) = -24
+hist_type1d_pertape(6) = 'GRID'
+hist_fincl6 += 'SOILWATER_10CM', 'EFLX_LH_TOT', 'FSH', 'FSH_TO_COUPLER', 'FGR', 'FGR12', 'FSM', 'TLAI', 'QDRAI', 'QDRAI_PERCH', 'QOVER', 'FSA', 'FIRA', 'H2OSNO', 'SNOWDP', 'H2OSFC', 'TV', 'TG', 'QVEGT', 'TWS', 'QVEGE', 'QSOIL', 'TSKIN', 'FSDS','FSNO','QINTR','SNOWICE','SNOWLIQ','QRUNOFF','H2OSOI','TSOI_10CM','VEGWPLN','VEGWPPD', 'VPD_CAN'
+
+! h6 stream (daily average, landunit-level)
+! Eday
+!hist_mfilt(7) = 3651
+!hist_dov2xy(7) = .false.
+!hist_nhtfrq(7) = -24
+!hist_type1d_pertape(7) = 'LAND'
+!hist_fincl7 += 'TREFMXAV','TREFMNAV'
+
+!----------------------------------------------------------------------------------
+! Settings from output_bgc_highfreq
+!----------------------------------------------------------------------------------
+
+! h5 stream (daily average, gridcell-level)
+hist_fincl6 += 'GPP', 'NPP', 'AR', 'HR', 'ALT'
+
+!----------------------------------------------------------------------------------
+! Settings from output_base_highfreq
+!----------------------------------------------------------------------------------
+
+! h7 stream (3-hourly average, gridcell-level)
+! 3hr, E3hr, CF3hr
+! 3hr requires QRUNOFF for time mean, and SOILWATER_10CM, TSKIN for time point (I)
+! CF3hr requires QFLX_SOLIDEVAP_FROM_TOP_LAYER for time point (I)
+hist_mfilt(8) = 29201
+hist_dov2xy(8) = .false.
+hist_nhtfrq(8) = -3
+hist_type1d_pertape(8) = 'GRID'
+hist_fincl8 += 'TSA','RH2M','FSH','EFLX_LH_TOT','TSKIN:I'
+
+!----------------------------------------------------------------------------------
+! Settings from output_bgc_highfreq
+!----------------------------------------------------------------------------------
+
+! h7 stream (3-hourly average, gridcell-level)
+! E3hr requires GPP, AR, HR for time mean
+hist_fincl8 += 'GPP','AR','HR'

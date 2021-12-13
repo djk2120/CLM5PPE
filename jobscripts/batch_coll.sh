@@ -1,15 +1,18 @@
 #!/bin/bash
 
-envtypes=('CTL2010' 'C285' 'AF1855')
-
-#envtypes=('NDEP' 'C867' 'AF2095')
-#runtype='AD'
+#envtypes=('CTL2010' 'C285' 'AF1855')
+#runtype='PROD'
 #chunk='e0'
-#tapes=('r')
+#
 
+
+envtypes=('CTL2010' 'C285' 'AF1855' 'C867' 'NDEP' 'AF2095')
+#envtypes=('C867' 'NDEP')
 runtype='PROD'
-chunk='s2'
+chunk='claypf'
+#tapes=('r')
 tapes=('r' 'h0' 'h1' 'h2' 'h3' 'h4' 'h5' 'h7')
+
 
 moveFiles=2
 

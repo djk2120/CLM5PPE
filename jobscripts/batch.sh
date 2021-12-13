@@ -1,7 +1,6 @@
 #!/bin/bash
-
 #PBS -N ens_submit
-#PBS -q regular
+#PBS -q premium
 #PBS -l walltime=12:00:00
 #PBS -A P93300641
 ### Merge output and error files
@@ -12,9 +11,11 @@
 
 
 
-envtypes=('NDEP' 'C867' 'AF2095')
-runtype='AD'
-chunk='e0'
+#envtypes=('C867')
+#envtypes=('NDEP')
+envtypes=('CTL2010' 'C285' 'AF1855' 'C867' 'NDEP' 'AF2095')
+runtype='PROD'
+chunk='claypf'
 
 if [ $runtype == 'PROD' ];then
     runstr=''
@@ -32,5 +33,6 @@ for envtype in ${envtypes[@]}; do
     cfile="PPEn11/configs/"$envtype"_"$runstr$pad$chunk".config"
     lfile="logfiles/"$envtype"_"$runstr$pad$chunk".log"
     bash run_ens.sh $cfile > $lfile
+
 
 done

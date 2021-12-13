@@ -18,9 +18,15 @@
 ! Set glc_do_dynglacier  with GLC_TWO_WAY_COUPLING               env variable
 !----------------------------------------------------------------------------------
 
-calc_human_stress_indices = 'NONE'
-hist_fincl1 = 'TOTECOSYSC', 'TOTECOSYSN', 'TOTSOMC', 'TOTSOMN', 'TOTVEGC', 'TOTVEGN', 'TLAI', 'GPP', 'CPOOL', 'NPP', 'TWS', 'H2OSNO', 'CWDC', 'TOTSOMC_1m'
-hist_dov2xy = .false.
-hist_type1d_pertape = 'GRID'
-hist_mfilt=999
+stream_fldfilename_ndep = '/glade/p/cgd/tss/people/oleson/CLM5_ndep/fndep_p5_clm_hist_b.e21.BWHIST.f09_g17.CMIP6-historical-WACCM.ensmean_1849-2015_monthly_0.9x1.25_c180926.nc'
 
+calc_human_stress_indices = 'NONE'
+
+hist_fincl1 = 'TOTECOSYSC', 'TOTECOSYSN', 'TOTSOMC', 'TOTSOMN', 'TOTVEGC', 'TOTVEGN', 'TLAI', 'GPP', 'CPOOL', 'NPP', 'TWS', 'H2OSNO', 'CWDC', 'TOTSOMC_1m'
+hist_fincl2 = 'TOTVEGC', 'TOTVEGN', 'TLAI', 'GPP', 'CPOOL', 'NPP'
+hist_dov2xy = .false.,.false
+hist_type1d_pertape = 'GRID'
+hist_nhtfrq = -8760,-8760
+hist_mfilt = 999,999
+use_matrixcn = .true.
+use_soil_matrixcn = .true.

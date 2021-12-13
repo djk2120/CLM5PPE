@@ -1,3 +1,14 @@
+#!/bin/bash
+#PBS -q premium
+#PBS -l walltime=12:00:00
+#PBS -A P93300641
+#PBS -j oe
+#PBS -k eod
+#PBS -l select=1:ncpus=1
+#PBS -W depend=afterok:testspin1
+
+prevcase="testspin2"
+repcase=""
 SCRATCH="/glade/scratch/djk2120/"
 SCRIPTS="/glade/work/djk2120/ctsm_medlyn/cime/scripts/"
 

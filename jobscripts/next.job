@@ -1,0 +1,18 @@
+#!/bin/bash
+#PBS -N jobname
+#PBS -q premium
+#PBS -l walltime=12:00:00
+#PBS -A P93300641
+#PBS -j oe
+#PBS -k eod
+#PBS -l select=1:ncpus=1
+#PBS -W depend=afterok:JOB_ID
+
+thiscase='abc'
+nextcase='def'
+joblist='jobs.txt'
+
+#tether submits thiscase (affixing finidat), 
+#and presubmits nextcase with afterok:thiscase
+bash tether.sh $thiscase $nextcase $joblist
+

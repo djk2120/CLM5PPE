@@ -19,8 +19,12 @@
 !----------------------------------------------------------------------------------
 
 calc_human_stress_indices = 'NONE'
-hist_fincl1 = 'TOTECOSYSC', 'TOTECOSYSN', 'TOTSOMC', 'TOTSOMN', 'TOTVEGC', 'TOTVEGN', 'TLAI', 'GPP', 'CPOOL', 'NPP', 'TWS', 'H2OSNO', 'CWDC', 'TOTSOMC_1m'
-hist_dov2xy = .false.
-hist_type1d_pertape = 'GRID'
-hist_mfilt=999
 
+hist_fincl1 = 'TOTECOSYSC', 'TOTECOSYSN', 'TOTSOMC', 'TOTSOMN', 'TOTVEGC', 'TOTVEGN', 'TLAI', 'GPP', 'CPOOL', 'NPP', 'TWS', 'H2OSNO', 'CWDC', 'TOTSOMC_1m'
+hist_fincl2 = 'TOTVEGC', 'TOTVEGN', 'TLAI', 'GPP', 'CPOOL', 'NPP'
+hist_dov2xy = .false.,.false
+hist_type1d_pertape = 'GRID'
+hist_nhtfrq = -8760,-8760
+hist_mfilt = 999,999
+use_matrixcn = .true.
+use_soil_matrixcn = .true.

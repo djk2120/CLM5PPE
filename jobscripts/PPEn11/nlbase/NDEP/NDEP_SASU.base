@@ -24,3 +24,5 @@ hist_dov2xy = .false.
 hist_type1d_pertape = 'GRID'
 hist_mfilt=999
 
+stream_fldfilename_ndep = '/glade/p/cgd/tss/people/oleson/CLM5_ndep/fndep_p5_clm_hist_b.e21.BWHIST.f09_g17.CMIP6-historical-WACCM.ensmean_1849-2015_monthly_0.9x1.25_c180926.nc'
+
