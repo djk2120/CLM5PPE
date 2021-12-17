@@ -6,12 +6,26 @@ template=$5
 
 cd $thiscase
 
+
+
 #handle finidat
 if [ $prevcase != 'none' ]; then
-    #find the previous restart file
+    #comment out any finidat from user_nl_clm
+    :> user_nl_clm.tmp
+    while read line; do
+	if [[ $line != *"finidat"* ]]; then
+	    echo $line>>user_nl_clm.tmp
+	else
+	    echo '!'$line>>user_nl_clm.tmp
+	fi
+	done<user_nl_clm
+    mv user_nl_clm.tmp user_nl_clm
+
+    #find the appropirate restart file
     casename=${prevcase##*/}
     restart=$scratch$casename'/run/'$casename".clm2.r."*".nc"
     restart=$(echo $restart) #expands wildcard
+
     #append to user_nl_clm
     echo -e 'finidat="'$restart'"'>>user_nl_clm
 fi
@@ -25,7 +39,8 @@ njobs=$(wc -l < $joblist)
 if (( $njobs > 0 ));then 
     #read next job from joblist
     nextcase=$(head -n 1 $joblist)
-    
+    echo "nextcase="$nextcase
+
     #cp joblist to nextcase, removing nextcase
     tail -n +2 $joblist > file.tmp 
     mv file.tmp $nextcase'/'$joblist

@@ -10,5 +10,6 @@
 
 #tether submits thiscase (affixing finidat), 
 #and presubmits nextcase with afterok:thiscase
-bash tether.sh prevcase scratch thiscase joblist template
+JOBDIR='/glade/u/home/djk2120/clm5ppe/jobscripts/'
+bash $JOBDIR"tether.sh" prevcase scratch thiscase joblist template
 

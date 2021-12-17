@@ -26,13 +26,15 @@ while read p; do
 	./xmlchange EXEROOT=$SCRATCH$case"/bld"
 	./xmlchange DOUT_S=FALSE
 	
-	#remove previous paramfile from user_nl_clm
+	#comment out previous paramfile from user_nl_clm
 	:> user_nl_clm.tmp
 	while read line; do
 	    if [[ $line != *"paramfile"* ]]; then
 		echo $line>>user_nl_clm.tmp
+	    else
+		echo '!'$line>>user_nl_clm.tmp
 	    fi
-	    done<user_nl_clm
+	done<user_nl_clm
 	mv user_nl_clm.tmp user_nl_clm
 	
 	#append correct paramfile
@@ -66,7 +68,7 @@ while read p; do
 
     #submit job, with next jobs tethered via PBS afterok
     cd $PPE
-    template="presubmission.template"
+    prevcase="none"
     bash tether.sh $prevcase $SCRATCH $firstcase $joblist $template
 
 done<$paramList
