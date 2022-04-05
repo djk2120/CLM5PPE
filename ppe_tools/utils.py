@@ -2,6 +2,34 @@ import os
 import numpy as np
 from ppe_tools import ParamInfo
 
+def parse_row(row):
+    out = {'loc':row['location']}
+    for minmax in ['min','max']:
+        x = row[minmax]
+        if x=='pft':
+            parsed = np.fromstring(row['pft_'+minmax+'s'], dtype='float', sep=',')
+        elif 'percent' in x:
+            parsed = x
+        else:
+            parsed = np.array(float(x))
+        out[minmax]=parsed
+    return out
+
+def parse_csv(csv,included=''):
+    data = pd.read_csv(csv)
+    if len(included)==0:
+        included = [(loc=='P')|(loc=='N') for loc in data['location']]
+    cols = ['name','location','min','max','pft_mins','pft_maxs','flag']
+    params_full = data.loc[included,cols]
+    params = params_full.reset_index(drop=True) # reset indexing and get rid of excel row number
+    oaats={}
+    for index, row in params.iterrows():
+        if not pd.notnull(row['flag']):
+            oaats[row['name']]=parse_row(row)
+        else:
+            raise NotImplementedError('flags need to be re-implemented')
+    return params,oaats
+
 def parse_val(loc,defval,thisval,sgn=1):
     '''
     Parse the value to be used to set a new parameter value

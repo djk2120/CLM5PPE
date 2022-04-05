@@ -1,0 +1,15 @@
+#!/bin/bash
+#PBS -N jobname
+#PBS -q casper
+#PBS -l walltime=12:00:00
+#PBS -A P93300641
+#PBS -j oe
+#PBS -k eod
+#PBS -l select=1:ncpus=1
+#PBS -W depend=afterok:JOB_ID
+
+#tether submits thiscase (affixing finidat), 
+#and presubmits nextcase with afterok:thiscase
+JOBDIR='/glade/u/home/djk2120/clm5ppe/jobscripts/'
+bash $JOBDIR"tether.sh" prevcase scratch thiscase joblist template
+

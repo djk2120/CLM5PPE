@@ -7,11 +7,12 @@ fi
 
 #set up environment variables
 source $1
-
+joblist='tethered.txt'
 
 while read p; do
-
-    for case in ${cases[@]}; do
+    for i in "${!cases[@]}"; do
+	case="${cases[i]}"
+	exeroot="${exeroots[i]}"
 	basecase=$SCRIPTS$ensemble"/basecases/"$case
 	thiscase=$SCRIPTS$ensemble"/"$case"/"$case"_"$p
 	
@@ -23,7 +24,7 @@ while read p; do
 	cd $thiscase
 	./case.setup
 	./xmlchange BUILD_COMPLETE=TRUE
-	./xmlchange EXEROOT=$SCRATCH$case"/bld"
+	./xmlchange EXEROOT=$exeroot
 	./xmlchange DOUT_S=FALSE
 	
 	#comment out previous paramfile from user_nl_clm
@@ -48,20 +49,13 @@ while read p; do
 	    nlmods=$NLMODS$p".txt"
 	    cat $nlmods >> user_nl_clm
 	fi
-	
-    done
 
-    #set up job tethering
-    i=0
-    joblist='tethered.txt'
-    for case in ${cases[@]}; do
-        i=$((i+1))
-	thiscase=$SCRIPTS$ensemble"/"$case"/"$case"_"$p
-	if (( i ==1 )); then
-	    cd $thiscase
+	#set up job tethering
+	if (( i == 0 )); then
 	    firstcase=$thiscase
 	    :> $joblist  #empty file
 	else
+	    cd $firstcase
 	    echo $thiscase >> $joblist
 	fi
     done
@@ -70,5 +64,7 @@ while read p; do
     cd $PPE
     prevcase="none"
     bash tether.sh $prevcase $SCRATCH $firstcase $joblist $template
+
+
 
 done<$paramList
