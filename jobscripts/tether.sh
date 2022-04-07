@@ -1,3 +1,4 @@
+#!/bin/bash
 prevcase=$1
 scratch=$2
 thiscase=$3
@@ -18,7 +19,7 @@ if [ $prevcase != 'none' ]; then
 	else
 	    echo '!'$line>>user_nl_clm.tmp
 	fi
-	done<user_nl_clm
+    done<user_nl_clm
     mv user_nl_clm.tmp user_nl_clm
 
     #find the appropirate restart file
@@ -32,7 +33,7 @@ fi
 
 #submit case, capturing JOB_ID
 ./case.submit > submit_out
-JOB_ID=$(grep "Submitted job id is" submit_out | tail -1 | cut -f 5 -d' ')
+JOB_ID=$(grep "Submitted job id is" submit_out | tail -1 | cut -f 5 -d' ') #this is definitely going to break
 
 #presubmit next case, if any are left
 njobs=$(wc -l < $joblist)

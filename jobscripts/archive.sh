@@ -7,12 +7,17 @@ then
     exit 1
 fi
 
-#place to track collisions
-:>collisions.txt
 
 #set up environment variables
 source $1
 moveFiles=$2
+
+#moveFiles==0, don't move files, just check for restarts
+#moveFiles==1, mv only if you won't overwrite
+#moveFiles==2, mv with overwrite
+
+#place to track collisions
+:>collisions.txt
 
 #create directories
 dirs=($HIST $SPIN $REST)

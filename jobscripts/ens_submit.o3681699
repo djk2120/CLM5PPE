@@ -17914,3 +17914,7 @@ For your changes to take effect, run:
 env_batch.xml appears to have changed, regenerating batch scripts
 manual edits to these file will be lost!
 
+submit_jobs case.run
+Submit job case.run
+nextcase=/glade/work/djk2120/PPEn11/cime/scripts/AF2095/PPEn11_AF2095_SASU/PPEn11_AF2095_SASU_OAAT0508
+3682150.chadmin1.ib0.cheyenne.ucar.edu
