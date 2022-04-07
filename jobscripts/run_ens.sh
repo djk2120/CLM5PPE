@@ -1,16 +1,20 @@
+#!/bin/bash
 if [ $# -lt 1 ]
 then
     echo "ERROR: please specify config file"
-    echo "   ex: ./runens.sh AF1855_AD_e0.config"
+    echo "   ex: ./runens.sh CTL2010_chunk1.config"
     exit 1
 fi
 
 #set up environment variables
 source $1
-joblist='tethered.txt'
 
-while read p; do
-    for i in "${!cases[@]}"; do
+#this file will hold the list of tethered jobs
+joblist='tethered.txt' 
+
+#create and submit all the cases
+while read p; do  #loop through paramfiles
+    for i in "${!cases[@]}"; do  #loop through spinup stages
 	case="${cases[i]}"
 	exeroot="${exeroots[i]}"
 	basecase=$SCRIPTS$ensemble"/basecases/"$case
@@ -64,7 +68,7 @@ while read p; do
     cd $PPE
     prevcase="none"
     bash tether.sh $prevcase $SCRATCH $firstcase $joblist $template
-
-
+    #this is equivalent to ./case.submit of $firstcase 
+    #plus a bit extra to automatically submit any tethered cases
 
 done<$paramList
