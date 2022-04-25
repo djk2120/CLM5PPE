@@ -1,0 +1,11 @@
+#!/bin/bash
+#PBS -N archive
+#PBS -q casper
+#PBS -l walltime=12:00:00
+#PBS -A P93300641
+#PBS -j oe
+#PBS -k eod
+#PBS -l select=1:ncpus=1
+
+bash archive.sh PPEn11/configs/AF1855_phen.config 2
+
