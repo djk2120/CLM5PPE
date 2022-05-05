@@ -1,0 +1,13 @@
+! h5 stream (daily average, gridcell-level)
+hist_mfilt(6) = 1825
+hist_dov2xy(6) = .false.
+hist_nhtfrq(6) = -24
+hist_type1d_pertape(6) = 'GRID'
+hist_fincl6 += 'SOILWATER_10CM','TWS','TLAI','GPP','FCTR','FGEV','FCEV','FSH','VEGWPLN','VEGWPPD','TV'
+
+! h8 stream (daily average, finest sub-grid)
+hist_mfilt(9) = 1825
+hist_dov2xy(9) = .false.
+hist_nhtfrq(9) = -24
+hist_type1d_pertape(9) = ' '
+hist_fincl9='TLAI'
