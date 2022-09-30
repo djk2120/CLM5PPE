@@ -1,7 +1,7 @@
 #!/bin/bash
 prevcase=$1 
-scratch=$2 
-CASENAME=$(basename $3)
+CASENAME=$(basename $2)
+scratch='/glade/scratch/djk2120/'
 
 #########################################################################################
 # PART 5

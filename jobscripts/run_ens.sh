@@ -10,8 +10,7 @@ fi
 source $1
 
 #this file will hold the list of tethered jobs
-joblist='tethered.txt' 
-modlist='modlist.txt'
+joblist='joblist.txt' 
 
 #create and submit all the cases
 while read p; do  #loop through paramfiles
@@ -36,7 +35,8 @@ while read p; do  #loop through paramfiles
 	./xmlchange EXEROOT=$exeroot
 	./xmlchange DOUT_S=FALSE
 	./xmlchange PROJECT=$PROJECT
-	
+	./xmlchange JOB_QUEUE="regular"
+
 	#comment out previous paramfile from user_nl_clm
 	:> user_nl_clm.tmp
 	while read line; do
@@ -61,31 +61,31 @@ while read p; do  #loop through paramfiles
 	fi
     done
 
-    echo "TETHER SETUP"
+    #tethering setup
+    case="${cases[0]}"
+    firstcase=$SCRIPTS$ensemble"/"$case"/"$case"_"$p
+    cd $firstcase
+    :> $joblist
     for i in "${!cases[@]}"; do  #loop through all steps/substeps
 	case="${cases[i]}"
 	casemod="${casemods[i]}"
 	thiscase=$SCRIPTS$ensemble"/"$case"/"$case"_"$p
+	
+	echo -n $case"_"$p >> $joblist
+	echo -n ","$thiscase >> $joblist
+	echo -n ","$casemod >> $joblist
 
-	#set up job tethering
-	if (( i == 0 )); then
-	    firstcase=$thiscase
-	    :> $joblist  #empty file
-	    :> $modlist
+	if [ $i -eq 0 ]; then
+	    echo ",queued" >> $joblist
 	else
-	    cd $firstcase
-	    echo $thiscase >> $joblist
-	    echo $casemod  >> $modlist
+	    echo ",waiting" >> $joblist
 	fi
+
     done
 
-    #submit job, with next jobs tethered via PBS afterok
-    cd $PPE
-    prevcase="none"
-    casemod=${casemods[0]}
-    bash tether.sh $prevcase $SCRATCH $firstcase $casemod $joblist $modlist $template
-
-    #this is equivalent to ./case.submit of $firstcase 
-    #plus a bit extra to automatically submit any tethered cases
+    # #submit job, with next jobs tethered via PBS afterok
+    bash $tether $joblist $template
+    # #this is equivalent to ./case.submit of $firstcase 
+    # #plus a bit extra to automatically submit any tethered cases
 
 done<$paramList

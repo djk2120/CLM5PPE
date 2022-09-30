@@ -16,7 +16,7 @@ keiths=('ctsm51c8BGC_PPEn11ctsm51d030_2deg_GSWP3V1_Sparse400_Control_1850AD' \
 
 
 s='/glade/work/djk2120/PPEn11trans/cime/scripts/'
-casedir=$s"/transient/basecases/"
+casedir=$s"transient/basecases/"
 cases=('PPEn11_transient_AD' \
 'PPEn11_transient_SASU' \
 'PPEn11_transient_postSASU' \
@@ -24,13 +24,19 @@ cases=('PPEn11_transient_AD' \
 
 
 cd $s
+
+
 for i in "${!keiths[@]}"; do
     k=$ks${keiths[$i]}
-    c=${cases[$i]}
+    c=$casedir${cases[$i]}
     
     ./create_clone --case $c --clone $k --project P93300641 --cime-output-root /glade/scratch/djk2120
     cd $c
     ./case.setup
+    ./xmlchange JOB_WALLCLOCK_TIME="12:00:00"
+    ./xmlchange DOUT_S=False
     ./case.build
+    echo -e "paramfile = '/glade/p/cgd/tss/people/oleson/modify_param/ctsm51_params.c210507_kwo.c220322.nc'">>user_nl_clm
+
     cd -
 done

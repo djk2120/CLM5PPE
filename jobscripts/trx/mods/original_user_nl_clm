@@ -41,7 +41,7 @@ hist_fincl3 += 'FSR', 'H2OSNO', 'Q2M', 'SNOWDP', 'TSA', 'TREFMNAV', 'TREFMXAV', 
 
 ! h3 stream (yearly average, gridcell-level)
 ! Eyr
-hist_mfilt(4) = 9999
+hist_mfilt(4) = 5
 hist_dov2xy(4) = .false.
 hist_nhtfrq(4) = -8760
 hist_type1d_pertape(4) = 'GRID'
@@ -50,7 +50,7 @@ hist_fincl4 += 'PCT_GLC_MEC', 'QICE_FORC', 'TSRF_FORC', 'TOPO_FORC', 'PCT_NAT_PF
 ! h4 stream (yearly average, landunit-level)
 ! Eyr landuse tiles
 ! (No fields in base, but other usermods add to this stream)
-hist_mfilt(5) = 9999
+hist_mfilt(5) = 5
 hist_dov2xy(5) = .false.
 hist_nhtfrq(5) = -8760
 hist_type1d_pertape(5) = 'LAND'

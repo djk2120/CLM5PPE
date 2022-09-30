@@ -1,0 +1,7 @@
+/glade/u/home/djk2120/clm5ppe/jobscripts/finidat.sh
+/glade/u/home/djk2120/clm5ppe/jobscripts/finidat.sh
+/glade/u/home/djk2120/clm5ppe/jobscripts/finidat.sh
+/glade/u/home/djk2120/clm5ppe/jobscripts/finidat.sh
+/glade/u/home/djk2120/clm5ppe/jobscripts/trx/mods/part1.sh
+/glade/u/home/djk2120/clm5ppe/jobscripts/trx/mods/part2.sh
+/glade/u/home/djk2120/clm5ppe/jobscripts/trx/mods/part3.sh

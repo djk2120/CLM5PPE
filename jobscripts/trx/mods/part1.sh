@@ -1,8 +1,7 @@
 #!/bin/bash
 prevcase=$1 
-scratch=$2 
-CASENAME=$(basename $3)
-
+CASENAME=$(basename $2)
+scratch='/glade/scratch/djk2120/'
 ##################################################################
 # PART 1
 #########################################################################################
@@ -30,3 +29,6 @@ gzip $DDIR$CASENAME*.bin
 
 # need to use user_nl_datm files to get years right
 cp user_nl_datm1901-2014 user_nl_datm
+
+# save original user_nl_clm
+cp user_nl_clm original_user_nl_clm

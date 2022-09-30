@@ -1,3 +1,11 @@
+! h1 stream (monthly average, finest sub-grid)
+! Emon, Lmon
+hist_mfilt(2) = 120
+hist_dov2xy(2) = .false.
+hist_nhtfrq(2) = 0
+hist_type1d_pertape(2) = ' '
+hist_fincl2 += 'ELAI','TLAI', 'TSA','TREFMNAV','TREFMXAV', 'BTRANMN', 'Vcmx25Z', 'FSH', 'VEGWP', 'FCTR', 'FCEV', 'FGEV', 'FIRE', 'FSR', 'FIRA', 'FSA', 'GSSUNLN', 'GSSHALN', 'TSKIN'
+hist_fincl2 += 'GPP', 'NPP', 'AGNPP', 'TOTVEGC', 'NPP_NUPTAKE', 'AR', 'HR', 'HTOP'
 
 ! h5 stream (daily average, gridcell-level)
 ! day, Eday
@@ -30,7 +38,7 @@ hist_fincl6 += 'GPP', 'NPP', 'AR', 'HR', 'ALT'
 ! 3hr, E3hr, CF3hr
 ! 3hr requires QRUNOFF for time mean, and SOILWATER_10CM, TSKIN for time point (I)
 ! CF3hr requires QFLX_SOLIDEVAP_FROM_TOP_LAYER for time point (I)
-hist_mfilt(8) = 29201
+hist_mfilt(8) = 2920
 hist_dov2xy(8) = .false.
 hist_nhtfrq(8) = -3
 hist_type1d_pertape(8) = 'GRID'
