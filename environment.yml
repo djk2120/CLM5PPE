@@ -1,0 +1,34 @@
+name: ppe-py
+channels:
+    - conda-forge
+    - defaults
+dependencies:
+    - python=3.7    # Python version 3.7
+    - bottleneck    # C-optimized array functions for NumPy
+    - cartopy       # Geographic plotting toolkit
+    - cftime
+    - dask          # Parallel processing library
+    - geopandas
+    - future        # Python 2/3 compatibility
+    - h5py          # Wrapper for HDF5
+    - ipython       # IPython interpreter and tools
+    - jupyter       # Jupyter federation architecture
+    - jupyterlab
+    - matplotlib    # 2D plotting library
+    - ncar-jobqueue
+    - nc-time-axis
+    - netcdf4       # Wrapper for netcdf4
+    - notebook      # Notebook interface
+    - numpy         # N-d array and numerics
+    - pandas        # Labeled array library
+    - regionmask
+    - scipy         # Common math/stats/science functions
+    - scikit-learn  # Macine learning library
+    - seaborn       # Statistical visualizations
+    - shapely
+    - six           # Python 2/3 compatibility
+    - sparse
+    - statsmodels
+    - tqdm          # Nice progressbar for longer computations
+    - xarray        # N-d labeled array library
+    - xesmf
