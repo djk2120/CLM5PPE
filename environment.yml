@@ -11,6 +11,7 @@ dependencies:
     - geopandas
     - future        # Python 2/3 compatibility
     - h5py          # Wrapper for HDF5
+    - hvplot
     - ipython       # IPython interpreter and tools
     - jupyter       # Jupyter federation architecture
     - jupyterlab
@@ -21,6 +22,8 @@ dependencies:
     - notebook      # Notebook interface
     - numpy         # N-d array and numerics
     - pandas        # Labeled array library
+    - panel
+    - plotly
     - regionmask
     - scipy         # Common math/stats/science functions
     - scikit-learn  # Macine learning library

@@ -7,92 +7,249 @@ import matplotlib
 import matplotlib.pyplot as plt
 import glob
 
-#define the directory structure to find files
-def get_files(name,htape,keys):
-    topdir     = '/glade/campaign/asp/djk2120/PPEn11/' 
-    thisdir    = topdir+name+'/hist/'
-    files      = [glob.glob(thisdir+'*'+key+'*'+htape+'*.nc')[0] for key in keys]
-    return files
+def get_files(exp,tape='h0',yy=()):
 
-def ppe_init(csv='/glade/scratch/djk2120/PPEn11/surv.csv'):
-    paramkey = pd.read_csv(csv)
-    keys = paramkey.key
+    top='/glade/campaign/asp/djk2120/PPEn11/'
+    d=top+exp+'/hist/'
 
-    #fetch the sparsegrid landarea
-    la_file = '/glade/scratch/djk2120/PPEn08/sparsegrid_landarea.nc'
-    la = xr.open_dataset(la_file).landarea  #km2
-    # pft area
-    f = get_files('CTL2010','h1',keys[0])[0]
-    lapft = get_lapft(la,f)
+    oaats=['CTL2010','C285','C867','AF1855','AF2095','NDEP']
+    key={oaat:'/glade/campaign/asp/djk2120/PPEn11/csvs/surv.csv' for oaat in oaats}
+    yys={oaat:(2005,2014) for oaat in oaats}
+    key['transient']='/glade/campaign/asp/djk2120/PPEn11/csvs/lhc220926.txt'
+    yys['transient']=(1850,2014)
     
+
+    df=pd.read_csv(key[exp])  
+    if not yy:
+        yr0,yr1=yys[exp]
+    else:
+        yr0,yr1=yy
     
-    #load conversion factors
-    attrs = pd.read_csv('agg_units.csv',index_col=0)
+    if exp=='transient':
+        keys = df.member.values
+        appends={}
+        params=[]
+        for p in df.keys():
+            if p!='member':
+                appends[p]=xr.DataArray(np.concatenate(([np.nan],df[p].values)),dims='ens')
+                params.append(p)
+        appends['params']=xr.DataArray(params,dims='param')
+        keys=np.concatenate((['LHC0000'],keys))
+        appends['key']=xr.DataArray(keys,dims='ens')
 
-    #dummy dataset
-    p,m = get_params(keys,paramkey)
-    ds0 = xr.Dataset()
-    ds0['param']  =xr.DataArray(p,dims='ens')
-    ds0['minmax'] =xr.DataArray(m,dims='ens')
-    ds0['key']    =xr.DataArray(keys,dims='ens')
-    whit = xr.open_dataset('./whit/whitkey.nc')
-    ds0['biome']      = whit['biome']
-    ds0['biome_name'] = whit['biome_name']
-    
-    return ds0,la,lapft,attrs,paramkey,keys
-def get_ensemble(data_vars,ensemble,htape,
-                 csv='/glade/scratch/djk2120/PPEn11/surv.csv',
-                 keys=[],paramkey='',p=True,extras=[]):
+    else:
+        keys=df.key.values
+        appends={v:xr.DataArray(df[v].values,dims='ens') for v in ['key','param','minmax']}
 
-    def preprocess(ds):
-        return ds[data_vars]
-
-    if csv:
-        ds0,la,lapft,attrs,paramkey,keys = ppe_init(csv=csv)
-    
-    #read in the dataset
-    files = get_files(ensemble,htape,keys)
-    ds = xr.open_mfdataset(files,combine='nested',concat_dim='ens',
-                           parallel=p,preprocess=preprocess)
-
-    #diagnose htape
-    htape = files[0].split('clm2.')[1].split('.')[0]
-    
-    #make time more sensible
-    if htape=='h0' or htape=='h1':
-        ds['time'] = xr.cftime_range(str(2005),periods=len(ds.time),freq='MS')
-    elif htape=='h5':
-        nt = len(ds.time)
-        t  = ds.time.isel(time=np.arange(nt)<nt-1)
-        ds = ds.isel(time=np.arange(nt)>0)
-        ds['time']=t
-
-    #specify extra variables
-    if not extras:
-        if htape=='h1':
-            extras     = ['pfts1d_lat','pfts1d_lon','pfts1d_itype_veg']
-        else:
-            extras     = ['grid1d_lat','grid1d_lon']
-
-    
-    #add in some extra variables
-    ds0 = xr.open_dataset(files[0])
-    for extra in extras:
-        ds[extra]=ds0[extra]
         
-    #append some info about key/param/minmax/biome
-    params,minmaxs = get_params(keys,paramkey) 
-    ds['key']    = xr.DataArray(keys,dims='ens')
-    ds['param']  = xr.DataArray(params,dims='ens')
-    ds['minmax'] = xr.DataArray(minmaxs,dims='ens')
-    whit         = xr.open_dataset('./whit/whitkey.nc')
-    ds['biome']      = whit['biome']
-    ds['biome_name'] = whit['biome_name']
-    if htape=='h1':
-        ds['pft'] = ds.pfts1d_itype_veg
+    if exp=='transient':
+        fla='landarea_transient.nc'
+    else:
+        fla='landarea_oaat.nc'
+    la=xr.open_dataset(fla)
+    appends['la']=la.landarea
+    if tape=='h1':
+        appends['lapft']=la.landarea_pft
+        
 
+    fs   = np.array(sorted(glob.glob(d+'*'+tape+'*')))
+    yrs  = np.array([int(f.split(tape)[1][1:5]) for f in fs])
+    mems = [f.split('/')[8].split('_')[-1].split('.')[0] for f in fs]
+    ix   = [mem in keys for mem in mems]
+    
+    files=fs[ix]
+    yrs=yrs[ix]
+    
+    #bump back yr0, if needed
+    uyrs=np.unique(yrs)
+    yr0=uyrs[(uyrs/yr0)<=1][-1]
+
+    #find index to subset files
+    ix    = (yrs>=yr0)&(yrs<=yr1)
+    yrs   = yrs[ix]
+    files = files[ix] 
+
+    ny=len(np.unique(yrs))
+    nens=len(keys)
+
+    if ny>1:
+        files = files.reshape([nens,ny])
+        files = [list(f) for f in files]
+        dims  = ['ens','time']
+    else:
+        dims  = 'ens'
+    
+    return files,appends,dims
+
+
+def get_ds(files,dims,dvs=[],appends={},singles=[]):
+    if dvs:
+        def preprocess(ds):
+            return ds[dvs]
+    else:
+        def preprocess(ds):
+            return ds
+
+    ds = xr.open_mfdataset(files,combine='nested',concat_dim=dims,
+                           parallel=True,
+                           preprocess=preprocess)
+    f=np.array(files).ravel()[0]
+    htape=f.split('clm2')[1][1:3]
+
+    #add extra variables
+    tmp = xr.open_dataset(f)
+    for v in tmp.data_vars:
+        if 'time' not in tmp[v].dims:
+            if v not in ds:
+                ds[v]=tmp[v]
+    
+    #fix up time dimension, swap pft
+    if (htape=='h0')|(htape=='h1'):
+        yr0=str(ds['time.year'][0].values)
+        nt=len(ds.time)
+        ds['time'] = xr.cftime_range(yr0,periods=nt,freq='MS',calendar='noleap') #fix time bug
+    if (htape=='h1'):
+        ds['pft']=ds['pfts1d_itype_veg']
+        
+    
+    for append in appends:
+        ds[append]=appends[append]
+        
+             
     return ds
 
+def get_exp(exp,dvs=[],tape='h0',yy=(),defonly=False):
+    '''
+    exp: 'transient','CTL2010','C285','C867','AF1855','2095','NDEP'
+    dvs:  e.g. ['TLAI']    or [] returns all available variables
+    tape: 'h0','h1',etc.
+    yy:   e.g. (2005,2014) or () returns all available years
+    '''
+    files,appends,dims=get_files(exp,tape=tape,yy=yy)
+    
+    if defonly:
+        files=files[0]
+        dims='time'
+        
+    ds=get_ds(files,dims,dvs=dvs,appends=appends)
+    
+    
+    f,a,d=get_files(exp,tape='h0',yy=yy)
+    singles=['RAIN','SNOW','TSA','RH2M','FSDS','WIND']
+    tmp=get_ds(f[0],'time',dvs=singles)
+    for s in singles:
+        ds[s]=tmp[s]
+    
+    if len(yy)>0:  
+        ds=ds.sel(time=slice(str(yy[0]),str(yy[1])))
+    
+    ds['PREC']=ds.RAIN+ds.SNOW
+    
+    t=ds.TSA-273.15
+    rh=ds.RH2M/100
+    es=0.61094*np.exp(17.625*t/(t+234.04))
+    ds['VPD']=((1-rh)*es).compute()
+    ds['VPD'].attrs={'long_name':'vapor pressure deficit','units':'kPa'}
+    ds['VP']=(rh*es).compute()
+    ds['VP'].attrs={'long_name':'vapor pressure','units':'kPa'}
+    
+    whit = xr.open_dataset('./whit/whitkey.nc')
+    ds['biome']=whit.biome
+    ds['biome_name']=whit.biome_name
+                
+    #get the pft names
+    pfts=xr.open_dataset('/glade/campaign/asp/djk2120/PPEn11/paramfiles/OAAT0000.nc').pftname
+    pfts=[str(p)[2:-1].strip() for p in pfts.values][:17]
+    ds['pft_name']=xr.DataArray(pfts,dims='pft_id')
+    
+    return ds
+
+def amean(da):
+    #annual mean
+    if da.name in cfs:
+        cf=cfs[da.name]['cf1']
+    else:
+        cf=1/365
+
+    m  = da['time.daysinmonth']
+    xa = cf*(m*da).groupby('time.year').sum().compute()
+    xa.name=da.name
+    return xa
+
+def gmean(da,la,g=[]):
+    '''
+    g defines the averaging group,
+    g=[] is global, otherwise use ds.biome or ds.pft
+    '''
+    if len(g)==0:
+        g=xr.DataArray(np.tile('global',len(da.gridcell)),dims='gridcell')
+    if da.name in cfs:
+        cf=cfs[da.name]['cf2']
+    else:
+        cf=1/la.groupby(g).sum()
+    x=cf*(da*la).groupby(g).sum()
+    x.name=da.name
+    x.attrs=da.attrs
+    if x.name in units:
+        x.attrs['units']=units[da.name]
+    if 'group' in x.dims:
+        x=x.isel(group=0)
+    if len(x.dims)>0:
+        if x.dims[0]!='ens':
+            x=x.T  
+    
+    return x.compute()
+
+def get_ix(ds,pft):
+    ix=ds.pfts1d_itype_veg==pft
+    a=ds.pfts1d_lat[ix]
+    o=ds.pfts1d_lon[ix]
+    
+    nlon=len(ds.lon)
+    nlat=len(ds.lat)
+    nx=len(a)
+
+    lats=xr.DataArray(np.tile(ds.lat.values.reshape([-1,1,1]),[1,nlon,nx]),dims=['lat','lon','pft'])
+    lons=xr.DataArray(np.tile(ds.lon.values.reshape([1,-1,1]),[nlat,1,nx]),dims=['lat','lon','pft'])
+    ix=((abs(lats-a)<0.25)&(abs(lons-o)<0.25)).sum(dim='pft')
+    
+    return ix==1
+def pftgrid(da,ds):
+
+    #set up dims for outgoing data array
+    dims=[]
+    s=[]
+    ix=get_ix(ds,1)
+    for dim in da.dims:
+        if dim !='pft':
+            dims.append(dim)
+            s.append(len(da[dim]))
+    dims=[*dims,*ix.dims]
+    s=[*s,*ix.shape]
+    ndims=len(dims)
+
+    das=[]
+    ix0=[slice(None) for i in range(ndims-2)]
+
+    pfts=np.unique(ds.pfts1d_itype_veg)
+    for pft in pfts:
+        out=np.zeros(s)+np.nan
+        if pft>0:
+            ix=get_ix(ds,pft)
+            ix2=tuple([*ix0,ix])
+            ixp=ds.pfts1d_itype_veg==pft
+            out[ix2]=da.isel(pft=ixp)
+        das.append(xr.DataArray(out.copy(),dims=dims))
+
+    da_out=xr.concat(das,dim='pft')
+    da_out['pft']=pfts
+    da_out['lat']=ds.lat
+    da_out['lon']=ds.lon
+    for dim in da.dims:
+        if dim !='pft':
+            da_out[dim]=da[dim]
+    
+    return da_out
 
 def get_map(da):
     '''
@@ -146,130 +303,6 @@ def get_map(da):
 
     return da_map
 
-def get_params(keys,paramkey):
-    params=[]
-    minmaxs=[]
-    for key in keys:
-        ix     = paramkey.key==key
-        params.append(paramkey.param[ix].values[0])
-        minmaxs.append(paramkey.minmax[ix].values[0])
-    return params,minmaxs
-
-def month_wts(nyears):
-    '''
-    returns an xr.DataArray of days per month, tiled for nyears
-    '''
-    days_pm  = [31,28,31,30,31,30,31,31,30,31,30,31]
-    return xr.DataArray(np.tile(days_pm,nyears),dims='time')
-
-def get_lapft(la,sample_h1):
-    
-    tmp = xr.open_dataset(sample_h1)
-
-    nx = len(tmp.pfts1d_lat)
-    pfts1d_area = np.zeros(nx)
-    for i,lat,lon in zip(range(nx),tmp.pfts1d_lat,tmp.pfts1d_lon):
-        ixlat = abs(lat-tmp.grid1d_lat)<0.1
-        ixlon = abs(lon-tmp.grid1d_lon)<0.1
-        ix    = (ixlat)&(ixlon)
-
-        pfts1d_area[i] = la[ix]
-
-    lapft = pfts1d_area*tmp.pfts1d_wtgcell
-    lapft.name = 'patch area'
-    lapft.attrs['long_name'] = 'pft patch area, within the sparsegrid'
-    lapft.attrs['units'] = 'km2'
-    return lapft
-
-def get_cfs(attrs,datavar,ds):
-    if datavar in attrs.index:
-        cf1   = attrs.cf1[datavar]
-        cf2   = attrs.cf2[datavar]
-        units = attrs.units[datavar]
-    else:
-        cf1   = 1/365
-        cf2   = 0        #flag to use 1/la.sum()
-        if datavar in ds:
-            units = ds[datavar].attrs['units']
-        else:
-            units = 'tbd'       
-    return cf1,cf2,units
-
-def ann_mean(x,cf=1/365):
-    ny = len(np.unique(x['time.year']))
-    xann = cf*(month_wts(ny)*x).groupby('time.year').sum()
-    return xann
-
-def reg_mean(x,la,cf=0,g=[]):
-    if len(g)==0: #global mean
-        g = la.copy(deep=True)*0+1
-        g.name = 'glob'
-    if cf==0:
-        cf = 1/la.groupby(g).sum()
-    xreg = cf*(la.values*x).groupby(g).sum().compute()
-    if 'glob' in xreg.dims:
-        xreg = xreg.isel(glob=0).drop('glob')
-    return xreg
-
-def calc_mean(datavar,ens,d='global',
-              csv='/glade/scratch/djk2120/PPEn11/surv.csv',
-              overwrite=False,
-              save=True):
-    
-    f = ens+'_'+datavar+'_ann.nc'
-    preload = '/glade/u/home/djk2120/clm5ppe/data/'+f
-    
-    if not glob.glob(preload):
-        preload = '../data/'+f
-
-    if overwrite:
-        os.system('rm '+preload)
-      
-    if glob.glob(preload):
-        xout = xr.open_dataset(preload)
-    else:
-        ds0,la,lapft,attrs,paramkey,keys = ppe_init(csv=csv)
-        dvs   = datavar.split('-')
-        domains = {'h0':['global','biome'],
-                   'h1':['pft']}
-        xout = xr.Dataset()
-        for htape,la_x in zip(['h0','h1'],[la,lapft]):
-            ds    = get_ensemble(dvs,ens,htape,csv='',keys=keys,paramkey=paramkey)
-            cf1,cf2,units = get_cfs(attrs,datavar,ds)
-            if dvs[0] in ds:
-                x     = ds[dvs[0]]
-                if len(dvs)==2:
-                    ix = ds[dvs[1]]>0
-                    x  = (x/ds[dvs[1]]).where(ix).fillna(0)
-
-                for domain in domains[htape]:
-                    if domain=='global':
-                        g=[]
-                    else:
-                        g=ds[domain]
-
-                    xann     = ann_mean(x,cf1)
-                    xann_reg = reg_mean(xann,la_x,cf2,g)                
-                    v = datavar+'_'+domain
-                    xout[v]=xann_reg
-                
-        xout.attrs={'units':units}
-    
-    if not glob.glob(preload):
-        if save:
-            if not os.path.isdir('../data/'):
-                os.system('mkdir ../data')
-            xout.to_netcdf(preload)
-    
-    #######
-    v = datavar+'_'+d
-    x = xout[v]
-    xm    = x.mean(dim='year')
-    xiav  = x.std(dim='year')
-    units = xout.attrs['units']
-    
-    return xm,xiav,units
-
 def find_pair(da,params,minmax,p):
     '''
     returns a subset of da, corresponding to parameter-p
@@ -320,26 +353,26 @@ def top_n(da,nx,params,minmax,uniques=[]):
     
     return xmins,xmaxs,pvals
 
-def rank_plot(da,ds,nx,ll=True,title=None,xlabel=None):
+def rank_plot(da,ds,nx,ax=None):
     xmins,xmaxs,pvals = top_n(da,nx,ds.param,ds.minmax)
     xdef = da.isel(ens=0)
-    plt.plot([xdef,xdef],[0,nx-1],'k:',label='default')
-    plt.scatter(xmins,range(nx),marker='o',facecolors='none', edgecolors='r',label='low-val')
-    plt.plot(xmaxs,range(nx),'ro',label='high-val')
     
-    if ll:
-        plt.legend(loc=3)
+    if not ax:
+        fig=plt.figure()
+        ax=fig.add_subplot()
+    
+    ax.plot([xdef,xdef],[0,nx-1],'k:',label='default')
+    ax.scatter(xmins,range(nx),marker='o',facecolors='none', edgecolors='r',label='low-val')
+    ax.plot(xmaxs,range(nx),'ro',label='high-val')
+
     i=-1
     for xmin,xmax in zip(xmins,xmaxs):
         i+=1
-        plt.plot([xmin,xmax],[i,i],'r')
-    plt.yticks(range(nx),pvals)
-    if not xlabel:
-        xlabel = da.name+' ['+da.attrs['units']+']'
-    if not title:
-        title = da.name
-    plt.xlabel(xlabel)
-    plt.title(title);
+        ax.plot([xmin,xmax],[i,i],'r')
+    ax.set_yticks(range(nx))
+    ax.set_yticklabels([p[:15] for p in pvals])
+
+
 
 def brown_green():
     '''

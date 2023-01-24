@@ -1,1 +1,1 @@
-from .analysis import get_ensemble,calc_mean,get_params,month_wts,get_cfs,find_pair,top_n,rank_plot,brown_green
+from .analysis import get_files,get_ds,get_exp,amean,gmean,get_ix,pftgrid,get_map,find_pair,top_n,rank_plot,brown_green
