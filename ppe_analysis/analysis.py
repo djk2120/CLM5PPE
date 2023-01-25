@@ -7,6 +7,19 @@ import matplotlib
 import matplotlib.pyplot as plt
 import glob
 
+cfs={'QRUNOFF':{'cf1':24*60*60,'cf2':None},
+     'GPP': {'cf1':24*60*60,'cf2':1e-9},
+     'AR':  {'cf1':24*60*60,'cf2':1e-9},
+     'HR':  {'cf1':24*60*60,'cf2':1e-9},
+     'NBP': {'cf1':24*60*60,'cf2':1e-9},
+     'FAREA_BURNED': {'cf1':24*60*60,'cf2':1}}
+units={'QRUNOFF':'mm/d',
+       'GPP':'PgC/yr',
+       'HR':'PgC/yr',
+       'AR':'PgC/yr',
+       'NBP':'PgC/yr',
+       'FAREA_BURNED':'km2'}
+
 def get_files(exp,tape='h0',yy=()):
 
     top='/glade/campaign/asp/djk2120/PPEn11/'
