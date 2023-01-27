@@ -7,18 +7,6 @@ import matplotlib
 import matplotlib.pyplot as plt
 import glob
 
-cfs={'QRUNOFF':{'cf1':24*60*60,'cf2':None},
-     'GPP': {'cf1':24*60*60,'cf2':1e-9},
-     'AR':  {'cf1':24*60*60,'cf2':1e-9},
-     'HR':  {'cf1':24*60*60,'cf2':1e-9},
-     'NBP': {'cf1':24*60*60,'cf2':1e-9},
-     'FAREA_BURNED': {'cf1':24*60*60,'cf2':1}}
-units={'QRUNOFF':'mm/d',
-       'GPP':'PgC/yr',
-       'HR':'PgC/yr',
-       'AR':'PgC/yr',
-       'NBP':'PgC/yr',
-       'FAREA_BURNED':'km2'}
 
 def get_files(exp,tape='h0',yy=()):
 
@@ -30,14 +18,14 @@ def get_files(exp,tape='h0',yy=()):
     yys={oaat:(2005,2014) for oaat in oaats}
     key['transient']='/glade/campaign/asp/djk2120/PPEn11/csvs/lhc220926.txt'
     yys['transient']=(1850,2014)
-    
+
 
     df=pd.read_csv(key[exp])  
     if not yy:
         yr0,yr1=yys[exp]
     else:
         yr0,yr1=yy
-    
+
     if exp=='transient':
         keys = df.member.values
         appends={}
@@ -53,8 +41,31 @@ def get_files(exp,tape='h0',yy=()):
     else:
         keys=df.key.values
         appends={v:xr.DataArray(df[v].values,dims='ens') for v in ['key','param','minmax']}
+       
+    
+    
+    fs   = np.array(glob.glob(d+'*'+tape+'*'))
+    yrs  = np.array([int(f.split(tape)[1][1:5]) for f in fs])
 
-        
+    #bump back yr0, if needed
+    uyrs=np.unique(yrs)
+    yr0=uyrs[(uyrs/yr0)<=1][-1]
+
+    #find index to subset files
+    ix    = (yrs>=yr0)&(yrs<=yr1)
+    fs    = fs[ix] 
+
+    #organize files to match sequence of keys
+    ny=len(np.unique(yrs[ix]))
+    fkeys=np.array([f.split(exp+'_')[1].split('.')[0] for f in fs])    
+    if ny==1:
+        files=[fs[fkeys==k][0] for k in keys]
+        dims  = 'time'
+    else:
+        files=[list(fs[fkeys==k]) for k in keys]
+        dims  = ['ens','time']
+    
+    #add landarea information
     if exp=='transient':
         fla='landarea_transient.nc'
     else:
@@ -64,34 +75,6 @@ def get_files(exp,tape='h0',yy=()):
     if tape=='h1':
         appends['lapft']=la.landarea_pft
         
-
-    fs   = np.array(sorted(glob.glob(d+'*'+tape+'*')))
-    yrs  = np.array([int(f.split(tape)[1][1:5]) for f in fs])
-    mems = [f.split('/')[8].split('_')[-1].split('.')[0] for f in fs]
-    ix   = [mem in keys for mem in mems]
-    
-    files=fs[ix]
-    yrs=yrs[ix]
-    
-    #bump back yr0, if needed
-    uyrs=np.unique(yrs)
-    yr0=uyrs[(uyrs/yr0)<=1][-1]
-
-    #find index to subset files
-    ix    = (yrs>=yr0)&(yrs<=yr1)
-    yrs   = yrs[ix]
-    files = files[ix] 
-
-    ny=len(np.unique(yrs))
-    nens=len(keys)
-
-    if ny>1:
-        files = files.reshape([nens,ny])
-        files = [list(f) for f in files]
-        dims  = ['ens','time']
-    else:
-        dims  = 'ens'
-    
     return files,appends,dims
 
 
@@ -177,34 +160,28 @@ def get_exp(exp,dvs=[],tape='h0',yy=(),defonly=False):
     
     return ds
 
-def amean(da):
+def amean(da,cf=1/365):
     #annual mean
-    if da.name in cfs:
-        cf=cfs[da.name]['cf1']
-    else:
-        cf=1/365
-
     m  = da['time.daysinmonth']
     xa = cf*(m*da).groupby('time.year').sum().compute()
     xa.name=da.name
     return xa
 
-def gmean(da,la,g=[]):
+def gmean(da,la,g=[],cf=None,u=None):
     '''
     g defines the averaging group,
     g=[] is global, otherwise use ds.biome or ds.pft
     '''
     if len(g)==0:
         g=xr.DataArray(np.tile('global',len(da.gridcell)),dims='gridcell')
-    if da.name in cfs:
-        cf=cfs[da.name]['cf2']
-    else:
+    if not cf:
         cf=1/la.groupby(g).sum()
+        
     x=cf*(da*la).groupby(g).sum()
     x.name=da.name
     x.attrs=da.attrs
-    if x.name in units:
-        x.attrs['units']=units[da.name]
+    if u:
+        x.attrs['units']=u
     if 'group' in x.dims:
         x=x.isel(group=0)
     if len(x.dims)>0:
