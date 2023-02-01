@@ -44,7 +44,7 @@ def get_files(exp,tape='h0',yy=()):
        
     
     
-    fs   = np.array(glob.glob(d+'*'+tape+'*'))
+    fs   = np.array(sorted(glob.glob(d+'*'+tape+'*')))
     yrs  = np.array([int(f.split(tape)[1][1:5]) for f in fs])
 
     #bump back yr0, if needed
@@ -60,7 +60,7 @@ def get_files(exp,tape='h0',yy=()):
     fkeys=np.array([f.split(exp+'_')[1].split('.')[0] for f in fs])    
     if ny==1:
         files=[fs[fkeys==k][0] for k in keys]
-        dims  = 'time'
+        dims  = 'ens'
     else:
         files=[list(fs[fkeys==k]) for k in keys]
         dims  = ['ens','time']
@@ -95,7 +95,7 @@ def get_ds(files,dims,dvs=[],appends={},singles=[]):
     #add extra variables
     tmp = xr.open_dataset(f)
     for v in tmp.data_vars:
-        if 'time' not in tmp[v].dims:
+        if 'time' not in tmp[v].dims: 
             if v not in ds:
                 ds[v]=tmp[v]
     
@@ -128,7 +128,6 @@ def get_exp(exp,dvs=[],tape='h0',yy=(),defonly=False):
         dims='time'
         
     ds=get_ds(files,dims,dvs=dvs,appends=appends)
-    
     
     f,a,d=get_files(exp,tape='h0',yy=yy)
     singles=['RAIN','SNOW','TSA','RH2M','FSDS','WIND']
