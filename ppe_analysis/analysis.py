@@ -6,6 +6,7 @@ import pandas as pd
 import matplotlib
 import matplotlib.pyplot as plt
 import glob
+import dask
 
 
 def get_files(exp,tape='h0',yy=()):
@@ -175,8 +176,8 @@ def gmean(da,la,g=[],cf=None,u=None):
         g=xr.DataArray(np.tile('global',len(da.gridcell)),dims='gridcell')
     if not cf:
         cf=1/la.groupby(g).sum()
-        
-    x=cf*(da*la).groupby(g).sum()
+    with dask.config.set(**{'array.slicing.split_large_chunks': True}):
+        x=cf*(da*la).groupby(g).sum()
     x.name=da.name
     x.attrs=da.attrs
     if u:
@@ -240,57 +241,13 @@ def pftgrid(da,ds):
     
     return da_out
 
-def get_map(da):
-    '''
-    Regrid from sparsegrid to standard lat/lon
-    
-    Better to do any dimension-reducing math before calling this function. 
-    Could otherwise be pretty slow...
-    '''
-    
-    #ACCESS the sparsegrid info
-    thedir  = '/glade/u/home/forrest/ppe_representativeness/output_v4/'
-    thefile = 'clusters.clm51_PPEn02ctsm51d021_2deg_GSWP3V1_leafbiomassesai_PPE3_hist.annual+sd.400.nc'
-    sg = xr.open_dataset(thedir+thefile)
-    
-    #DIAGNOSE the shape of the output map
-    newshape = []
-    coords=[]
-    #  grab any dimensions that arent "gridcell" from da
-    for coord,nx in zip(da.coords,da.shape):
-        if nx!=400:
-            newshape.append(nx)
-            coords.append((coord,da[coord].values))
-    #  grab lat/lon from sg
-    for coord in ['lat','lon']:
-        nx = len(sg[coord])
-        newshape.append(nx)
-        coords.append((coord,sg[coord].values))
 
-    #INSTANTIATE the outgoing array
-    array = np.zeros(newshape)+np.nan
-    nd    = len(array.shape)
-    
-    #FILL the array
-    ds = xr.open_dataset('/glade/scratch/djk2120/PPEn11/hist/CTL2010/PPEn11_CTL2010_OAAT0399.clm2.h0.2005-02-01-00000.nc')
-    for i in range(400):
-        lat=ds.grid1d_lat[i]
-        lon=ds.grid1d_lon[i]
-        cc = sg.rcent.sel(lat=lat,lon=lon,method='nearest')
-        ix = sg.cclass==cc
-        
-        
-        if nd==2:
-            array[ix]=da.isel(gridcell=i)
-        else:
-            nx = ix.sum().values
-            array[:,ix]=np.tile(da.isel(gridcell=i).values[:,np.newaxis],[1,nx])
-    
-    #OUTPUT as DataArray
-    da_map = xr.DataArray(array,name=da.name,coords=coords)
-    da_map.attrs=da.attrs
+def get_map(da,sgmap=None):
+    if not sgmap:
+        sgmap=xr.open_dataset('sgmap.nc')
+    return da.sel(gridcell=sgmap.cclass).where(sgmap.notnan).compute()
 
-    return da_map
+
 
 def find_pair(da,params,minmax,p):
     '''
