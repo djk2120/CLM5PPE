@@ -91,13 +91,14 @@ class Ensemble(object):
                 else:
                     self.add_member(member)
 
-    def add_lhcs(self,range_info,prefix,nextnum,n_samples):
+    def add_lhcs(self,range_info,prefix,nextnum,n_samples,lhc=None):
         ct = nextnum-1
         params = [p for p in range_info]
 
-        space = Space([(0.,1.) for p in params])
-        lhs = Lhs(lhs_type="classic", criterion=None)
-        lhc = lhs.generate(space.dimensions, n_samples)
+        if not lhc:
+            space = Space([(0.,1.) for p in params])
+            lhs = Lhs(lhs_type="classic", criterion=None)
+            lhc = lhs.generate(space.dimensions, n_samples)
 
         pfile = xr.open_dataset(self._basefile,decode_times=False)
 
