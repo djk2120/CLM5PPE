@@ -2,7 +2,7 @@ import sys
 import os
 import xarray as xr
 import numpy as np
-import dask
+import glob
 from datetime import date
 
 
@@ -16,14 +16,15 @@ cfs['QRUNOFF']={'mean':(24*60*60/365,None,'mm/d'),
                 'amp':(24*60*60,None,'mm/d')}
 
 
-def amean(da,cf=1/365):
+def amean(da,cf=None):
     #annual mean
+    if not cf:
+        cf=1/365
     m  = da['time.daysinmonth']
     xa = cf*(m*da).groupby('time.year').sum().compute()
-    xa.name=da.name
     return xa
 
-def gmean(da,la,g=[],cf=None,u=None):
+def gmean(da,la,g=[],cf=None):
     '''
     g defines the averaging group,
     g=[] is global, otherwise use ds.biome or ds.pft
@@ -32,17 +33,10 @@ def gmean(da,la,g=[],cf=None,u=None):
         g=xr.DataArray(np.tile('global',len(da.gridcell)),dims='gridcell')
     if not cf:
         cf=1/la.groupby(g).sum()
-    with dask.config.set(**{'array.slicing.split_large_chunks': True}):
-        x=cf*(da*la).groupby(g).sum()
-    x.name=da.name
-    x.attrs=da.attrs
-    if u:
-        x.attrs['units']=u
+
+    x=cf*(da*la).groupby(g).sum()
     if 'group' in x.dims:
         x=x.isel(group=0)
-    if len(x.dims)>0:
-        if x.dims[0]!='ens':
-            x=x.T  
     
     return x.compute()
 
@@ -138,10 +132,12 @@ def postproc(d,exp,key):
 
 
 def main():
+    f=sys.argv[1]
+
     exp=f.split('PPEn11/')[1].split('/')[0]
     key=f.split('_')[-1].split('.')[0]
     d0='/glade/campaign/asp/djk2120/PPEn11/'
-    d=d+exp+'/postp/'
+    d=d0+exp+'/postp/'
     if not os.path.isdir(d):
         os.system('mkdir -p '+d)
 
