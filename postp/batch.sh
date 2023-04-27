@@ -1,5 +1,8 @@
+mv OAAT_surv.nc OAAT_surv.old
+
 while read exp; do
-    if [ $exp != 'CTL2010' ]; then
-	sed 's/CTL2010/'$exp'/g' crunch/CTL2010.sh > 'crunch/'$exp'.sh'
-    fi
+    sed 's/CTL2010/'$exp'/g' crunch/template.sh > 'crunch/'$exp'.sh'
+    jobid=$(qsub 'crunch/'$exp'.sh')
 done <exps.txt
+sed 's/jobid/'$jobid'/g' enscat.sh > enscat_tmp.sh
+qsub enscat_tmp.sh

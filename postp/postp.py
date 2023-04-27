@@ -103,12 +103,13 @@ def postproc(d,exp,key):
         dsets[tape]=ds
     dsets={'global':dsets['h0'],'biome':dsets['h0'],'pft':dsets['h1']}
     
-    dvs=['GPP','AR','HR','NPP','NBP',
-         'EFLX_LH_TOT','FCTR','FCEV','FGEV',
-         'SOILWATER_10CM','TWS','QRUNOFF','SNOWDP','H2OSNO',
-         'TLAI','FSR',
+    dvs=['GPP','AR','HR','NPP','NBP','NEP','ER',
+         'EFLX_LH_TOT','FCTR','FCEV','FGEV','BTRANMN','FGR','FSH','Rnet',
+         'SOILWATER_10CM','TWS','QRUNOFF','SNOWDP','H2OSNO','FSNO',
+         'TLAI','FSR','ALTMAX','TV','TG',
          'FAREA_BURNED','COL_FIRE_CLOSS',
-         'TOTVEGC','TOTECOSYSC','TOTSOMC_1m']
+         'TOTVEGC','TOTECOSYSC','TOTSOMC_1m',
+         'TOTVEGN','TOTECOSYSN']
     
     out=xr.Dataset()
     domains=['global','global','global','biome','pft']
