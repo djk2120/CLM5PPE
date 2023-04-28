@@ -14,5 +14,8 @@ ds['exp']=exps
 whit=xr.open_dataset(d+'whitkey.nc')
 ds['biome_name']=xr.DataArray(whit.biome_name.values,dims='biome')
 ds['la']=xr.open_dataset(d+'sparsegrid_landarea.nc').landarea
+f='/glade/campaign/asp/djk2120/PPEn11/paramfiles/LHC0000.nc'
+tmp=xr.open_dataset(f)
+ds['pft_name']=xr.DataArray([str(p)[2:-1].strip() for p in tmp.pftname.values[:17]],dims='pft')
 ds.attrs.pop('history');
 ds.to_netcdf(d+'OAAT_surv.nc')

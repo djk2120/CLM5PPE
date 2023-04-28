@@ -6,11 +6,12 @@
 #PBS -j oe
 #PBS -k eod
 #PBS -l select=1:ncpus=1
-
+#PBS -W depend=afterok:jobid
 module load nco
 source ~/.bashrc
 conda activate ppe-py
 
+sleep 600 #allow 10 minutes for postp to wrap
 mkdir tmp
 
 files=""

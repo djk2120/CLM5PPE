@@ -268,55 +268,30 @@ def find_pair(da,params,minmax,p):
 
     return da.sel(ens=[emin,emax])
 
-def top_n(da,nx,params,minmax,uniques=[]):
-    '''
-    Sort for the largest perturbation effects
-    
-    returns lists of xmin, xmax, and the param_name for the top nx perturbations
-    '''
-    
-    if not uniques:
-        uniques = list(np.unique(params))
-        if 'default' in uniques:
-            uniques.remove('default')
-    
-    xmins=[];xmaxs=[];dxs=[]
-    for u in uniques:
-        pair  = find_pair(da,params,minmax,u)
-        xmin  = pair[0].values
-        xmax  = pair[1].values
-        dx    = abs(xmax-xmin)
-
-        xmins.append(xmin)
-        xmaxs.append(xmax)
-        dxs.append(dx)
-
-    ranks = np.argsort(dxs)
-
-    pvals = [uniques[ranks[i]] for i in range(-nx,0)]
-    xmins = [xmins[ranks[i]]   for i in range(-nx,0)]
-    xmaxs = [xmaxs[ranks[i]]   for i in range(-nx,0)]
-    
-    return xmins,xmaxs,pvals
-
-def rank_plot(da,ds,nx,ax=None):
-    xmins,xmaxs,pvals = top_n(da,nx,ds.param,ds.minmax)
-    xdef = da.isel(ens=0)
+def top_n(da,nx):
+    ''' return top_n by param effect '''
+    dx=abs(da.sel(minmax='max')-da.sel(minmax='min'))
+    ix=dx.argsort()[-nx:].values
+    x=da.isel(param=ix)
+    return x
+def rank_plot(da,nx,ax=None):
+    x = top_n(da,nx)
+    xdef = da.sel(param='default',minmax='min')
     
     if not ax:
         fig=plt.figure()
         ax=fig.add_subplot()
     
     ax.plot([xdef,xdef],[0,nx-1],'k:',label='default')
-    ax.scatter(xmins,range(nx),marker='o',facecolors='none', edgecolors='r',label='low-val')
-    ax.plot(xmaxs,range(nx),'ro',label='high-val')
+    ax.scatter(x.sel(minmax='min'),range(nx),marker='o',facecolors='none', edgecolors='r',label='low-val')
+    ax.plot(x.sel(minmax='max'),range(nx),'ro',label='high-val')
 
     i=-1
-    for xmin,xmax in zip(xmins,xmaxs):
+    for xmin,xmax in x:
         i+=1
         ax.plot([xmin,xmax],[i,i],'r')
     ax.set_yticks(range(nx))
-    ax.set_yticklabels([p[:15] for p in pvals])
+    ax.set_yticklabels([p[:15] for p in x.param.values])
 
 
 
