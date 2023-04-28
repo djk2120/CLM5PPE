@@ -1,0 +1,63 @@
+! h1 stream (monthly average, finest sub-grid)
+! Emon, Lmon
+hist_mfilt(2) = 120
+hist_dov2xy(2) = .false.
+hist_nhtfrq(2) = 0
+hist_type1d_pertape(2) = ' '
+hist_fincl2 += 'ELAI','TLAI', 'TSA','TREFMNAV','TREFMXAV', 'BTRANMN', 'Vcmx25Z', 'FSH', 'VEGWP', 'FCTR', 'FCEV', 'FGEV', 'FIRE', 'FSR', 'FIRA', 'FSA', 'GSSUNLN', 'GSSHALN', 'TSKIN'
+hist_fincl2 += 'GPP', 'NPP', 'AGNPP', 'TOTVEGC', 'NPP_NUPTAKE', 'AR', 'HR', 'HTOP'
+
+! h5 stream (daily average, gridcell-level)
+! day, Eday
+hist_mfilt(6) = 1825
+hist_dov2xy(6) = .false.
+hist_nhtfrq(6) = -24
+hist_type1d_pertape(6) = 'GRID'
+hist_fincl6 += 'SOILWATER_10CM', 'TOTSOILLIQ', 'TOTSOILICE', 'EFLX_LH_TOT', 'FSH', 'FGR12', 'FSM', 'QSNOEVAP', 'TLAI', 'QDRAI', 'QDRAI_PERCH', 'QOVER', 'FSA', 'FIRA', 'H2OSNO', 'QSNOFRZ', 'QFLX_SNOW_DRAIN', 'SNOWDP', 'H2OSFC', 'TV', 'TG', 'TAUX', 'TAUY', 'QVEGT', 'TWS', 'QVEGE', 'QSOIL','TSKIN','FSNO','QINTR','SNOWICE','SNOWLIQ','QRUNOFF','H2OSOI','TSOI_10CM','VEGWPLN','VEGWPPD'
+
+! h6 stream (daily average, landunit-level)
+! Eday
+hist_mfilt(7) = 1825
+hist_dov2xy(7) = .false.
+hist_nhtfrq(7) = -24
+hist_type1d_pertape(7) = 'LAND'
+hist_fincl7 += 'TREFMXAV','TREFMNAV'
+
+!----------------------------------------------------------------------------------
+! Settings from output_bgc_highfreq
+!----------------------------------------------------------------------------------
+
+! h5 stream (daily average, gridcell-level)
+hist_fincl6 += 'GPP', 'NPP', 'AR', 'HR', 'ALT'
+
+!----------------------------------------------------------------------------------
+! Settings from output_base_highfreq
+!----------------------------------------------------------------------------------
+
+! h7 stream (3-hourly average, gridcell-level)
+! 3hr, E3hr, CF3hr
+! 3hr requires QRUNOFF for time mean, and SOILWATER_10CM, TSKIN for time point (I)
+! CF3hr requires QFLX_SOLIDEVAP_FROM_TOP_LAYER for time point (I)
+hist_mfilt(8) = 2920
+hist_dov2xy(8) = .false.
+hist_nhtfrq(8) = -3
+hist_type1d_pertape(8) = 'GRID'
+hist_fincl8 += 'TSA','RH2M','SOILWATER_10CM:I','FSH','EFLX_LH_TOT','FSDS','QRUNOFF','QFLX_SOLIDEVAP_FROM_TOP_LAYER:I','TSKIN:I'
+
+!----------------------------------------------------------------------------------
+! Settings from output_bgc_highfreq
+!----------------------------------------------------------------------------------
+
+! h7 stream (3-hourly average, gridcell-level)
+! E3hr requires GPP, AR, HR for time mean
+hist_fincl8 += 'GPP','AR','HR'
+
+
+
+
+! h8 stream (daily average, finest sub-grid)
+hist_mfilt(9) = 1825
+hist_dov2xy(9) = .false.
+hist_nhtfrq(9) = -24
+hist_type1d_pertape(9) = ' '
+hist_fincl9='TLAI'

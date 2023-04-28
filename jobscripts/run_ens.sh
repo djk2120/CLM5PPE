@@ -35,7 +35,7 @@ while read p; do  #loop through paramfiles
 	./xmlchange EXEROOT=$exeroot
 	./xmlchange DOUT_S=FALSE
 	./xmlchange PROJECT=$PROJECT
-	./xmlchange JOB_QUEUE="regular"
+	#./xmlchange JOB_QUEUE="regular"
 
 	#comment out previous paramfile from user_nl_clm
 	:> user_nl_clm.tmp
