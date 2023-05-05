@@ -19,6 +19,8 @@ def get_files(exp,tape='h0',yy=()):
     yys={oaat:(2005,2014) for oaat in oaats}
     key['transient']='/glade/campaign/asp/djk2120/PPEn11/csvs/lhc220926.txt'
     yys['transient']=(1850,2014)
+    key['EmBE']='/glade/work/linnia/CLM-PPE-LAI_tests/exp1_EmBE/psets_exp1_EmBE_230419.txt' #LRH
+    yys['EmBE']=(1850,2014) #LRH
 
 
     df=pd.read_csv(key[exp])  
@@ -27,7 +29,7 @@ def get_files(exp,tape='h0',yy=()):
     else:
         yr0,yr1=yy
 
-    if exp=='transient':
+    if exp=='transient' or exp=='EmBE': #LRH
         keys = df.member.values
         appends={}
         params=[]
@@ -36,14 +38,16 @@ def get_files(exp,tape='h0',yy=()):
                 appends[p]=xr.DataArray(np.concatenate(([np.nan],df[p].values)),dims='ens')
                 params.append(p)
         appends['params']=xr.DataArray(params,dims='param')
-        keys=np.concatenate((['LHC0000'],keys))
+        if exp=='transient': #LRH
+            keys=np.concatenate((['LHC0000'],keys))
+        else: #LRH
+            keys=np.concatenate((['exp1_EmBE0001'],keys)) #LRH
         appends['key']=xr.DataArray(keys,dims='ens')
 
     else:
         keys=df.key.values
         appends={v:xr.DataArray(df[v].values,dims='ens') for v in ['key','param','minmax']}
        
-    
     
     fs   = np.array(sorted(glob.glob(d+'*'+tape+'*')))
     yrs  = np.array([int(f.split(tape)[1][1:5]) for f in fs])
@@ -58,16 +62,21 @@ def get_files(exp,tape='h0',yy=()):
 
     #organize files to match sequence of keys
     ny=len(np.unique(yrs[ix]))
-    fkeys=np.array([f.split(exp+'_')[1].split('.')[0] for f in fs])    
+    
+    if exp=='EmBE': #LRH
+        fkeys=np.array([f.split('transient_')[1].split('.')[0] for f in fs]) #LRH
+    else: #LRH
+        fkeys=np.array([f.split(exp+'_')[1].split('.')[0] for f in fs])
+
     if ny==1:
         files=[fs[fkeys==k][0] for k in keys]
         dims  = 'ens'
     else:
         files=[list(fs[fkeys==k]) for k in keys]
         dims  = ['ens','time']
-    
+
     #add landarea information
-    if exp=='transient':
+    if exp=='transient' or 'EmBE': #LRH
         fla='landarea_transient.nc'
     else:
         fla='landarea_oaat.nc'
