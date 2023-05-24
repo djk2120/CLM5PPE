@@ -12,5 +12,5 @@ for f in $d*".h0."*; do
 	printf -v k "%03d" $j
 	:>"f"$k".txt"
     fi
-    echo $f > "f"$k".txt"
+    echo $f >> "f"$k".txt"
 done

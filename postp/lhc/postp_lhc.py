@@ -67,7 +67,7 @@ def makeann(file_list):
 
         out=xr.Dataset(ann)
         out.attrs={'orig':f,'key':key,'lafile':lafile,'bfile':bfile}
-        out.to_netcdf(fout)
+        out.to_netcdf(fout,unlimited_dims='year')
 
 
 file_list=sys.argv[1]

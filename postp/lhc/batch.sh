@@ -7,8 +7,8 @@ for f in *.txt; do
     job=$fname".job"
     sed 's/CTL2010/'$fname'/g' template.sh > $job
     sed -i 's/zqz/'$f'/g' $job
-    #qsub $job
+    qsub $job
 done
 
 
-rm *.txt
+
