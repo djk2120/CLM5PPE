@@ -18,10 +18,10 @@ then
 fi
 
 while read p; do
-    for case in ${cases[@]}; do
+    for basecase in ${cases[@]}; do
 
-	basecase=$SCRIPTS$ensemble"/basecases/"$case
-	thiscase=$SCRIPTS$ensemble"/"$case"/"$case"_"$p
+	case=$(basename $basecase)
+	thiscase=$CASEDIR$case"/"$case"_"$p
 	
 	cd $SCRIPTS
 	./create_clone --case $thiscase --clone $basecase --keepexe
