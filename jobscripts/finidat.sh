@@ -1,7 +1,7 @@
 #!/bin/bash
 prevcase=$1
-scratch=$2
-thiscase=$3
+thiscase=$2
+scratch="/glade/scratch/djk2120/"
 
 cd $thiscase
 #handle finidat
@@ -9,8 +9,12 @@ if [ $prevcase != 'none' ]; then
 
     #find the appropirate restart file
     casename=${prevcase##*/}
+    echo $casename
+
     restart=$scratch$casename'/run/'$casename".clm2.r."*".nc"
     restart=$(echo $restart) #expands wildcard
+    echo $restart
+
 
     if [ -f $restart ]; then
 	#comment out any finidat from user_nl_clm
