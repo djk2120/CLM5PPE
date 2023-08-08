@@ -83,9 +83,9 @@ while read p; do  #loop through paramfiles
 
     done
 
-    # #submit job, with next jobs tethered via PBS afterok
+    #submit job, with next jobs tethered via PBS afterok
     bash $tether $joblist $template
-    # #this is equivalent to ./case.submit of $firstcase 
-    # #plus a bit extra to automatically submit any tethered cases
+    #this is equivalent to ./case.submit of $firstcase 
+    #plus a bit extra to automatically submit any tethered cases
 
 done<$paramList
