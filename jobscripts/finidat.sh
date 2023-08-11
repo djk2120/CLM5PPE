@@ -11,10 +11,16 @@ if [ $prevcase != 'none' ]; then
     casename=${prevcase##*/}
     echo $casename
 
-    restart=$scratch$casename'/run/'$casename".clm2.r."*".nc"
-    restart=$(echo $restart) #expands wildcard
+    d=$scratch$casename'/run/'
+    lastyr=-1
+    restart="missing"
+    for r in $d*clm2.r.*; do
+	yr=$(echo $r | cut -d- -f1 | cut -d. -f4)
+	if [[ $((10#$yr)) > $lastyr ]]; then
+	    restart=$r
+	fi
+    done
     echo $restart
-
 
     if [ -f $restart ]; then
 	#comment out any finidat from user_nl_clm
@@ -31,6 +37,7 @@ if [ $prevcase != 'none' ]; then
 	#append to user_nl_clm
 	echo -e 'finidat="'$restart'"'>>user_nl_clm
     else
+	echo "ERROR: MISSING RESTART FILE"
 	exit 1
     fi
 fi
