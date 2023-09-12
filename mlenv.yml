@@ -1,4 +1,4 @@
-name: /glade/u/home/linnia/miniconda3/envs/mlenv
+name: ppe-py-ml
 channels:
   - defaults
 dependencies:
