@@ -13,23 +13,33 @@ def get_files(exp,tape='h0',yy=()):
 
     top='/glade/campaign/asp/djk2120/PPEn11/'
     d=top+exp+'/hist/'
-
+    
+    if exp=='pftLAI':
+        d='/glade/work/linnia/CLM-PPE-LAI_tests/exp2_pftLAI/data/hist/'
+    elif exp=='SSP370':
+        d='/glade/campaign/cgd/tss/projects/PPE/PPEn11_LHC/SSP370/hist/'
+        
+        
     oaats=['CTL2010','C285','C867','AF1855','AF2095','NDEP']
     key={oaat:'/glade/campaign/asp/djk2120/PPEn11/csvs/surv.csv' for oaat in oaats}
     yys={oaat:(2005,2014) for oaat in oaats}
     key['transient']='/glade/campaign/asp/djk2120/PPEn11/csvs/lhc220926.txt'
     yys['transient']=(1850,2014)
-    key['EmBE']='/glade/work/linnia/CLM-PPE-LAI_tests/exp1_EmBE/psets_exp1_EmBE_230419.txt' #LRH
-    yys['EmBE']=(1850,2014) #LRH
-
-
+    #LRH: need to make path an input to function
+    key['EmBE']='/glade/work/linnia/CLM-PPE-LAI_tests/exp1_EmBE/psets_exp1_EmBE_230419.txt' 
+    yys['EmBE']=(1850,2014)
+    key['pftLAI']='/glade/work/linnia/CLM-PPE-LAI_tests/exp2_pftLAI/pftLAI.txt'
+    yys['pftLAI']=(1850,2014)
+    key['SSP370']='/glade/campaign/asp/djk2120/PPEn11/csvs/lhc220926.txt'
+    yys['SSP370']=(2015,2099)
+    
     df=pd.read_csv(key[exp])  
     if not yy:
         yr0,yr1=yys[exp]
     else:
         yr0,yr1=yy
 
-    if exp=='transient' or exp=='EmBE': #LRH
+    if exp=='transient' or exp=='SSP370' or exp=='EmBE' or exp=='pftLAI': #LRH
         keys = df.member.values
         appends={}
         params=[]
@@ -38,20 +48,17 @@ def get_files(exp,tape='h0',yy=()):
                 appends[p]=xr.DataArray(np.concatenate(([np.nan],df[p].values)),dims='ens')
                 params.append(p)
         appends['params']=xr.DataArray(params,dims='param')
-        if exp=='transient': #LRH
+        if exp=='transient' or exp=='SSP370': #LRH
             keys=np.concatenate((['LHC0000'],keys))
-        else: #LRH
-            keys=np.concatenate((['exp1_EmBE0001'],keys)) #LRH
         appends['key']=xr.DataArray(keys,dims='ens')
 
     else:
         keys=df.key.values
         appends={v:xr.DataArray(df[v].values,dims='ens') for v in ['key','param','minmax']}
        
-    
     fs   = np.array(sorted(glob.glob(d+'*'+tape+'*')))
     yrs  = np.array([int(f.split(tape)[1][1:5]) for f in fs])
-
+    
     #bump back yr0, if needed
     uyrs=np.unique(yrs)
     yr0=uyrs[(uyrs/yr0)<=1][-1]
@@ -63,10 +70,12 @@ def get_files(exp,tape='h0',yy=()):
     #organize files to match sequence of keys
     ny=len(np.unique(yrs[ix]))
     
-    if exp=='EmBE': #LRH
-        fkeys=np.array([f.split('transient_')[1].split('.')[0] for f in fs]) #LRH
-    else: #LRH
+    if exp=='transient' or exp=='SSP370':
         fkeys=np.array([f.split(exp+'_')[1].split('.')[0] for f in fs])
+    elif exp=='EmBE':
+        fkeys=np.array([f.split('transient_')[1].split('.')[0] for f in fs]) #LRH
+    else:
+        fkeys=np.array([f.split('transient_')[1].split('.')[0] for f in fs]) #LRH
 
     if ny==1:
         files=[fs[fkeys==k][0] for k in keys]
@@ -76,7 +85,7 @@ def get_files(exp,tape='h0',yy=()):
         dims  = ['ens','time']
 
     #add landarea information
-    if exp=='transient' or 'EmBE': #LRH
+    if exp=='transient' or 'SSP370' or 'EmBE' or 'pftLAI': #LRH
         fla='landarea_transient.nc'
     else:
         fla='landarea_oaat.nc'
@@ -126,7 +135,7 @@ def get_ds(files,dims,dvs=[],appends={},singles=[]):
 
 def get_exp(exp,dvs=[],tape='h0',yy=(),defonly=False):
     '''
-    exp: 'transient','CTL2010','C285','C867','AF1855','2095','NDEP'
+    exp: 'SSP370','transient','CTL2010','C285','C867','AF1855','2095','NDEP'
     dvs:  e.g. ['TLAI']    or [] returns all available variables
     tape: 'h0','h1',etc.
     yy:   e.g. (2005,2014) or () returns all available years
@@ -140,7 +149,7 @@ def get_exp(exp,dvs=[],tape='h0',yy=(),defonly=False):
     ds=get_ds(files,dims,dvs=dvs,appends=appends)
     
     f,a,d=get_files(exp,tape='h0',yy=yy)
-    singles=['RAIN','SNOW','TSA','RH2M','FSDS','WIND']
+    singles=['RAIN','SNOW','TSA','RH2M','FSDS','WIND','TBOT','QBOT','FLDS']
     tmp=get_ds(f[0],'time',dvs=singles)
     for s in singles:
         ds[s]=tmp[s]
