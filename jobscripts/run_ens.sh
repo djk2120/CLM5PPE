@@ -32,7 +32,7 @@ while read p; do
 	cd $thiscase
 	./case.setup
 	./xmlchange PROJECT=$PROJECT
-
+	./xmlchange JOB_QUEUE="regular"
 	#comment out previous paramfile from user_nl_clm
 	:> user_nl_clm.tmp
 	while read line; do
