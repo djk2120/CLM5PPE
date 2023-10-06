@@ -60,7 +60,7 @@ while read p; do
 done <$paramList
 
 
-if [[ $needdepr -eq 0 ]]; 
+if [[ $needdepr -eq 0 ]]; then
     echo "Some files were deprecated!"
     echo "  see: "$depr
 fi
