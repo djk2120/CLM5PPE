@@ -1,0 +1,12 @@
+#!/bin/bash
+#PBS -N key
+#PBS -A P93300041
+#PBS -l select=1:ncpus=1:mem=10GB
+#PBS -l walltime=00:30:00
+#PBS -q casper
+#PBS -j oe
+#PBS -k eod
+
+source ~/.bashrc
+conda activate ppe-py
+python postp.py key
