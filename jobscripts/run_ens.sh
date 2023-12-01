@@ -32,7 +32,7 @@ while read p; do
 	cd $thiscase
 	./case.setup
 	./xmlchange PROJECT=$PROJECT
-	./xmlchange JOB_QUEUE="regular"
+
 	#comment out previous paramfile from user_nl_clm
 	:> user_nl_clm.tmp
 	while read line; do
@@ -53,7 +53,7 @@ while read p; do
 	if [ "$finidatFlag" = true ]
 	then
 	    if [[ $i -eq 1 ]]; then
-		bash $finidatScript $prevcase $SCRATCH $thiscase
+		bash $finidatScript $prevcase $thiscase $SCRATCH
 	    fi
 	fi
 
@@ -70,7 +70,7 @@ while read p; do
     # submit case (with tethering if needed)
     if [ "$tetherFlag" = false ]
     then
-	./case.submit -a "-l place=group=rack"
+	./case.submit
     else
 	#tethering setup
 	basecase="${cases[0]}"
