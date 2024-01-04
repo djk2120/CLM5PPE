@@ -1,9 +1,10 @@
 import numpy as np
 import pandas as pd
 import tensorflow as tf
+import sys
 
 # input to script
-idx = 2
+idx = sys.argv[1]
 
 #############################################
 # Setup
