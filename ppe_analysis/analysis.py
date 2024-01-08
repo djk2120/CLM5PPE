@@ -50,6 +50,8 @@ def get_files(exp,tape='h0',yy=()):
         appends['params']=xr.DataArray(params,dims='param')
         if exp=='transient' or exp=='SSP370': #LRH
             keys=np.concatenate((['LHC0000'],keys))
+        if exp=='EmBE': #LRH
+            keys=np.concatenate((['exp1_EmBE0001'],keys))
         appends['key']=xr.DataArray(keys,dims='ens')
 
     else:
