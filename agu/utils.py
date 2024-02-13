@@ -1,6 +1,7 @@
 import xarray as xr
 import numpy as np
 import glob
+import matplotlib.pyplot as plt
 def amean(da):
     #annual mean of monthly data
     m  = da['time.daysinmonth']
