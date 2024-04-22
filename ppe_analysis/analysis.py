@@ -18,6 +18,8 @@ def get_files(exp,tape='h0',yy=()):
         d='/glade/work/linnia/CLM-PPE-LAI_tests/exp2_pftLAI/data/hist/'
     elif exp=='SSP370':
         d='/glade/campaign/cgd/tss/projects/PPE/PPEn11_LHC/SSP370/hist/'
+    elif exp=='wave1':
+        d='/glade/campaign/cgd/tss/projects/PPE/PPEn14_wave1/transient/hist/'
         
         
     oaats=['CTL2010','C285','C867','AF1855','AF2095','NDEP']
@@ -32,6 +34,8 @@ def get_files(exp,tape='h0',yy=()):
     yys['pftLAI']=(1850,2014)
     key['SSP370']='/glade/campaign/asp/djk2120/PPEn11/csvs/lhc220926.txt'
     yys['SSP370']=(2015,2099)
+    key['wave1']='/glade/work/linnia/CLM-PPE-LAI_tests/wave1/wave1.txt'
+    yys['wave1']=(1850,2014)
     
     df=pd.read_csv(key[exp])  
     if not yy:
@@ -39,7 +43,7 @@ def get_files(exp,tape='h0',yy=()):
     else:
         yr0,yr1=yy
 
-    if exp=='transient' or exp=='SSP370' or exp=='EmBE' or exp=='pftLAI': #LRH
+    if exp=='transient' or exp=='SSP370' or exp=='EmBE' or exp=='pftLAI' or exp=='wave1': #LRH
         keys = df.member.values
         appends={}
         params=[]
@@ -52,6 +56,8 @@ def get_files(exp,tape='h0',yy=()):
             keys=np.concatenate((['LHC0000'],keys))
         if exp=='EmBE': #LRH
             keys=np.concatenate((['exp1_EmBE0001'],keys))
+        if exp=='wave1':
+            keys=np.concatenate((['wave10001'],keys))
         appends['key']=xr.DataArray(keys,dims='ens')
 
     else:
@@ -74,7 +80,7 @@ def get_files(exp,tape='h0',yy=()):
     
     if exp=='transient' or exp=='SSP370':
         fkeys=np.array([f.split(exp+'_')[1].split('.')[0] for f in fs])
-    elif exp=='EmBE':
+    elif exp=='EmBE' or exp=='wave1':
         fkeys=np.array([f.split('transient_')[1].split('.')[0] for f in fs]) #LRH
     else:
         fkeys=np.array([f.split('transient_')[1].split('.')[0] for f in fs]) #LRH
@@ -87,7 +93,7 @@ def get_files(exp,tape='h0',yy=()):
         dims  = ['ens','time']
 
     #add landarea information
-    if exp=='transient' or 'SSP370' or 'EmBE' or 'pftLAI': #LRH
+    if exp=='transient' or 'SSP370' or 'EmBE' or 'pftLAI' or 'wave1': #LRH
         fla='landarea_transient.nc'
     else:
         fla='landarea_oaat.nc'
@@ -147,7 +153,7 @@ def get_exp(exp,dvs=[],tape='h0',yy=(),defonly=False):
     if defonly:
         files=files[0]
         dims='time'
-        
+
     ds=get_ds(files,dims,dvs=dvs,appends=appends)
     
     f,a,d=get_files(exp,tape='h0',yy=yy)
